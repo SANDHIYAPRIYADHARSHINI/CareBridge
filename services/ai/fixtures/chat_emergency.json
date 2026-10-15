@@ -1,0 +1,33 @@
+{
+  "request_id": "req-mock-chat-emerg-003",
+  "language": "en",
+  "answer": "This sounds like a life-threatening medical emergency. Please call emergency services immediately or go to the nearest emergency room. Do not attempt to drive yourself.",
+  "citations": [],
+  "support_status": "unsupported",
+  "escalation": {
+    "required": true,
+    "level": "L3",
+    "reason": "Emergency symptom keywords detected: severe chest pressure radiating to jaw and shortness of breath.",
+    "suggested_contact": "emergency"
+  },
+  "uncertainty_notes": [
+    "LLM skipped due to red-flag safety trigger L3."
+  ],
+  "suggested_actions": [
+    {
+      "type": "call_emergency",
+      "payload": {
+        "number": "108",
+        "description": "Ambulance Emergency Helpline"
+      }
+    }
+  ],
+  "translation_check": null,
+  "metrics": {
+    "latency_ms": 12.0,
+    "model": "rule_engine:redflag_router",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "none"
+  }
+}

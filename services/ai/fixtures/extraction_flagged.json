@@ -1,0 +1,109 @@
+{
+  "request_id": "req-mock-extract-flagged-002",
+  "document_id": "doc-syn-rx-002",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "tesseract-5.3.0",
+    "lines": [
+      { "id": "L1", "text": "CITY GENERAL HEALTH CENTRE", "bbox": [120, 60, 500, 30], "page": 1, "conf": 0.95 },
+      { "id": "L2", "text": "Dr. Ananya Roy, MBBS  Reg: TN-MC-62104", "bbox": [120, 100, 480, 25], "page": 1, "conf": 0.94 },
+      { "id": "L3", "text": "Patient: M. Karthik  Age: 34 M  Date: 14-Oct-2026", "bbox": [120, 140, 520, 25], "page": 1, "conf": 0.93 },
+      { "id": "L4", "text": "1. Cap Amoxicillin - 1-1-1 after food x 10 days (Qty: 15 caps)", "bbox": [120, 190, 650, 25], "page": 1, "conf": 0.88 },
+      { "id": "L5", "text": "2. Tab Paracetamol 650mg - SOS for fever > 100F", "bbox": [120, 230, 580, 25], "page": 1, "conf": 0.95 }
+    ]
+  },
+  "prescriber": {
+    "name": { "value": "Dr. Ananya Roy", "raw": "Dr. Ananya Roy, MBBS", "status": "found", "confidence": 0.94, "evidence_line_ids": ["L2"] },
+    "registration_no": { "value": "TN-MC-62104", "raw": "TN-MC-62104", "status": "found", "confidence": 0.96, "evidence_line_ids": ["L2"] },
+    "hospital": { "value": "City General Health Centre", "raw": "CITY GENERAL HEALTH CENTRE", "status": "found", "confidence": 0.95, "evidence_line_ids": ["L1"] },
+    "date": { "value": "2026-10-14", "raw": "14-Oct-2026", "status": "found", "confidence": 0.93, "evidence_line_ids": ["L3"] }
+  },
+  "patient": {
+    "name": { "value": "M. Karthik", "raw": "M. Karthik", "status": "found", "confidence": 0.93, "evidence_line_ids": ["L3"] },
+    "age": { "value": "34", "raw": "34", "status": "found", "confidence": 0.95, "evidence_line_ids": ["L3"] }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": { "value": "Amoxicillin", "raw": "Amoxicillin", "status": "found", "confidence": 0.92, "evidence_line_ids": ["L4"] },
+      "strength": { "value": null, "raw": null, "status": "missing", "confidence": 0.0, "evidence_line_ids": ["L4"] },
+      "form": { "value": "capsule", "raw": "Cap", "status": "found", "confidence": 0.95, "evidence_line_ids": ["L4"] },
+      "dose": { "value": "1 capsule", "raw": "1", "status": "found", "confidence": 0.90, "evidence_line_ids": ["L4"] },
+      "frequency": { "value": "three times daily", "raw": "1-1-1", "status": "found", "confidence": 0.91, "evidence_line_ids": ["L4"] },
+      "timing": { "value": "after food", "raw": "after food", "status": "found", "confidence": 0.92, "evidence_line_ids": ["L4"] },
+      "duration": { "value": "10 days", "raw": "10 days", "status": "found", "confidence": 0.92, "evidence_line_ids": ["L4"] },
+      "instructions": { "value": "take 3 times daily after food", "raw": "after food", "status": "found", "confidence": 0.88, "evidence_line_ids": ["L4"] },
+      "frequency_normalized": {
+        "times_per_day": 3,
+        "slots": ["morning", "noon", "night"],
+        "as_needed": false
+      },
+      "suggestions": [
+        {
+          "field": "medicines[0].strength",
+          "suggested_value": "500 mg",
+          "reason": "Common adult Amoxicillin oral dose in primary care is 500 mg, but must be confirmed with prescriber."
+        }
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "med-2",
+      "name": { "value": "Paracetamol", "raw": "Paracetamol", "status": "found", "confidence": 0.96, "evidence_line_ids": ["L5"] },
+      "strength": { "value": "650 mg", "raw": "650mg", "status": "found", "confidence": 0.96, "evidence_line_ids": ["L5"] },
+      "form": { "value": "tablet", "raw": "Tab", "status": "found", "confidence": 0.97, "evidence_line_ids": ["L5"] },
+      "dose": { "value": "1 tablet", "raw": "1", "status": "found", "confidence": 0.94, "evidence_line_ids": ["L5"] },
+      "frequency": { "value": "as needed", "raw": "SOS", "status": "found", "confidence": 0.95, "evidence_line_ids": ["L5"] },
+      "timing": { "value": "as needed for fever", "raw": "SOS for fever > 100F", "status": "found", "confidence": 0.91, "evidence_line_ids": ["L5"] },
+      "duration": { "value": null, "raw": null, "status": "missing", "confidence": 0.0, "evidence_line_ids": ["L5"] },
+      "instructions": { "value": "take SOS when temperature exceeds 100 F", "raw": "SOS for fever > 100F", "status": "found", "confidence": 0.93, "evidence_line_ids": ["L5"] },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": null,
+    "raw": null,
+    "status": "missing",
+    "confidence": 0.0,
+    "evidence_line_ids": []
+  },
+  "flags": [
+    {
+      "id": "flag-missing-strength-med-1",
+      "severity": "warn",
+      "code": "MISSING_STRENGTH",
+      "message": "Prescription does not specify strength/dose for Amoxicillin capsules.",
+      "field_path": "medicines[0].strength",
+      "evidence_line_ids": ["L4"]
+    },
+    {
+      "id": "flag-qty-duration-conflict-med-1",
+      "severity": "warn",
+      "code": "QUANTITY_DURATION_CONFLICT",
+      "message": "Frequency (3 times daily) for 10 days requires 30 capsules, but quantity written is 15 capsules.",
+      "field_path": "medicines[0].duration",
+      "evidence_line_ids": ["L4"]
+    }
+  ],
+  "overall_status": "needs_review",
+  "review_reasons": [
+    "Missing drug strength for Amoxicillin: requires pharmacist or doctor clarification before setting reminders.",
+    "Quantity and frequency mismatch: 15 capsules is insufficient for 10 days at 3 doses/day."
+  ],
+  "metrics": {
+    "latency_ms": 381.2,
+    "model": "google/gemma-3-27b-it",
+    "tokens_in": 780,
+    "tokens_out": 440,
+    "gpu": "AMD Instinct MI300X"
+  }
+}

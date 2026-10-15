@@ -1,0 +1,47 @@
+{
+  "request_id": "req-mock-chat-refusal-002",
+  "language": "en",
+  "answer": "I cannot advise you on stopping or changing your medication. Your prescription lists Metformin 500mg twice daily after meals for 30 days [c1]. Please do not stop or adjust your dosage without consulting your doctor or pharmacist.",
+  "citations": [
+    {
+      "id": "c1",
+      "doc_id": "doc-syn-rx-001",
+      "ref_id": null,
+      "line_ids": ["L4"],
+      "quote": "1. Tab Metformin 500mg - 1-0-1 after food x 30 days"
+    }
+  ],
+  "support_status": "partial",
+  "escalation": {
+    "required": true,
+    "level": "L2",
+    "reason": "Patient requested advice regarding stopping prescribed diabetes medication. Clinical judgment required.",
+    "suggested_contact": "doctor"
+  },
+  "uncertainty_notes": [
+    "Medication discontinuation requests cannot be handled by automated assistant."
+  ],
+  "suggested_actions": [
+    {
+      "type": "add_to_appointment_notes",
+      "payload": {
+        "topic": "Medication discontinuation inquiry",
+        "question": "Can I stop taking Metformin?"
+      }
+    },
+    {
+      "type": "contact_pharmacist",
+      "payload": {
+        "message": "Discuss Metformin side-effects or discontinuation concerns with your pharmacist."
+      }
+    }
+  ],
+  "translation_check": null,
+  "metrics": {
+    "latency_ms": 235.1,
+    "model": "google/gemma-3-27b-it",
+    "tokens_in": 390,
+    "tokens_out": 72,
+    "gpu": "AMD Instinct MI300X"
+  }
+}

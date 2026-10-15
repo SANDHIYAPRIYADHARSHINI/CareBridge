@@ -1,0 +1,28 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "When should I take the cholesterol medicine?"
+    }
+  ],
+  "language": "en",
+  "documents": [
+    {
+      "doc_id": "doc-syn-rx-001",
+      "type": "prescription",
+      "title": "Prescription from Dr. S. Ramanathan",
+      "structured": {
+        "hospital": "Kaveri Community Clinic, Chennai",
+        "medicines": [
+          { "name": "Metformin", "dose": "500mg", "frequency": "1-0-1 after food", "duration": "30 days" },
+          { "name": "Atorvastatin", "dose": "10mg", "frequency": "0-0-1 night after food", "duration": "30 days" },
+          { "name": "Amlodipine", "dose": "5mg", "frequency": "1-0-0 morning before food", "duration": "30 days" }
+        ]
+      },
+      "ocr_lines": [
+        { "id": "L5", "text": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days", "bbox": [100, 220, 620, 25], "page": 1, "conf": 0.95 }
+      ]
+    }
+  ],
+  "use_reference": true
+}

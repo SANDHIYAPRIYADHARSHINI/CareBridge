@@ -1,0 +1,1 @@
+Summarize the document for a patient in plain language, at most 8 short sentences. Each sentence needs citation ids. Then list `missing` (important details not present) and `inconsistencies` (details that conflict). Do not fill gaps. Do not add advice.

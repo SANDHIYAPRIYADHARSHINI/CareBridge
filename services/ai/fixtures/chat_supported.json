@@ -1,0 +1,31 @@
+{
+  "request_id": "req-mock-chat-supp-001",
+  "language": "en",
+  "answer": "According to your prescription, take Atorvastatin 10mg once daily at night after food [c1].",
+  "citations": [
+    {
+      "id": "c1",
+      "doc_id": "doc-syn-rx-001",
+      "ref_id": null,
+      "line_ids": ["L5"],
+      "quote": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days"
+    }
+  ],
+  "support_status": "supported",
+  "escalation": {
+    "required": false,
+    "level": "L0",
+    "reason": null,
+    "suggested_contact": "none"
+  },
+  "uncertainty_notes": [],
+  "suggested_actions": [],
+  "translation_check": null,
+  "metrics": {
+    "latency_ms": 218.4,
+    "model": "google/gemma-3-27b-it",
+    "tokens_in": 340,
+    "tokens_out": 45,
+    "gpu": "AMD Instinct MI300X"
+  }
+}
