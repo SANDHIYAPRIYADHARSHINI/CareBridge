@@ -1,6 +1,6 @@
 # CareBridge AI — planning bundle (Member 1: AI, Voice & Prescription Intelligence)
 
-Drop this folder at the root of your repo, open it in Antigravity, and start with `docs/vibe-prompts.md` (P0).
+
 
 | File | Purpose |
 |---|---|
