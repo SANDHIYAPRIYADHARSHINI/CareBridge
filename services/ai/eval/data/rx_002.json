@@ -1,0 +1,498 @@
+{
+  "request_id": "req-syn-002",
+  "document_id": "doc-syn-rx-002",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "VASANTHAM FAMILY MEDICAL CENTRE",
+        "bbox": [
+          120,
+          70,
+          602,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "15 Anna Salai, Madurai - 625001 | Ph: 0452-2531092",
+        "bbox": [
+          120,
+          115,
+          506,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)",
+        "bbox": [
+          120,
+          165,
+          477,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-28401",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "Patient: K. Lakshmi    Age: 62 F    Date: 12-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          497,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Arthroscil 50mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          370,
+          492,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Always take after food to protect stomach lining.",
+        "bbox": [
+          120,
+          406,
+          508,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Paincure 325mg - SOS as needed for fever or pain x 15 days",
+        "bbox": [
+          120,
+          460,
+          649,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Take every 6 hours as needed for body pain or fever above 100°F.",
+        "bbox": [
+          120,
+          496,
+          644,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "3. Tab Pulmoheal 100mcg - SOS as needed for wheezing x 15 days",
+        "bbox": [
+          120,
+          550,
+          646,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "    Instructions: Inhale 1 puff as needed for breathlessness.",
+        "bbox": [
+          120,
+          586,
+          459,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L12",
+        "text": "Follow up in 4 weeks with fasting lab reports.",
+        "bbox": [
+          120,
+          1180,
+          433,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L13",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. K. Anbazhagan",
+      "raw": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-28401",
+      "raw": "TN-MC-28401",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "VASANTHAM FAMILY MEDICAL CENTRE",
+      "raw": "VASANTHAM FAMILY MEDICAL CENTRE",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "12-Oct-2026",
+      "raw": "12-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "K. Lakshmi",
+      "raw": "K. Lakshmi",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "62",
+      "raw": "62",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Arthroscil",
+        "raw": "Arthroscil",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "50mg",
+        "raw": "50mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Always take after food to protect stomach lining.",
+        "raw": "Always take after food to protect stomach lining.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Paincure",
+        "raw": "Paincure",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "325mg",
+        "raw": "325mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "as needed for fever or pain",
+        "raw": "as needed for fever or pain",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Take every 6 hours as needed for body pain or fever above 100°F.",
+        "raw": "Take every 6 hours as needed for body pain or fever above 100°F.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Pulmoheal",
+        "raw": "Pulmoheal",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "strength": {
+        "value": "100mcg",
+        "raw": "100mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "form": {
+        "value": "inhaler",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "timing": {
+        "value": "as needed for wheezing",
+        "raw": "as needed for wheezing",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "instructions": {
+        "value": "Inhale 1 puff as needed for breathlessness.",
+        "raw": "Inhale 1 puff as needed for breathlessness.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow up in 4 weeks with fasting lab reports.",
+    "raw": "Follow up in 4 weeks with fasting lab reports.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L12"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

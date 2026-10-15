@@ -1,0 +1,500 @@
+{
+  "request_id": "req-syn-011",
+  "document_id": "doc-syn-rx-011",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "அருணோதயம் சமுதாய நல மையம்",
+        "bbox": [
+          120,
+          70,
+          668,
+          35
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "42 காந்தி சாலை, சேலம் - 636007",
+        "bbox": [
+          120,
+          115,
+          378,
+          23
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+        "bbox": [
+          120,
+          165,
+          483,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-10293",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "நோயாளி / Patient: R. Murugan    வயது / Age: 54 M    தேதி / Date: 21-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          837,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Normotens 2.5mg - 1-0-0 காலை உணவுக்கு முன் x 15 days",
+        "bbox": [
+          120,
+          370,
+          686,
+          23
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: தினமும் காலையில் தண்ணீருடன் உட்கொள்ளவும்.",
+        "bbox": [
+          120,
+          406,
+          619,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Bactozap 250mg - 1-0-1 உணவுக்குப் பின் x 30 days",
+        "bbox": [
+          120,
+          460,
+          605,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: முழுமையான 7 நாட்கள் வரை தொடர்ந்து உட்கொள்ளவும்.",
+        "bbox": [
+          120,
+          496,
+          695,
+          19
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "3. Tab Pulmoheal 100mcg - SOS மூச்சுத்திணறல் ஏற்படும் போது x 15 days",
+        "bbox": [
+          120,
+          550,
+          787,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "    Instructions: மூச்சுத்திணறல் ஏற்படும் போது ஒரு முறை உள்ளிழுக்கவும்.",
+        "bbox": [
+          120,
+          586,
+          677,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L12",
+        "text": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+        "bbox": [
+          120,
+          1180,
+          1113,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L13",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. R. Senthamilselvan",
+      "raw": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-10293",
+      "raw": "TN-MC-10293",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+      "raw": "அருணோதயம் சமுதாய நல மையம்",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "21-Oct-2026",
+      "raw": "21-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "R. Murugan",
+      "raw": "R. Murugan",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "54",
+      "raw": "54",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Normotens",
+        "raw": "Normotens",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "2.5mg",
+        "raw": "2.5mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "காலை உணவுக்கு முன்",
+        "raw": "காலை உணவுக்கு முன்",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "தினமும் காலையில் தண்ணீருடன் உட்கொள்ளவும்.",
+        "raw": "தினமும் காலையில் தண்ணீருடன் உட்கொள்ளவும்.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Bactozap",
+        "raw": "Bactozap",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "250mg",
+        "raw": "250mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "capsule",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "உணவுக்குப் பின்",
+        "raw": "உணவுக்குப் பின்",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "முழுமையான 7 நாட்கள் வரை தொடர்ந்து உட்கொள்ளவும்.",
+        "raw": "முழுமையான 7 நாட்கள் வரை தொடர்ந்து உட்கொள்ளவும்.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Pulmoheal",
+        "raw": "Pulmoheal",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "strength": {
+        "value": "100mcg",
+        "raw": "100mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "form": {
+        "value": "inhaler",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "timing": {
+        "value": "மூச்சுத்திணறல் ஏற்படும் போது",
+        "raw": "மூச்சுத்திணறல் ஏற்படும் போது",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "instructions": {
+        "value": "மூச்சுத்திணறல் ஏற்படும் போது ஒரு முறை உள்ளிழுக்கவும்.",
+        "raw": "மூச்சுத்திணறல் ஏற்படும் போது ஒரு முறை உள்ளிழுக்கவும்.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+    "raw": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L12"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

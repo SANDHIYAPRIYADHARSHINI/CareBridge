@@ -1,0 +1,519 @@
+{
+  "request_id": "req-syn-023",
+  "document_id": "doc-syn-rx-023",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "KURUNJI RURAL HEALTH DISPENSARY",
+        "bbox": [
+          120,
+          70,
+          572,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "88 Thanjavur Main Road, Trichy - 620001 | Ph: 0431-2701824",
+        "bbox": [
+          120,
+          115,
+          589,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. V. Malathi, MBBS, MD",
+        "bbox": [
+          120,
+          165,
+          270,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-39182",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "Patient: M. Saravanan    Age: 45 M    Date: 15-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          535,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Thyrobalance - 1-0-0 early morning empty stomach x 15 days",
+        "bbox": [
+          120,
+          370,
+          662,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "bbox": [
+          120,
+          406,
+          776,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Cardiovin 10mg - 0-0-1 night after food x 30 days",
+        "bbox": [
+          120,
+          460,
+          548,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Take once daily at bedtime after dinner.",
+        "bbox": [
+          120,
+          496,
+          433,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "3. Tab Gastrosave 20mg - 1-0-0 empty stomach morning x 15 days",
+        "bbox": [
+          120,
+          550,
+          647,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "    Instructions: Take 30 minutes before breakfast.",
+        "bbox": [
+          120,
+          586,
+          389,
+          14
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L12",
+        "text": "Follow up in 4 weeks with fasting lab reports.",
+        "bbox": [
+          120,
+          1180,
+          433,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L13",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. V. Malathi",
+      "raw": "Dr. V. Malathi, MBBS, MD",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-39182",
+      "raw": "TN-MC-39182",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "KURUNJI RURAL HEALTH DISPENSARY",
+      "raw": "KURUNJI RURAL HEALTH DISPENSARY",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "15-Oct-2026",
+      "raw": "15-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "M. Saravanan",
+      "raw": "M. Saravanan",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "45",
+      "raw": "45",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Thyrobalance",
+        "raw": "Thyrobalance",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": null,
+        "raw": null,
+        "status": "missing",
+        "confidence": 0.0,
+        "evidence_line_ids": []
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "early morning empty stomach",
+        "raw": "early morning empty stomach",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "raw": "Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "needs_review"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Cardiovin",
+        "raw": "Cardiovin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "10mg",
+        "raw": "10mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "0-0-1",
+        "raw": "0-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "night after food",
+        "raw": "night after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Take once daily at bedtime after dinner.",
+        "raw": "Take once daily at bedtime after dinner.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Gastrosave",
+        "raw": "Gastrosave",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "strength": {
+        "value": "20mg",
+        "raw": "20mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "form": {
+        "value": "capsule",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "timing": {
+        "value": "empty stomach morning",
+        "raw": "empty stomach morning",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "instructions": {
+        "value": "Take 30 minutes before breakfast.",
+        "raw": "Take 30 minutes before breakfast.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow up in 4 weeks with fasting lab reports.",
+    "raw": "Follow up in 4 weeks with fasting lab reports.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L12"
+    ]
+  },
+  "flags": [
+    {
+      "id": "flag-missing-strength-med-1",
+      "severity": "warn",
+      "code": "MISSING_STRENGTH",
+      "message": "Missing drug strength on Thyrobalance.",
+      "field_path": "medicines[0].strength",
+      "evidence_line_ids": [
+        "L6"
+      ]
+    }
+  ],
+  "overall_status": "needs_review",
+  "review_reasons": [
+    "Missing strength for medicine #1 (Thyrobalance)."
+  ],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": {
+    "is_corrupted": true,
+    "type": "missing_strength",
+    "corrupted_fields": [
+      "medicines[0].strength"
+    ],
+    "description": "Deliberate test defect: missing_strength"
+  }
+}

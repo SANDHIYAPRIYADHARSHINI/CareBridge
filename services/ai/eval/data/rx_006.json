@@ -1,0 +1,391 @@
+{
+  "request_id": "req-syn-006",
+  "document_id": "doc-syn-rx-006",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+        "bbox": [
+          120,
+          70,
+          710,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "42 Gandhi Road, Salem - 636007 | Ph: 0427-2410293",
+        "bbox": [
+          120,
+          115,
+          510,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+        "bbox": [
+          120,
+          165,
+          483,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-10293",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "Patient: T. Valli    Age: 51 F    Date: 16-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          459,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Allermed 5mg - 0-0-1 night x 30 days",
+        "bbox": [
+          120,
+          370,
+          429,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Take once daily in the evening or at bedtime.",
+        "bbox": [
+          120,
+          406,
+          475,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Pulmoheal 100mcg - SOS as needed for wheezing x 15 days",
+        "bbox": [
+          120,
+          460,
+          646,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Inhale 1 puff as needed for breathlessness.",
+        "bbox": [
+          120,
+          496,
+          459,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "Follow up in 4 weeks with fasting lab reports.",
+        "bbox": [
+          120,
+          1180,
+          433,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. R. Senthamilselvan",
+      "raw": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-10293",
+      "raw": "TN-MC-10293",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+      "raw": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "16-Oct-2026",
+      "raw": "16-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "T. Valli",
+      "raw": "T. Valli",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "51",
+      "raw": "51",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Allermed",
+        "raw": "Allermed",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "5mg",
+        "raw": "5mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "0-0-1",
+        "raw": "0-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "night",
+        "raw": "night",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Take once daily in the evening or at bedtime.",
+        "raw": "Take once daily in the evening or at bedtime.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Pulmoheal",
+        "raw": "Pulmoheal",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "100mcg",
+        "raw": "100mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "inhaler",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "as needed for wheezing",
+        "raw": "as needed for wheezing",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Inhale 1 puff as needed for breathlessness.",
+        "raw": "Inhale 1 puff as needed for breathlessness.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow up in 4 weeks with fasting lab reports.",
+    "raw": "Follow up in 4 weeks with fasting lab reports.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L10"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

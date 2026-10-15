@@ -1,0 +1,411 @@
+{
+  "request_id": "req-syn-024",
+  "document_id": "doc-syn-rx-024",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "SENTHAMIZH WELFARE CLINIC",
+        "bbox": [
+          120,
+          70,
+          467,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "204 Velachery Main Road, Chennai - 600042 | Ph: 044-22441920",
+        "bbox": [
+          120,
+          115,
+          622,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. S. Meenakshi, MBBS",
+        "bbox": [
+          120,
+          165,
+          253,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-51042",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "நோயாளி / Patient: S. Revathi    வயது / Age: 38 F    தேதி / Date: 16-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          810,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Cardiovin 10mg - [???] night after food x 30 days",
+        "bbox": [
+          120,
+          370,
+          538,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Take once daily at bedtime after dinner.",
+        "bbox": [
+          120,
+          406,
+          433,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Pulmoheal 100mcg - SOS as needed for wheezing x 15 days",
+        "bbox": [
+          120,
+          460,
+          646,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Inhale 1 puff as needed for breathlessness.",
+        "bbox": [
+          120,
+          496,
+          459,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+        "bbox": [
+          120,
+          1180,
+          1113,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. S. Meenakshi",
+      "raw": "Dr. S. Meenakshi, MBBS",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-51042",
+      "raw": "TN-MC-51042",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "SENTHAMIZH WELFARE CLINIC",
+      "raw": "SENTHAMIZH WELFARE CLINIC",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "16-Oct-2026",
+      "raw": "16-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "S. Revathi",
+      "raw": "S. Revathi",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "38",
+      "raw": "38",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Cardiovin",
+        "raw": "Cardiovin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "10mg",
+        "raw": "10mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": null,
+        "raw": "[???]",
+        "status": "unclear",
+        "confidence": 0.2,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "night after food",
+        "raw": "night after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Take once daily at bedtime after dinner.",
+        "raw": "Take once daily at bedtime after dinner.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "needs_review"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Pulmoheal",
+        "raw": "Pulmoheal",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "100mcg",
+        "raw": "100mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "inhaler",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "as needed for wheezing",
+        "raw": "as needed for wheezing",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Inhale 1 puff as needed for breathlessness.",
+        "raw": "Inhale 1 puff as needed for breathlessness.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+    "raw": "மறுபரிசோதனை: 4 வாரங்களுக்குப் பின் ஆய்வக அறிக்கைகளுடன் வரவும் / Follow up in 4 weeks.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L10"
+    ]
+  },
+  "flags": [
+    {
+      "id": "flag-unclear-freq-med-1",
+      "severity": "warn",
+      "code": "UNREADABLE_FREQUENCY",
+      "message": "Frequency illegible or smudged for Cardiovin.",
+      "field_path": "medicines[0].frequency",
+      "evidence_line_ids": [
+        "L6"
+      ]
+    }
+  ],
+  "overall_status": "needs_review",
+  "review_reasons": [
+    "Frequency smudged and unreadable for Cardiovin."
+  ],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": {
+    "is_corrupted": true,
+    "type": "smudged_frequency",
+    "corrupted_fields": [
+      "medicines[0].frequency"
+    ],
+    "description": "Deliberate test defect: smudged_frequency"
+  }
+}

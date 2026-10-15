@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -72,6 +72,7 @@ class ExtractionResult(BaseModel):
     overall_status: OverallStatus
     review_reasons: list[str] = Field(default_factory=list)
     metrics: Metrics
+    corruption_details: dict[str, Any] | None = None
 
 
 class QrExtractRequest(BaseModel):

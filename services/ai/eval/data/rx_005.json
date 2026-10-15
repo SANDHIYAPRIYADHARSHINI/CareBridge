@@ -1,0 +1,500 @@
+{
+  "request_id": "req-syn-005",
+  "document_id": "doc-syn-rx-005",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "MARUTHAM PRIMARY HEALTH CENTRE",
+        "bbox": [
+          120,
+          70,
+          597,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "12 Coimbatore Bypass, Erode - 638001 | Ph: 0424-2218491",
+        "bbox": [
+          120,
+          115,
+          571,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. P. Sundaramoorthy, MBBS, MD",
+        "bbox": [
+          120,
+          165,
+          366,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-62391",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "Patient: P. Alagappan    Age: 68 M    Date: 15-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          531,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Bactozap 250mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          370,
+          501,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Complete the full 7-day course even if you feel better.",
+        "bbox": [
+          120,
+          406,
+          546,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Pulmoheal 100mcg - SOS as needed for wheezing x 15 days",
+        "bbox": [
+          120,
+          460,
+          646,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Inhale 1 puff as needed for breathlessness.",
+        "bbox": [
+          120,
+          496,
+          459,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "3. Tab Gastrosave 20mg - 1-0-0 empty stomach morning x 15 days",
+        "bbox": [
+          120,
+          550,
+          647,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "    Instructions: Take 30 minutes before breakfast.",
+        "bbox": [
+          120,
+          586,
+          389,
+          14
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L12",
+        "text": "Follow up in 4 weeks with fasting lab reports.",
+        "bbox": [
+          120,
+          1180,
+          433,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L13",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. P. Sundaramoorthy",
+      "raw": "Dr. P. Sundaramoorthy, MBBS, MD",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-62391",
+      "raw": "TN-MC-62391",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "MARUTHAM PRIMARY HEALTH CENTRE",
+      "raw": "MARUTHAM PRIMARY HEALTH CENTRE",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "15-Oct-2026",
+      "raw": "15-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "P. Alagappan",
+      "raw": "P. Alagappan",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "68",
+      "raw": "68",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Bactozap",
+        "raw": "Bactozap",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "250mg",
+        "raw": "250mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "capsule",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Complete the full 7-day course even if you feel better.",
+        "raw": "Complete the full 7-day course even if you feel better.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Pulmoheal",
+        "raw": "Pulmoheal",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "100mcg",
+        "raw": "100mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "inhaler",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "as needed for wheezing",
+        "raw": "as needed for wheezing",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Inhale 1 puff as needed for breathlessness.",
+        "raw": "Inhale 1 puff as needed for breathlessness.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Gastrosave",
+        "raw": "Gastrosave",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "strength": {
+        "value": "20mg",
+        "raw": "20mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "form": {
+        "value": "capsule",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "timing": {
+        "value": "empty stomach morning",
+        "raw": "empty stomach morning",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "instructions": {
+        "value": "Take 30 minutes before breakfast.",
+        "raw": "Take 30 minutes before breakfast.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow up in 4 weeks with fasting lab reports.",
+    "raw": "Follow up in 4 weeks with fasting lab reports.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L12"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

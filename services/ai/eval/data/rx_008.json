@@ -1,0 +1,609 @@
+{
+  "request_id": "req-syn-008",
+  "document_id": "doc-syn-rx-008",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "KURUNJI RURAL HEALTH DISPENSARY",
+        "bbox": [
+          120,
+          70,
+          572,
+          24
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L2",
+        "text": "88 Thanjavur Main Road, Trichy - 620001 | Ph: 0431-2701824",
+        "bbox": [
+          120,
+          115,
+          589,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L3",
+        "text": "Dr. V. Malathi, MBBS, MD",
+        "bbox": [
+          120,
+          165,
+          270,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L4",
+        "text": "Reg: TN-MC-39182",
+        "bbox": [
+          780,
+          165,
+          189,
+          21
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L5",
+        "text": "Patient: D. Banumathi    Age: 41 F    Date: 18-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          524,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L6",
+        "text": "1. Tab Paincure 325mg - SOS as needed for fever or pain x 15 days",
+        "bbox": [
+          120,
+          370,
+          649,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L7",
+        "text": "    Instructions: Take every 6 hours as needed for body pain or fever above 100°F.",
+        "bbox": [
+          120,
+          406,
+          644,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L8",
+        "text": "2. Tab Thyrobalance 25mcg - 1-0-0 early morning empty stomach x 15 days",
+        "bbox": [
+          120,
+          460,
+          734,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L9",
+        "text": "    Instructions: Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "bbox": [
+          120,
+          496,
+          776,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L10",
+        "text": "3. Tab Bactozap 250mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          550,
+          501,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L11",
+        "text": "    Instructions: Complete the full 7-day course even if you feel better.",
+        "bbox": [
+          120,
+          586,
+          546,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L12",
+        "text": "4. Tab Arthroscil 50mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          640,
+          492,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L13",
+        "text": "    Instructions: Always take after food to protect stomach lining.",
+        "bbox": [
+          120,
+          676,
+          508,
+          18
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L14",
+        "text": "Follow up in 4 weeks with fasting lab reports.",
+        "bbox": [
+          120,
+          1180,
+          433,
+          22
+        ],
+        "page": 1,
+        "conf": 0.96
+      },
+      {
+        "id": "L15",
+        "text": "Doctor's Signature / முத்திரை",
+        "bbox": [
+          860,
+          1430,
+          253,
+          20
+        ],
+        "page": 1,
+        "conf": 0.96
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. V. Malathi",
+      "raw": "Dr. V. Malathi, MBBS, MD",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-39182",
+      "raw": "TN-MC-39182",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "hospital": {
+      "value": "KURUNJI RURAL HEALTH DISPENSARY",
+      "raw": "KURUNJI RURAL HEALTH DISPENSARY",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "18-Oct-2026",
+      "raw": "18-Oct-2026",
+      "status": "found",
+      "confidence": 0.97,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "D. Banumathi",
+      "raw": "D. Banumathi",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    },
+    "age": {
+      "value": "41",
+      "raw": "41",
+      "status": "found",
+      "confidence": 0.98,
+      "evidence_line_ids": [
+        "L5"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Paincure",
+        "raw": "Paincure",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "strength": {
+        "value": "325mg",
+        "raw": "325mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "timing": {
+        "value": "as needed for fever or pain",
+        "raw": "as needed for fever or pain",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "instructions": {
+        "value": "Take every 6 hours as needed for body pain or fever above 100°F.",
+        "raw": "Take every 6 hours as needed for body pain or fever above 100°F.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Thyrobalance",
+        "raw": "Thyrobalance",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "strength": {
+        "value": "25mcg",
+        "raw": "25mcg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "timing": {
+        "value": "early morning empty stomach",
+        "raw": "early morning empty stomach",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "instructions": {
+        "value": "Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "raw": "Take first thing in the morning with plain water, 45 minutes before tea or breakfast.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Bactozap",
+        "raw": "Bactozap",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "strength": {
+        "value": "250mg",
+        "raw": "250mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "form": {
+        "value": "capsule",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "instructions": {
+        "value": "Complete the full 7-day course even if you feel better.",
+        "raw": "Complete the full 7-day course even if you feel better.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-4",
+      "name": {
+        "value": "Arthroscil",
+        "raw": "Arthroscil",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "strength": {
+        "value": "50mg",
+        "raw": "50mg",
+        "status": "found",
+        "confidence": 0.96,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.97,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "dose": {
+        "value": "1 unit",
+        "raw": "1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.93,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.95,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "instructions": {
+        "value": "Always take after food to protect stomach lining.",
+        "raw": "Always take after food to protect stomach lining.",
+        "status": "found",
+        "confidence": 0.92,
+        "evidence_line_ids": [
+          "L12"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow up in 4 weeks with fasting lab reports.",
+    "raw": "Follow up in 4 weeks with fasting lab reports.",
+    "status": "found",
+    "confidence": 0.94,
+    "evidence_line_ids": [
+      "L14"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "synthetic_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

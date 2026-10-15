@@ -1,0 +1,364 @@
+{
+  "dataset_name": "carebridge_synthetic_rx_v1",
+  "total_prescriptions": 30,
+  "clean_count": 20,
+  "corrupted_count": 10,
+  "corruption_breakdown": {
+    "missing_strength": 3,
+    "smudged_frequency": 2,
+    "quantity_duration_conflict": 3,
+    "duplicate_drug": 2
+  },
+  "prescriptions": [
+    {
+      "id": "doc-syn-rx-001",
+      "image_file": "rx_001.png",
+      "json_file": "rx_001.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-002",
+      "image_file": "rx_002.png",
+      "json_file": "rx_002.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-003",
+      "image_file": "rx_003.png",
+      "json_file": "rx_003.json",
+      "language": "en",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-004",
+      "image_file": "rx_004.png",
+      "json_file": "rx_004.json",
+      "language": "en",
+      "medicines_count": 4,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-005",
+      "image_file": "rx_005.png",
+      "json_file": "rx_005.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-006",
+      "image_file": "rx_006.png",
+      "json_file": "rx_006.json",
+      "language": "en",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-007",
+      "image_file": "rx_007.png",
+      "json_file": "rx_007.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-008",
+      "image_file": "rx_008.png",
+      "json_file": "rx_008.json",
+      "language": "en",
+      "medicines_count": 4,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-009",
+      "image_file": "rx_009.png",
+      "json_file": "rx_009.json",
+      "language": "ta",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-010",
+      "image_file": "rx_010.png",
+      "json_file": "rx_010.json",
+      "language": "ta",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-011",
+      "image_file": "rx_011.png",
+      "json_file": "rx_011.json",
+      "language": "ta",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-012",
+      "image_file": "rx_012.png",
+      "json_file": "rx_012.json",
+      "language": "ta",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-013",
+      "image_file": "rx_013.png",
+      "json_file": "rx_013.json",
+      "language": "ta",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-014",
+      "image_file": "rx_014.png",
+      "json_file": "rx_014.json",
+      "language": "ta",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-015",
+      "image_file": "rx_015.png",
+      "json_file": "rx_015.json",
+      "language": "bilingual",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-016",
+      "image_file": "rx_016.png",
+      "json_file": "rx_016.json",
+      "language": "bilingual",
+      "medicines_count": 4,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-017",
+      "image_file": "rx_017.png",
+      "json_file": "rx_017.json",
+      "language": "bilingual",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-018",
+      "image_file": "rx_018.png",
+      "json_file": "rx_018.json",
+      "language": "bilingual",
+      "medicines_count": 2,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-019",
+      "image_file": "rx_019.png",
+      "json_file": "rx_019.json",
+      "language": "bilingual",
+      "medicines_count": 3,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-020",
+      "image_file": "rx_020.png",
+      "json_file": "rx_020.json",
+      "language": "bilingual",
+      "medicines_count": 4,
+      "overall_status": "ready",
+      "is_corrupted": false,
+      "corruption_type": null,
+      "corrupted_fields": []
+    },
+    {
+      "id": "doc-syn-rx-021",
+      "image_file": "rx_021.png",
+      "json_file": "rx_021.json",
+      "language": "en",
+      "medicines_count": 2,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "missing_strength",
+      "corrupted_fields": [
+        "medicines[0].strength"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-022",
+      "image_file": "rx_022.png",
+      "json_file": "rx_022.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "missing_strength",
+      "corrupted_fields": [
+        "medicines[0].strength"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-023",
+      "image_file": "rx_023.png",
+      "json_file": "rx_023.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "missing_strength",
+      "corrupted_fields": [
+        "medicines[0].strength"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-024",
+      "image_file": "rx_024.png",
+      "json_file": "rx_024.json",
+      "language": "bilingual",
+      "medicines_count": 2,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "smudged_frequency",
+      "corrupted_fields": [
+        "medicines[0].frequency"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-025",
+      "image_file": "rx_025.png",
+      "json_file": "rx_025.json",
+      "language": "bilingual",
+      "medicines_count": 3,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "smudged_frequency",
+      "corrupted_fields": [
+        "medicines[0].frequency"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-026",
+      "image_file": "rx_026.png",
+      "json_file": "rx_026.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "quantity_duration_conflict",
+      "corrupted_fields": [
+        "medicines[0].duration"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-027",
+      "image_file": "rx_027.png",
+      "json_file": "rx_027.json",
+      "language": "en",
+      "medicines_count": 2,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "quantity_duration_conflict",
+      "corrupted_fields": [
+        "medicines[0].duration"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-028",
+      "image_file": "rx_028.png",
+      "json_file": "rx_028.json",
+      "language": "en",
+      "medicines_count": 4,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "quantity_duration_conflict",
+      "corrupted_fields": [
+        "medicines[0].duration"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-029",
+      "image_file": "rx_029.png",
+      "json_file": "rx_029.json",
+      "language": "en",
+      "medicines_count": 3,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "duplicate_drug",
+      "corrupted_fields": [
+        "medicines[2].name"
+      ]
+    },
+    {
+      "id": "doc-syn-rx-030",
+      "image_file": "rx_030.png",
+      "json_file": "rx_030.json",
+      "language": "en",
+      "medicines_count": 2,
+      "overall_status": "needs_review",
+      "is_corrupted": true,
+      "corruption_type": "duplicate_drug",
+      "corrupted_fields": [
+        "medicines[1].name"
+      ]
+    }
+  ]
+}
