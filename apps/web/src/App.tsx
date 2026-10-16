@@ -18,7 +18,7 @@ import { TodayScreen } from "./features/today/TodayScreen";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import type { ExtractionResult } from "./types/ai";
-import { extractionFlaggedFixture } from "./fixtures";
+import { rxDemo001Fixture } from "./fixtures";
 import { isEnvUseFixtures } from "./services/aiApi";
 import "./index.css";
 
@@ -260,7 +260,7 @@ export function App() {
             className={`rail-nav-btn ${activeTab === "check" ? "active" : ""}`}
             onClick={() => {
               if (!currentExtraction) {
-                setCurrentExtraction(extractionFlaggedFixture);
+                setCurrentExtraction(rxDemo001Fixture);
                 setCurrentImageUrl("/rx_demo_001.png");
               }
               setActiveTab("check");
@@ -289,7 +289,7 @@ export function App() {
               onNavigateToAdd={() => setActiveTab("add")}
               onNavigateToCheck={() => {
                 if (!currentExtraction) {
-                  setCurrentExtraction(extractionFlaggedFixture);
+                  setCurrentExtraction(rxDemo001Fixture);
                   setCurrentImageUrl("/rx_demo_001.png");
                 }
                 setActiveTab("check");
@@ -308,7 +308,7 @@ export function App() {
 
           {activeTab === "check" && (
             <PrescriptionReview
-              extraction={currentExtraction || extractionFlaggedFixture}
+              extraction={currentExtraction || rxDemo001Fixture}
               imageUrl={currentImageUrl}
               useFixtures={useFixtures}
               onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
@@ -358,7 +358,7 @@ export function App() {
           className={`mobile-tab-btn ${activeTab === "check" ? "active" : ""}`}
           onClick={() => {
             if (!currentExtraction) {
-              setCurrentExtraction(extractionFlaggedFixture);
+              setCurrentExtraction(rxDemo001Fixture);
               setCurrentImageUrl("/rx_demo_001.png");
             }
             setActiveTab("check");

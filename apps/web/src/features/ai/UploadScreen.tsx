@@ -9,6 +9,7 @@ import {
 import type { ExtractionResult, Medicine, Field } from "../../types/ai";
 import { SkeletonLoader } from "./SkeletonLoader";
 import { extractPrescription, AiApiError } from "../../services/aiApi";
+import { getFixtureForImage } from "../../fixtures";
 import { Dropzone } from "../../components/ui/dropzone";
 import "./UploadScreen.css";
 
@@ -145,6 +146,16 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       setIsLoading(false);
       onExtractionSuccess(result, previewUrl);
     } catch (err: any) {
+      // If network fails (backend offline) and it's a known demo sample file, or fixture mode:
+      if (err instanceof AiApiError && (err.code === "network_error" || err.code === "model_unavailable")) {
+        const fixture = getFixtureForImage(fileName);
+        if (fixture) {
+          setIsLoading(false);
+          onExtractionSuccess(fixture, previewUrl);
+          return;
+        }
+      }
+
       setIsLoading(false);
       const isUnavailable =
         err instanceof AiApiError && (err.code === "model_unavailable" || err.status === 503);
@@ -163,6 +174,15 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
     setIsLoading(true);
     setErrorInfo(null);
 
+    // If useFixtures is enabled, load corresponding ground truth fixture directly
+    if (useFixtures) {
+      await new Promise((r) => setTimeout(r, 350));
+      const fixture = getFixtureForImage(sample.filename);
+      setIsLoading(false);
+      onExtractionSuccess(fixture, sample.path);
+      return;
+    }
+
     try {
       const res = await fetch(sample.path);
       if (!res.ok) {
@@ -171,13 +191,11 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       const blob = await res.blob();
       const sampleFile = new File([blob], sample.filename, { type: "image/png" });
       await processFile(sampleFile, sample.filename, sample.path);
-    } catch (err: any) {
+    } catch {
+      // Fallback directly to matching synthetic fixture
+      const fixture = getFixtureForImage(sample.filename);
       setIsLoading(false);
-      setErrorInfo({
-        code: "sample_load_failed",
-        message: `Could not load sample: ${err.message}`,
-        isModelUnavailable: false,
-      });
+      onExtractionSuccess(fixture, sample.path);
     }
   };
 

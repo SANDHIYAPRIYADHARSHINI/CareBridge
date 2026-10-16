@@ -6,11 +6,10 @@ import type {
   ApiErrorDetail,
 } from "../types/ai";
 import {
-  extractionOkFixture,
-  extractionFlaggedFixture,
   chatSupportedFixture,
   chatEmergencyL3Fixture,
   chatRefusalL2Fixture,
+  getFixtureForImage,
 } from "../fixtures";
 
 export class AiApiError extends Error {
@@ -32,7 +31,7 @@ export function getAiBaseUrl(): string {
 }
 
 export function isEnvUseFixtures(): boolean {
-  return import.meta.env.VITE_USE_FIXTURES === "true";
+  return import.meta.env.VITE_USE_FIXTURES !== "false";
 }
 
 /**
@@ -46,12 +45,8 @@ export async function extractPrescription(
 ): Promise<ExtractionResult> {
   if (useFixtures) {
     // Simulate brief realistic processing delay
-    await new Promise((r) => setTimeout(r, 1200));
-    const lowerName = fileName.toLowerCase();
-    if (lowerName.includes("002") || lowerName.includes("clean") || lowerName.includes("ok")) {
-      return extractionOkFixture;
-    }
-    return extractionFlaggedFixture;
+    await new Promise((r) => setTimeout(r, 600));
+    return getFixtureForImage(fileName);
   }
 
   const baseUrl = getAiBaseUrl();

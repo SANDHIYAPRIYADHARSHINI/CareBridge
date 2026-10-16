@@ -70,6 +70,10 @@ export interface ExtractionResult {
     type: "image" | "pdf" | "qr";
     page_count: number;
   };
+  image?: {
+    width: number;
+    height: number;
+  };
   ocr: {
     engine: string;
     lines: OcrLine[];

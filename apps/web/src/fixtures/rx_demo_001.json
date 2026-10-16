@@ -1,0 +1,493 @@
+{
+  "request_id": "req-demo-001",
+  "document_id": "doc-demo-rx-001",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+        "bbox": [
+          120,
+          70,
+          710,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L2",
+        "text": "42 Gandhi Road, Salem - 636007 | Ph: 0427-2410293",
+        "bbox": [
+          120,
+          115,
+          510,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L3",
+        "text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)    Reg: TN-MC-10293",
+        "bbox": [
+          120,
+          165,
+          717,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L4",
+        "text": "Patient: R. Murugan    Age: 54 M    Date: 14-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          517,
+          21
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L5",
+        "text": "1. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          370,
+          516,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L6",
+        "text": "    Directions: Take 1 tablet after meals twice daily with water.",
+        "bbox": [
+          120,
+          406,
+          478,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L7",
+        "text": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days",
+        "bbox": [
+          120,
+          460,
+          571,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L8",
+        "text": "    Directions: Take 1 tablet at bedtime after dinner.",
+        "bbox": [
+          120,
+          496,
+          400,
+          14
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L9",
+        "text": "3. Tab Amlodipine 5mg - 1-0-0 morning before food x 30 days",
+        "bbox": [
+          120,
+          550,
+          608,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L10",
+        "text": "    Directions: Take 1 tablet once daily in the morning with water.",
+        "bbox": [
+          120,
+          586,
+          506,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L11",
+        "text": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+        "bbox": [
+          120,
+          680,
+          688,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L12",
+        "text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+        "bbox": [
+          120,
+          1530,
+          625,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+      "raw": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-10293",
+      "raw": "TN-MC-10293",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "hospital": {
+      "value": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+      "raw": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "14-Oct-2026",
+      "raw": "14-Oct-2026",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "R. Murugan",
+      "raw": "R. Murugan",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "age": {
+      "value": "54",
+      "raw": "54",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Metformin",
+        "raw": "Metformin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "strength": {
+        "value": "500mg",
+        "raw": "500mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet after meals twice daily with water.",
+        "raw": "Take 1 tablet after meals twice daily with water.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5",
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Atorvastatin",
+        "raw": "Atorvastatin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "strength": {
+        "value": "10mg",
+        "raw": "10mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "frequency": {
+        "value": "0-0-1",
+        "raw": "0-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "timing": {
+        "value": "night after food",
+        "raw": "night after food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet at bedtime after dinner.",
+        "raw": "Take 1 tablet at bedtime after dinner.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7",
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Amlodipine",
+        "raw": "Amlodipine",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "strength": {
+        "value": "5mg",
+        "raw": "5mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "timing": {
+        "value": "morning before food",
+        "raw": "morning before food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet once daily in the morning with water.",
+        "raw": "Take 1 tablet once daily in the morning with water.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9",
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+    "raw": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+    "status": "found",
+    "confidence": 0.98,
+    "evidence_line_ids": [
+      "L11"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "demo_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

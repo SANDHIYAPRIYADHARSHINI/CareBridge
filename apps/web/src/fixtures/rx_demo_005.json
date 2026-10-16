@@ -1,0 +1,493 @@
+{
+  "request_id": "req-demo-005",
+  "document_id": "doc-demo-rx-005",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "அருணோதயம் சமுதாய நல மையம்",
+        "bbox": [
+          120,
+          70,
+          668,
+          35
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L2",
+        "text": "42 காந்தி சாலை, சேலம் - 636007 | தொலைபேசி: 0427-2410293",
+        "bbox": [
+          120,
+          115,
+          722,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L3",
+        "text": "மருத்துவர் பி. சுந்தரமூர்த்தி, MBBS, MD    Reg: TN-MC-62391",
+        "bbox": [
+          120,
+          165,
+          693,
+          27
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L4",
+        "text": "நோயாளி: டி. பானுமதி    வயது: 41 பெண்    தேதி: 16-அக்டோபர்-2026",
+        "bbox": [
+          120,
+          230,
+          822,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L5",
+        "text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப் பின் x 30 நாட்கள்",
+        "bbox": [
+          120,
+          370,
+          672,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L6",
+        "text": "    வழிமுறை: தினமும் இருவேளை உணவுக்குப் பின் ஒரு மாத்திரை உட்கொள்ளவும்.",
+        "bbox": [
+          120,
+          406,
+          797,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L7",
+        "text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு முன் x 30 நாட்கள்",
+        "bbox": [
+          120,
+          460,
+          723,
+          23
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L8",
+        "text": "    வழிமுறை: தினமும் காலையில் உணவுக்கு முன் தண்ணீர் குடித்து உட்கொள்ளவும்.",
+        "bbox": [
+          120,
+          496,
+          809,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L9",
+        "text": "3. Tab Pantoprazole 40mg - 1-0-0 காலை வெறும் வயிற்றில் x 15 நாட்கள்",
+        "bbox": [
+          120,
+          550,
+          783,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L10",
+        "text": "    வழிமுறை: காலை உணவுக்கு அரை மணி நேரம் முன் வெறும் வயிற்றில் உட்கொள்ளவும்.",
+        "bbox": [
+          120,
+          586,
+          873,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L11",
+        "text": "அடுத்த பரிசோதனை: 30 நாட்கள் கழித்து இரத்த அழுத்தம் மற்றும் சர்க்கரை அளவு சரிபார்க்க வரவும்.",
+        "bbox": [
+          120,
+          680,
+          1203,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L12",
+        "text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+        "bbox": [
+          120,
+          1530,
+          625,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "மருத்துவர் பி. சுந்தரமூர்த்தி, MBBS, MD",
+      "raw": "மருத்துவர் பி. சுந்தரமூர்த்தி, MBBS, MD",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-62391",
+      "raw": "TN-MC-62391",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "hospital": {
+      "value": "அருணோதயம் சமுதாய நல மையம்",
+      "raw": "அருணோதயம் சமுதாய நல மையம்",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "16-அக்டோபர்-2026",
+      "raw": "16-அக்டோபர்-2026",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "டி. பானுமதி",
+      "raw": "டி. பானுமதி",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "age": {
+      "value": "41",
+      "raw": "41",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Metformin",
+        "raw": "Metformin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "strength": {
+        "value": "500mg",
+        "raw": "500mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "timing": {
+        "value": "உணவுக்குப் பின்",
+        "raw": "உணவுக்குப் பின்",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "instructions": {
+        "value": "தினமும் இருவேளை உணவுக்குப் பின் ஒரு மாத்திரை உட்கொள்ளவும்.",
+        "raw": "தினமும் இருவேளை உணவுக்குப் பின் ஒரு மாத்திரை உட்கொள்ளவும்.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5",
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Amlodipine",
+        "raw": "Amlodipine",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "strength": {
+        "value": "5mg",
+        "raw": "5mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "timing": {
+        "value": "காலை உணவுக்கு முன்",
+        "raw": "காலை உணவுக்கு முன்",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "instructions": {
+        "value": "தினமும் காலையில் உணவுக்கு முன் தண்ணீர் குடித்து உட்கொள்ளவும்.",
+        "raw": "தினமும் காலையில் உணவுக்கு முன் தண்ணீர் குடித்து உட்கொள்ளவும்.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7",
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Pantoprazole",
+        "raw": "Pantoprazole",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "strength": {
+        "value": "40mg",
+        "raw": "40mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "timing": {
+        "value": "காலை வெறும் வயிற்றில்",
+        "raw": "காலை வெறும் வயிற்றில்",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "instructions": {
+        "value": "காலை உணவுக்கு அரை மணி நேரம் முன் வெறும் வயிற்றில் உட்கொள்ளவும்.",
+        "raw": "காலை உணவுக்கு அரை மணி நேரம் முன் வெறும் வயிற்றில் உட்கொள்ளவும்.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9",
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "அடுத்த பரிசோதனை: 30 நாட்கள் கழித்து இரத்த அழுத்தம் மற்றும் சர்க்கரை அளவு சரிபார்க்க வரவும்.",
+    "raw": "அடுத்த பரிசோதனை: 30 நாட்கள் கழித்து இரத்த அழுத்தம் மற்றும் சர்க்கரை அளவு சரிபார்க்க வரவும்.",
+    "status": "found",
+    "confidence": 0.98,
+    "evidence_line_ids": [
+      "L11"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "demo_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

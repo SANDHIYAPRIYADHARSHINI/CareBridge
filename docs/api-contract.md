@@ -32,6 +32,7 @@ interface Medicine {
 interface ExtractionResult {
   request_id: string; document_id: string;                 // document_id minted by AI service, Member 2 may replace
   source: { type: "image"|"pdf"|"qr"; page_count: number };
+  image?: { width: number; height: number };               // natural pixel dimensions of source image for bbox scaling
   ocr: { engine: string; lines: OcrLine[] };
   prescriber: { name: Field; registration_no: Field; hospital: Field; date: Field };
   patient: { name: Field; age: Field };
