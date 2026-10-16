@@ -103,9 +103,7 @@ def validate_tesseract(lang: str = "eng+tam") -> str:
     try:
         engine_version = str(pytesseract.get_tesseract_version())
     except Exception as exc:
-        raise RuntimeError(
-            f"Failed to execute Tesseract binary at '{bin_path}': {exc}"
-        ) from exc
+        raise RuntimeError(f"Failed to execute Tesseract binary at '{bin_path}': {exc}") from exc
 
     try:
         installed_langs = pytesseract.get_languages()

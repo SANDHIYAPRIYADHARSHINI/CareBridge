@@ -1,10 +1,16 @@
+import io
 import json
+import logging
 
+import httpx
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
+from PIL import Image
 
 from app.config import Settings, get_settings
+from app.core.extraction import extract_prescription
 from app.schemas.prescription import ExtractionResult, QrExtractRequest
 
+logger = logging.getLogger("carebridge.ai.prescriptions")
 router = APIRouter(prefix="/v1/prescriptions", tags=["Prescriptions"])
 
 
@@ -20,13 +26,13 @@ def _load_fixture(settings: Settings, filename: str) -> dict:
 
 
 @router.post("/extract", response_model=ExtractionResult)
-async def extract_prescription(
+async def extract_prescription_endpoint(
     request: Request,
     file: UploadFile = File(...),
     language_hint: str | None = Form("auto"),
     settings: Settings = Depends(get_settings),
 ) -> ExtractionResult:
-    # Validate content type
+    # 1. Validate content type
     allowed_content_types = [
         "image/jpeg",
         "image/png",
@@ -48,7 +54,7 @@ async def extract_prescription(
             },
         )
 
-    # Validate file size if available
+    # 2. Validate file size
     content = await file.read()
     max_bytes = settings.MAX_UPLOAD_MB * 1024 * 1024
     if len(content) > max_bytes:
@@ -63,6 +69,7 @@ async def extract_prescription(
             },
         )
 
+    # 3. Mock mode returns fixtures
     if settings.MOCK_MODE:
         req_id = getattr(request.state, "request_id", "req-mock-default")
         filename_lower = (file.filename or "").lower()
@@ -75,18 +82,70 @@ async def extract_prescription(
         data["request_id"] = req_id
         return ExtractionResult.model_validate(data)
 
-    raise HTTPException(
-        status_code=501,
-        detail={
-            "error": {
-                "code": "model_unavailable",
-                "message": (
-                    "Live extraction pipeline active in milestone P3. Use MOCK_MODE=true for now."
-                ),
-                "retryable": False,
-            }
-        },
-    )
+    # 4. Live mode requires LLM_API_KEY
+    if not settings.LLM_API_KEY or settings.LLM_API_KEY.strip() in ("", "unset", "none"):
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": {
+                    "code": "model_unavailable",
+                    "message": (
+                        "LLM_API_KEY is not configured in environment. "
+                        "Live model inference is unavailable. Set MOCK_MODE=true for fixtures."
+                    ),
+                    "retryable": False,
+                }
+            },
+        )
+
+    # 5. Open image
+    try:
+        image = Image.open(io.BytesIO(content)).convert("RGB")
+    except Exception as exc:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": {
+                    "code": "invalid_input",
+                    "message": f"Could not parse uploaded file as an image: {exc}",
+                    "retryable": False,
+                }
+            },
+        ) from exc
+
+    req_id = getattr(request.state, "request_id", None)
+
+    try:
+        return await extract_prescription(
+            image_input=image,
+            language_hint=language_hint,
+            settings=settings,
+            request_id=req_id,
+        )
+    except httpx.HTTPError as exc:
+        logger.error("LLM backend communication failure: %s", exc)
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": {
+                    "code": "model_unavailable",
+                    "message": f"LLM backend unavailable: {exc}",
+                    "retryable": True,
+                }
+            },
+        ) from exc
+    except Exception as exc:
+        logger.error("Prescription extraction failed: %s", exc, exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": {
+                    "code": "internal_error",
+                    "message": f"Extraction pipeline failed: {exc}",
+                    "retryable": False,
+                }
+            },
+        ) from exc
 
 
 @router.post("/from-qr", response_model=ExtractionResult)
