@@ -1,8 +1,8 @@
 """OCR evaluation script across all 30 synthetic prescriptions.
 
-Runs OCR extraction on eval/data/rx_001.png ... rx_030.png, tracks lines,
-bounding boxes, and Tamil Unicode lines, and computes mean OCR confidence.
-Saves results to eval/results/ocr_eval.json.
+Runs OCR extraction on eval/data/rx_001.png ... rx_030.png using real Tesseract OCR,
+tracks lines, bounding boxes, Tamil Unicode lines, and computes mean OCR confidence.
+Saves results including engine version to eval/results/ocr_eval.json.
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ from app.core.ocr import (  # noqa: E402
     compute_ocr_statistics,
     extract_ocr_lines,
     is_tamil_text,
+    validate_tesseract,
 )
 from app.schemas.common import OcrLine  # noqa: E402
 
@@ -28,9 +29,12 @@ RESULTS_DIR = BASE_DIR / "eval" / "results"
 
 
 def evaluate_dataset() -> dict[str, Any]:
-    print("=" * 70)
-    print("CareBridge AI: OCR Evaluation across 30 Synthetic Prescriptions")
-    print("=" * 70)
+    print("=" * 75)
+    print("CareBridge AI: OCR Evaluation across 30 Synthetic Prescriptions (Tesseract)")
+    print("=" * 75)
+
+    engine_version = validate_tesseract(lang="eng+tam")
+    print(f"Tesseract OCR Engine Version: {engine_version}")
 
     if not DATA_DIR.exists():
         print(f"Error: Dataset directory {DATA_DIR} does not exist.")
@@ -41,10 +45,10 @@ def evaluate_dataset() -> dict[str, Any]:
 
     header = (
         f"{'Image':<12} | {'Lines':<6} | {'Mean Conf':<10} | "
-        f"{'Tamil Lines':<12} | {'Skew (deg)':<10}"
+        f"{'Tamil Lines':<12} | {'Skew (deg)':<10} | {'Status':<10}"
     )
     print(header)
-    print("-" * 60)
+    print("-" * 75)
 
     for i in range(1, 31):
         img_name = f"rx_{i:03d}.png"
@@ -54,13 +58,14 @@ def evaluate_dataset() -> dict[str, Any]:
             print(f"Warning: {img_name} not found, skipping.")
             continue
 
-        lines, skew_angle = extract_ocr_lines(img_path, deskew=True)
+        lines, skew_angle = extract_ocr_lines(img_path, lang="eng+tam", deskew=True)
         all_prescriptions_lines.append(lines)
 
         tamil_lines = [line_item for line_item in lines if is_tamil_text(line_item.text)]
         mean_conf = (
             sum(line_item.conf for line_item in lines) / len(lines) if lines else 0.0
         )
+        status = "OK" if lines else "ZERO_LINES"
 
         item_result = {
             "image": img_name,
@@ -68,18 +73,22 @@ def evaluate_dataset() -> dict[str, Any]:
             "mean_confidence": round(mean_conf, 4),
             "tamil_lines": len(tamil_lines),
             "detected_skew_deg": round(skew_angle, 2),
+            "has_zero_lines": len(lines) == 0,
         }
         per_image_results.append(item_result)
 
         print(
             f"{img_name:<12} | {len(lines):<6} | {mean_conf:<10.3f} | "
-            f"{len(tamil_lines):<12} | {skew_angle:<10.1f}"
+            f"{len(tamil_lines):<12} | {skew_angle:<10.1f} | {status:<10}"
         )
 
-    summary_stats = compute_ocr_statistics(all_prescriptions_lines)
+    summary_stats = compute_ocr_statistics(
+        all_prescriptions_lines, engine_version=engine_version
+    )
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     report_payload = {
+        "engine_version": engine_version,
         "summary": summary_stats,
         "details": per_image_results,
     }
@@ -88,20 +97,23 @@ def evaluate_dataset() -> dict[str, Any]:
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(report_payload, f, indent=2, ensure_ascii=False)
 
-    print("=" * 70)
+    print("=" * 75)
     print("SUMMARY OCR EVALUATION METRICS:")
+    print(f"Tesseract Engine Version:      {engine_version}")
     print(f"Total Prescriptions Evaluated: {summary_stats['total_prescriptions']}")
     print(f"Total Lines Extracted:         {summary_stats['total_lines']}")
-    mean_pct = summary_stats['mean_confidence'] * 100
+    mean_pct = summary_stats["mean_confidence"] * 100
     print(f"Overall Mean OCR Confidence:   {mean_pct:.2f}% ({summary_stats['mean_confidence']})")
-    tam_cnt = summary_stats['tamil_lines_count']
-    tot_lines = summary_stats['total_lines']
+    tam_cnt = summary_stats["tamil_lines_count"]
+    tot_lines = summary_stats["total_lines"]
     print(f"Tamil Lines Count:             {tam_cnt} / {tot_lines}")
-    print(f"Tamil Lines Percentage:        {summary_stats['tamil_lines_pct']:.2f}%")
+    zero_cnt = summary_stats["zero_line_images_count"]
+    tot_rx = summary_stats["total_prescriptions"]
+    print(f"Zero-Line Images Count:        {zero_cnt} / {tot_rx}")
     print(f"Results saved to:              {out_file}")
-    print("=" * 70)
+    print("=" * 75)
 
-    return summary_stats
+    return report_payload
 
 
 if __name__ == "__main__":

@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     OCR_LANGS: str = "eng+tam"
     MAX_UPLOAD_MB: int = 10
     ALLOWED_ORIGINS: str | list[str] = "http://localhost:5173,http://localhost:3000"
+    TESSERACT_CMD: str | None = None
 
     HOST: str = "0.0.0.0"
     PORT: int = 8100

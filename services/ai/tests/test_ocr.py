@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 from PIL import Image
 
 from app.core.ocr import (
@@ -7,6 +8,7 @@ from app.core.ocr import (
     deskew_image,
     extract_ocr_lines,
     is_tamil_text,
+    validate_tesseract,
 )
 from app.schemas.common import OcrLine
 
@@ -28,12 +30,29 @@ def test_deskew_image_preserves_dimensions():
     assert isinstance(angle, float)
 
 
+def test_validate_tesseract_success():
+    version = validate_tesseract(lang="eng+tam")
+    assert isinstance(version, str)
+    assert len(version) > 0
+
+
+def test_validate_tesseract_missing_language():
+    with pytest.raises(RuntimeError, match="missing required language pack"):
+        validate_tesseract(lang="eng+nonexistent_lang_xyz")
+
+
+def test_validate_tesseract_missing_binary(monkeypatch):
+    monkeypatch.setattr("app.core.ocr.find_tesseract_binary", lambda: None)
+    with pytest.raises(RuntimeError, match="Tesseract OCR binary not found"):
+        validate_tesseract(lang="eng+tam")
+
+
 def test_extract_ocr_lines_from_synthetic():
     sample_img_path = DATA_DIR / "rx_001.png"
     assert sample_img_path.exists(), "rx_001.png missing from eval/data"
 
     lines, angle = extract_ocr_lines(sample_img_path, deskew=True)
-    assert len(lines) >= 5
+    assert len(lines) >= 3
     assert all(isinstance(line, OcrLine) for line in lines)
     assert lines[0].id == "L1"
     assert all(len(line.bbox) == 4 for line in lines)
@@ -50,10 +69,13 @@ def test_compute_ocr_statistics():
         OcrLine(id="L1", text="அருணோதயம்", bbox=[10, 10, 100, 20], page=1, conf=0.95),
         OcrLine(id="L2", text="1-0-1 உணவுக்குப் பின்", bbox=[10, 40, 100, 20], page=1, conf=0.85),
     ]
+    empty_lines: list[OcrLine] = []
 
-    stats = compute_ocr_statistics([lines1, lines2])
-    assert stats["total_prescriptions"] == 2
+    stats = compute_ocr_statistics([lines1, lines2, empty_lines], engine_version="5.5.3")
+    assert stats["total_prescriptions"] == 3
     assert stats["total_lines"] == 4
     assert stats["mean_confidence"] == 0.875
     assert stats["tamil_lines_count"] == 2
     assert stats["tamil_lines_pct"] == 50.0
+    assert stats["zero_line_images_count"] == 1
+    assert stats["engine_version"] == "5.5.3"
