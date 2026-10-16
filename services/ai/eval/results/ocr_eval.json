@@ -1,0 +1,221 @@
+{
+  "summary": {
+    "total_prescriptions": 30,
+    "total_lines": 380,
+    "mean_confidence": 0.96,
+    "tamil_lines_count": 102,
+    "tamil_lines_pct": 26.84
+  },
+  "details": [
+    {
+      "image": "rx_001.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_002.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_003.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_004.png",
+      "total_lines": 15,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_005.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_006.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_007.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_008.png",
+      "total_lines": 15,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_009.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 9,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_010.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 11,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_011.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 11,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_012.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 9,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_013.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 11,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_014.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 11,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_015.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_016.png",
+      "total_lines": 15,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_017.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_018.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_019.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_020.png",
+      "total_lines": 15,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_021.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_022.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_023.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_024.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_025.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 3,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_026.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_027.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_028.png",
+      "total_lines": 15,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_029.png",
+      "total_lines": 13,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    },
+    {
+      "image": "rx_030.png",
+      "total_lines": 11,
+      "mean_confidence": 0.96,
+      "tamil_lines": 1,
+      "detected_skew_deg": 0.0
+    }
+  ]
+}
