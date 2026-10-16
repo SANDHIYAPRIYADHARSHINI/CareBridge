@@ -488,3 +488,117 @@ button:disabled {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ==========================================================================
+   Member 2 Navigation & Role Switcher
+   ========================================================================== */
+.role-segmented-switch {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
+}
+
+.role-segment-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.role-segment-btn:hover {
+  color: var(--ink);
+}
+
+.role-segment-btn.active {
+  background-color: var(--card);
+  border-color: var(--hairline);
+  color: var(--primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-subtle);
+}
+
+.rail-nav-divider {
+  width: 50px;
+  height: 1px;
+  background-color: var(--hairline);
+  margin: 0.3rem 0;
+}
+
+/* Mobile More Drawer */
+.mobile-more-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 55;
+  display: flex;
+  align-items: flex-end;
+}
+
+.mobile-more-drawer {
+  background: var(--card);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  width: 100%;
+  max-height: 80vh;
+  padding: 1.25rem 1.25rem calc(60px + 1.5rem) 1.25rem;
+  overflow-y: auto;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-more-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.mobile-more-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mobile-more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.more-drawer-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.more-drawer-btn.active {
+  background: var(--primary-subtle);
+  color: var(--primary);
+  border-color: var(--primary);
+}
