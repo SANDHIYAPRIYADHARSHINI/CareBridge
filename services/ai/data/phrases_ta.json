@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "notes": "Fixed dosage phrase translations for CareBridge AI. Every Tamil entry is flagged needs_native_review: true for native speaker validation.",
+  "timing": {
+    "after food": {"text": "உணவுக்குப் பின்", "needs_native_review": true},
+    "after meals": {"text": "உணவுக்குப் பின்", "needs_native_review": true},
+    "before food": {"text": "உணவுக்கு முன்", "needs_native_review": true},
+    "before meals": {"text": "உணவுக்கு முன்", "needs_native_review": true},
+    "with food": {"text": "உணவுடன்", "needs_native_review": true},
+    "with meals": {"text": "உணவுடன்", "needs_native_review": true},
+    "empty stomach": {"text": "வெறும் வயிற்றில்", "needs_native_review": true},
+    "on an empty stomach": {"text": "வெறும் வயிற்றில்", "needs_native_review": true},
+    "at bedtime": {"text": "தூங்குவதற்கு முன்", "needs_native_review": true},
+    "morning": {"text": "காலையில்", "needs_native_review": true},
+    "in the morning": {"text": "காலையில்", "needs_native_review": true},
+    "noon": {"text": "மதியம்", "needs_native_review": true},
+    "in the afternoon": {"text": "மதியம்", "needs_native_review": true},
+    "evening": {"text": "மாலையில்", "needs_native_review": true},
+    "in the evening": {"text": "மாலையில்", "needs_native_review": true},
+    "night": {"text": "இரவில்", "needs_native_review": true},
+    "at night": {"text": "இரவில்", "needs_native_review": true}
+  },
+  "frequency": {
+    "once daily": {"text": "ஒரு நாளைக்கு ஒரு முறை", "needs_native_review": true},
+    "twice daily": {"text": "ஒரு நாளைக்கு இரண்டு முறை", "needs_native_review": true},
+    "three times daily": {"text": "ஒரு நாளைக்கு மூன்று முறை", "needs_native_review": true},
+    "thrice daily": {"text": "ஒரு நாளைக்கு மூன்று முறை", "needs_native_review": true},
+    "four times daily": {"text": "ஒரு நாளைக்கு நான்கு முறை", "needs_native_review": true},
+    "as needed": {"text": "தேவைப்படும் போது மட்டும்", "needs_native_review": true},
+    "every 8 hours": {"text": "8 மணி நேரத்திற்கு ஒரு முறை", "needs_native_review": true},
+    "every 12 hours": {"text": "12 மணி நேரத்திற்கு ஒரு முறை", "needs_native_review": true},
+    "once a week": {"text": "வாரத்திற்கு ஒரு முறை", "needs_native_review": true},
+    "1-0-1": {"text": "காலை 1, இரவு 1", "needs_native_review": true},
+    "1-0-0": {"text": "காலை 1 மட்டும்", "needs_native_review": true},
+    "0-0-1": {"text": "இரவு 1 மட்டும்", "needs_native_review": true},
+    "1-1-1": {"text": "காலை 1, மதியம் 1, இரவு 1", "needs_native_review": true},
+    "0-1-0": {"text": "மதியம் 1 மட்டும்", "needs_native_review": true}
+  },
+  "dosage_forms": {
+    "tablet": {"text": "மாத்திரை", "needs_native_review": true},
+    "tablets": {"text": "மாத்திரைகள்", "needs_native_review": true},
+    "tab": {"text": "மாத்திரை", "needs_native_review": true},
+    "capsule": {"text": "கேப்சூல்", "needs_native_review": true},
+    "capsules": {"text": "கேப்சூல்கள்", "needs_native_review": true},
+    "cap": {"text": "கேப்சூல்", "needs_native_review": true},
+    "syrup": {"text": "சிரப்", "needs_native_review": true},
+    "syp": {"text": "சிரப்", "needs_native_review": true},
+    "injection": {"text": "ஊசி", "needs_native_review": true},
+    "inj": {"text": "ஊசி", "needs_native_review": true},
+    "drops": {"text": "சொட்டு மருந்து", "needs_native_review": true},
+    "ointment": {"text": "களிம்பு", "needs_native_review": true},
+    "inhaler": {"text": "இன்ஹேலர்", "needs_native_review": true}
+  },
+  "duration": {
+    "for 3 days": {"text": "3 நாட்களுக்கு", "needs_native_review": true},
+    "for 5 days": {"text": "5 நாட்களுக்கு", "needs_native_review": true},
+    "for 7 days": {"text": "7 நாட்களுக்கு", "needs_native_review": true},
+    "for 10 days": {"text": "10 நாட்களுக்கு", "needs_native_review": true},
+    "for 14 days": {"text": "14 நாட்களுக்கு", "needs_native_review": true},
+    "for 30 days": {"text": "30 நாட்களுக்கு", "needs_native_review": true},
+    "for 1 month": {"text": "1 மாதத்திற்கு", "needs_native_review": true},
+    "for 3 months": {"text": "3 மாதங்களுக்கு", "needs_native_review": true}
+  },
+  "instructions": {
+    "take with a full glass of water": {
+      "text": "முழு டம்ளர் தண்ணீருடன் விழுங்கவும்",
+      "needs_native_review": true
+    },
+    "do not crush or chew": {
+      "text": "மாத்திரையை நசுக்கவோ மெல்லவோ கூடாது",
+      "needs_native_review": true
+    },
+    "keep out of reach of children": {
+      "text": "குழந்தைகளுக்கு எட்டாத இடத்தில் வைக்கவும்",
+      "needs_native_review": true
+    },
+    "store in a cool dry place": {
+      "text": "குளிர்ந்த, உலர்ந்த இடத்தில் சேமிக்கவும்",
+      "needs_native_review": true
+    },
+    "shake well before use": {
+      "text": "பயன்படுத்துவதற்கு முன் நன்றாக குலுக்கவும்",
+      "needs_native_review": true
+    },
+    "complete the full course of medication": {
+      "text": "மருத்துவர் குறிப்பிட்ட முழு நாட்களும் தவறாமல் உட்கொள்ளவும்",
+      "needs_native_review": true
+    },
+    "finish the full course": {
+      "text": "மருத்துவர் குறிப்பிட்ட முழு நாட்களும் தவறாமல் உட்கொள்ளவும்",
+      "needs_native_review": true
+    },
+    "avoid alcohol": {
+      "text": "மது அருந்துவதை தவிர்க்கவும்",
+      "needs_native_review": true
+    }
+  }
+}

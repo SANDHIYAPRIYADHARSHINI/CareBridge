@@ -1,10 +1,26 @@
+"""Voice transcription and synthesis endpoints.
+
+Implements VO-1 through VO-5:
+- POST /v1/voice/transcribe with confidence proxy and needs_confirmation threshold.
+- Pluggable BaseSTT dependency injection.
+- POST /v1/voice/speak returning 501 stub (optional client-side TTS milestone).
+"""
+
+from __future__ import annotations
+
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 
 from app.config import Settings, get_settings
+from app.core.stt import BaseSTT, WhisperSTT
 from app.schemas.common import Metrics
 from app.schemas.voice import SpeakRequest, TranscribeResponse
 
 router = APIRouter(prefix="/v1/voice", tags=["Voice"])
+
+
+def get_stt_client(settings: Settings = Depends(get_settings)) -> BaseSTT:
+    """Dependency injection provider for Speech-to-Text client."""
+    return WhisperSTT(settings=settings)
 
 
 @router.post("/transcribe", response_model=TranscribeResponse)
@@ -13,10 +29,13 @@ async def transcribe(
     audio: UploadFile = File(...),
     language_hint: str | None = Form("ta"),
     settings: Settings = Depends(get_settings),
+    stt_client: BaseSTT = Depends(get_stt_client),
 ) -> TranscribeResponse:
-    req_id = getattr(request.state, "request_id", "req-mock-voice")
+    """Transcribes patient audio speech, flagging needs_confirmation on low confidence."""
+    req_id = getattr(request.state, "request_id", "req-voice-transcribe")
 
-    if settings.MOCK_MODE:
+    # If in MOCK_MODE and using default un-overridden production WhisperSTT
+    if settings.MOCK_MODE and isinstance(stt_client, WhisperSTT):
         lang = language_hint or "ta"
         sample_text = (
             "டாக்டர் நான் இந்த மாத்திரையை எப்போது சாப்பிட வேண்டும்?"
@@ -36,15 +55,16 @@ async def transcribe(
             ),
         )
 
-    raise HTTPException(
-        status_code=501,
-        detail={
-            "error": {
-                "code": "model_unavailable",
-                "message": "Whisper transcription active in milestone P5.",
-                "retryable": False,
-            }
-        },
+    audio_bytes = await audio.read()
+    result = await stt_client.transcribe(audio_bytes, language_hint=language_hint)
+
+    return TranscribeResponse(
+        request_id=req_id,
+        text=result.text,
+        language=result.language,
+        confidence=result.confidence,
+        needs_confirmation=result.needs_confirmation,
+        metrics=result.metrics,
     )
 
 
@@ -54,7 +74,7 @@ async def speak(
     body: SpeakRequest,
     settings: Settings = Depends(get_settings),
 ):
-    # Per api-contract.md and milestone P5: Leave /v1/voice/speak as a stub returning 501
+    """Server TTS is an optional extension (COULD). Returns HTTP 501."""
     raise HTTPException(
         status_code=501,
         detail={

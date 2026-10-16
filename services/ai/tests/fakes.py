@@ -1,7 +1,7 @@
-"""Test fakes for LLM and Embedder interfaces.
+"""Test fakes for LLM, Embedder, and STT interfaces.
 
 In accordance with project rules:
-- FakeLLM and FakeEmbedder are used strictly in tests, never in production code.
+- FakeLLM, FakeEmbedder, and FakeSTT are used strictly in tests, never in production code.
 - Deterministic, fast, zero GPU or network dependencies.
 """
 
@@ -14,6 +14,7 @@ import numpy as np
 
 from app.core.llm import LLMResponse
 from app.core.rag import BaseEmbedder
+from app.core.stt import BaseSTT, STTResult
 from app.schemas.common import Metrics
 
 
@@ -102,4 +103,45 @@ class FakeLLM:
             parsed_json=self.default_response_json,
             metrics=metrics,
             raw={"id": "fake-resp-1", "choices": [{"message": {"content": self.default_text}}]},
+        )
+
+
+class FakeSTT(BaseSTT):
+    """Deterministic in-memory speech-to-text fake for unit testing."""
+
+    def __init__(
+        self,
+        default_text: str = "டாக்டர் நான் இந்த மாத்திரையை எப்போது சாப்பிட வேண்டும்?",
+        default_language: str = "ta",
+        default_confidence: float = 0.94,
+        force_needs_confirmation: bool | None = None,
+    ) -> None:
+        self.default_text = default_text
+        self.default_language = default_language
+        self.default_confidence = default_confidence
+        self.force_needs_confirmation = force_needs_confirmation
+        self.calls: list[dict[str, Any]] = []
+
+    async def transcribe(
+        self,
+        audio_bytes: bytes,
+        language_hint: str | None = None,
+    ) -> STTResult:
+        self.calls.append({"bytes_len": len(audio_bytes), "language_hint": language_hint})
+        resolved_lang = language_hint if language_hint in ("ta", "en") else self.default_language
+        needs_conf = (
+            self.force_needs_confirmation
+            if self.force_needs_confirmation is not None
+            else self.default_confidence < 0.80
+        )
+        return STTResult(
+            text=self.default_text,
+            language=resolved_lang,
+            confidence=self.default_confidence,
+            needs_confirmation=needs_conf,
+            metrics=Metrics(
+                latency_ms=25.0,
+                model="fake-whisper-test",
+                gpu="mock-gpu",
+            ),
         )

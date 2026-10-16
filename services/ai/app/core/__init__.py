@@ -24,6 +24,8 @@ from app.core.safety import (
     check_preservation,
     get_redflag_router,
 )
+from app.core.stt import BaseSTT, STTResult, WhisperSTT
+from app.core.translate import DosageTranslator, TranslationResult
 from app.core.verification import apply_evidence_gate, verify_prescription_rules
 
 __all__ = [
@@ -51,5 +53,9 @@ __all__ = [
     "DocumentChunk",
     "chunk_document",
     "retrieve_top_k",
+    "BaseSTT",
+    "WhisperSTT",
+    "STTResult",
+    "DosageTranslator",
+    "TranslationResult",
 ]
-
