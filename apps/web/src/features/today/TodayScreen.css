@@ -1,0 +1,233 @@
+/* ==========================================================================
+   TodayScreen Styles — Patient Calm Home
+   ========================================================================== */
+
+.today-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.today-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.today-greeting {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.today-subtitle {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+/* Day Ribbon Card */
+.day-ribbon-card {
+  background-color: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.ribbon-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ribbon-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ribbon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 720px) {
+  .ribbon-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.time-slot-column {
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.slot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.slot-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 48px;
+}
+
+.pill-chip {
+  background-color: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.65rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.pill-chip-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.pill-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pill-meta {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.empty-slot-text {
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.ribbon-footer-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.view-rx-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: transparent;
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.view-rx-button:hover {
+  text-decoration: underline;
+}
+
+/* Add Action Card */
+.add-action-card {
+  background-color: var(--card);
+  border: 1.5px dashed var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-action-card:hover {
+  border-color: var(--primary);
+  background-color: #F8F5EE;
+}
+
+.add-action-content {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.add-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--primary-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.add-action-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.add-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.add-card-sub {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.add-card-cta {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: none;
+  flex-shrink: 0;
+}
+
+.add-card-cta:hover {
+  background-color: var(--primary-hover);
+}
+
+@media (max-width: 600px) {
+  .add-action-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .add-card-cta {
+    width: 100%;
+  }
+}

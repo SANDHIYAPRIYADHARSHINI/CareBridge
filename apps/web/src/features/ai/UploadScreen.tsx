@@ -1,10 +1,9 @@
 import { useState } from "react";
 import {
-  Flask,
   WarningCircle,
   PencilSimple,
   ArrowRight,
-  ShieldCheck,
+  Sparkle,
 } from "@phosphor-icons/react";
 
 import type { ExtractionResult, Medicine, Field } from "../../types/ai";
@@ -16,7 +15,7 @@ import "./UploadScreen.css";
 interface UploadScreenProps {
   onExtractionSuccess: (result: ExtractionResult, imageUrl: string) => void;
   useFixtures: boolean;
-  onToggleFixtures: (val: boolean) => void;
+  onToggleFixtures?: (val: boolean) => void;
   language?: "en" | "ta";
 }
 
@@ -29,10 +28,79 @@ interface ManualMedicineEntry {
   duration: string;
 }
 
+interface DemoSample {
+  id: string;
+  filename: string;
+  path: string;
+  titleEn: string;
+  titleTa: string;
+  langTag: string;
+  langType: "english" | "bilingual" | "tamil";
+  medsSummaryEn: string;
+  medsSummaryTa: string;
+}
+
+const DEMO_SAMPLES: DemoSample[] = [
+  {
+    id: "rx-1",
+    filename: "rx_demo_001.png",
+    path: "/rx_demo_001.png",
+    titleEn: "Arunodhayam Health Clinic",
+    titleTa: "அருணோதயம் சுகாதார மையம்",
+    langTag: "English",
+    langType: "english",
+    medsSummaryEn: "Metformin 500mg, Atorvastatin 10mg, Amlodipine 5mg",
+    medsSummaryTa: "மெட்ஃபோர்மின் 500mg, அடோர்வாஸ்டாடின் 10mg, அம்லோடிபைன் 5mg",
+  },
+  {
+    id: "rx-2",
+    filename: "rx_demo_002.png",
+    path: "/rx_demo_002.png",
+    titleEn: "City General Hospital",
+    titleTa: "நகர பொது மருத்துவமனை",
+    langTag: "English",
+    langType: "english",
+    medsSummaryEn: "Pantoprazole 40mg, Metformin 500mg, Paracetamol 650mg",
+    medsSummaryTa: "பான்டோபிரசோல் 40mg, மெட்ஃபோர்மின் 500mg, பாராசிட்டமால் 650mg",
+  },
+  {
+    id: "rx-3",
+    filename: "rx_demo_003.png",
+    path: "/rx_demo_003.png",
+    titleEn: "Apollo Community Clinic",
+    titleTa: "அப்பல்லோ சமூக மருத்துவமனை",
+    langTag: "Bilingual",
+    langType: "bilingual",
+    medsSummaryEn: "Metformin 500mg, Amlodipine 5mg (Tamil timings)",
+    medsSummaryTa: "மெட்ஃபோர்மின் 500mg, அம்லோடிபைன் 5mg (தமிழ் வழிமுறைகள்)",
+  },
+  {
+    id: "rx-4",
+    filename: "rx_demo_004.png",
+    path: "/rx_demo_004.png",
+    titleEn: "Meenakshi Mission Hospital",
+    titleTa: "மீனாட்சி மிஷன் மருத்துவமனை",
+    langTag: "Bilingual",
+    langType: "bilingual",
+    medsSummaryEn: "Pantoprazole 40mg, Atorvastatin 10mg, Paracetamol 650mg",
+    medsSummaryTa: "பான்டோபிரசோல் 40mg, அடோர்வாஸ்டாடின் 10mg, பாராசிட்டமால் 650mg",
+  },
+  {
+    id: "rx-5",
+    filename: "rx_demo_005.png",
+    path: "/rx_demo_005.png",
+    titleEn: "Govt Primary Health Centre",
+    titleTa: "அரசு ஆரம்ப சுகாதார நிலையம்",
+    langTag: "தமிழ்",
+    langType: "tamil",
+    medsSummaryEn: "மெட்ஃபோர்மின், அம்லோடிபைன், பான்டோபிரசோல்",
+    medsSummaryTa: "மெட்ஃபோர்மின் 500mg, அம்லோடிபைன் 5mg, பான்டோபிரசோல் 40mg",
+  },
+];
+
 export const UploadScreen: React.FC<UploadScreenProps> = ({
   onExtractionSuccess,
   useFixtures,
-  onToggleFixtures,
   language = "en",
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -84,30 +152,30 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
 
       setErrorInfo({
         code: err.code || "unknown_error",
-        message: err.message || "An unexpected error occurred while analyzing the prescription.",
+        message: err.message || "An unexpected issue occurred while reading the prescription.",
         isModelUnavailable: isUnavailable || isNetwork,
       });
     }
   };
 
   // "Use a sample synthetic prescription" action
-  const handleUseSample = async (samplePath: string, sampleName: string) => {
+  const handleUseSample = async (sample: DemoSample) => {
     setIsLoading(true);
     setErrorInfo(null);
 
     try {
-      const res = await fetch(samplePath);
+      const res = await fetch(sample.path);
       if (!res.ok) {
-        throw new Error(`Failed to load synthetic sample from ${samplePath}`);
+        throw new Error(`Failed to load synthetic sample from ${sample.path}`);
       }
       const blob = await res.blob();
-      const sampleFile = new File([blob], sampleName, { type: "image/png" });
-      await processFile(sampleFile, sampleName, samplePath);
+      const sampleFile = new File([blob], sample.filename, { type: "image/png" });
+      await processFile(sampleFile, sample.filename, sample.path);
     } catch (err: any) {
       setIsLoading(false);
       setErrorInfo({
         code: "sample_load_failed",
-        message: `Could not load synthetic sample: ${err.message}`,
+        message: `Could not load sample: ${err.message}`,
         isModelUnavailable: false,
       });
     }
@@ -164,7 +232,7 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       }));
 
     if (medicines.length === 0) {
-      alert("Please provide at least one medication name.");
+      alert(language === "ta" ? "குறைந்தது ஒரு மருந்தின் பெயரை உள்ளிடவும்." : "Please provide at least one medication name.");
       return;
     }
 
@@ -200,36 +268,21 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
 
   return (
     <div className="upload-screen-container">
-      {/* Header Intro */}
-      <div className="upload-hero">
-        <h2 className="upload-title">
+      {/* Calm Patient Hero Header per docs/design-v2.md section 7 */}
+      <header className="upload-hero">
+        <h1 className="upload-hero-title">
           {language === "ta"
-            ? "உங்கள் மருத்துவச் சீட்டைப் பதிவேற்றுங்கள்"
-            : "Upload Your Prescription"}
-        </h2>
-        <p className="upload-subtitle">
+            ? "உங்கள் மருந்துச் சீட்டைப் புரிந்து கொள்ளுங்கள், வரிக்கு வரி."
+            : "Understand your prescription, line by line."}
+        </h1>
+        <p className="upload-hero-sub">
           {language === "ta"
-            ? "கையேடு அல்லது அச்சிடப்பட்ட மருந்துச் சீட்டைப் புகைப்படமாக அல்லது PDF ஆக பதிவேற்றுங்கள். எங்கள் AI விதிகள் மருந்துகளைப் பிரித்தெடுத்து உறுதிப்படுத்தும்."
-            : "Clear, deterministic extraction powered by AMD ROCm. We verify every dosage and frequency against the source text."}
+            ? "புகைப்படத்தைச் சேர்க்கவும். அது என்ன சொல்கிறது, எங்கு கண்டறியப்பட்டது, எதைச் சரிபார்க்க வேண்டும் என்பதைக் காட்டுகிறோம்."
+            : "Add a photo. We show what it says, where we found it, and what to double-check."}
         </p>
+      </header>
 
-        {/* Fixture mode indicator & switch */}
-        <div className="mode-indicator-bar">
-          <span className={`status-pill ${useFixtures ? "offline" : "live"}`}>
-            {useFixtures ? "Offline Demo Mode (Fixtures)" : "Live AI Mode (AMD ROCm / Port 8100)"}
-          </span>
-          <button
-            type="button"
-            className="toggle-mode-btn"
-            onClick={() => onToggleFixtures(!useFixtures)}
-            title="Toggle between Live AI backend service and Offline synthetic demo fixtures"
-          >
-            Switch to {useFixtures ? "Live AI Backend" : "Offline Fixtures"}
-          </button>
-        </div>
-      </div>
-
-      {/* Loading view: Narrative SkeletonLoader */}
+      {/* Loading view: Narrative SkeletonLoader with calm patient status */}
       {isLoading && (
         <div className="upload-loading-card">
           <SkeletonLoader />
@@ -239,7 +292,7 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       {/* Main interactive area when not loading */}
       {!isLoading && (
         <>
-          {/* Calm Error Banner (Handles model_unavailable or connection drops) */}
+          {/* Calm Error Banner */}
           {errorInfo && (
             <div className="calm-error-card" role="alert">
               <div className="calm-error-header">
@@ -247,12 +300,12 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
                 <div>
                   <h3 className="calm-error-title">
                     {errorInfo.isModelUnavailable
-                      ? "AI Reading Service Currently Unavailable"
-                      : "Prescription Processing Note"}
+                      ? "Reading Service Temporarily Paused"
+                      : "Prescription Notice"}
                   </h3>
                   <p className="calm-error-message">
                     {errorInfo.isModelUnavailable
-                      ? "Our automated reading model is temporarily resting or disconnected. In adherence with our core clinical safety rules, CareBridge AI never guesses or fakes medication data."
+                      ? "The reading service is currently resting or disconnected. We never guess or invent medication information."
                       : errorInfo.message}
                   </p>
                 </div>
@@ -261,31 +314,11 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
               <div className="calm-error-actions">
                 <button
                   type="button"
-                  className="calm-btn primary"
+                  className="manual-entry-trigger-btn"
                   onClick={() => setShowManualEntry(true)}
                 >
-                  <PencilSimple size={16} weight="bold" />
-                  <span>Enter Medications Manually</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="calm-btn secondary"
-                  onClick={() => {
-                    onToggleFixtures(true);
-                    handleUseSample("/rx_demo_001.png", "rx_demo_001.png");
-                  }}
-                >
-                  <Flask size={16} />
-                  <span>Test with Synthetic Demo Fixture</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="calm-btn ghost"
-                  onClick={() => setErrorInfo(null)}
-                >
-                  Dismiss
+                  <PencilSimple size={16} />
+                  <span>Enter medications manually</span>
                 </button>
               </div>
             </div>
@@ -293,113 +326,112 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
 
           {/* Manual Entry Fallback Form */}
           {showManualEntry ? (
-            <div className="manual-entry-card" aria-label="Manual prescription entry fallback">
-              <div className="manual-entry-header">
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <PencilSimple size={22} color="var(--primary)" weight="bold" />
-                  <h3>Manual Medication Entry</h3>
-                </div>
-                <button
-                  type="button"
-                  className="manual-cancel-btn"
-                  onClick={() => setShowManualEntry(false)}
-                >
-                  Cancel
-                </button>
+            <div className="manual-entry-sheet">
+              <div className="manual-sheet-header">
+                <h3>Enter Medications Manually</h3>
+                <p>Type your medicines exactly as written on your prescription.</p>
               </div>
 
-              <p className="manual-entry-note">
-                Enter your prescribed medications below. You will be able to ask questions and review them safely.
-              </p>
-
-              <div className="manual-metadata-grid">
-                <div className="form-field">
-                  <label htmlFor="patient-name">Patient Name (optional)</label>
+              <div className="manual-fields-grid">
+                <div className="manual-field-group">
+                  <label htmlFor="doctorName">Doctor or Clinic</label>
                   <input
-                    id="patient-name"
+                    id="doctorName"
                     type="text"
-                    placeholder="e.g. K. Sundaram"
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
+                    value={doctorName}
+                    placeholder="e.g. Dr. K. Sundaram"
+                    onChange={(e) => setDoctorName(e.target.value)}
                   />
                 </div>
-                <div className="form-field">
-                  <label htmlFor="doctor-name">Prescribing Doctor (optional)</label>
+                <div className="manual-field-group">
+                  <label htmlFor="patientName">Patient Name</label>
                   <input
-                    id="doctor-name"
+                    id="patientName"
                     type="text"
-                    placeholder="e.g. Dr. S. Ramanathan"
-                    value={doctorName}
-                    onChange={(e) => setDoctorName(e.target.value)}
+                    value={patientName}
+                    placeholder="e.g. Priya"
+                    onChange={(e) => setPatientName(e.target.value)}
                   />
                 </div>
               </div>
 
               <div className="manual-meds-list">
-                {manualMeds.map((med, idx) => (
+                <h4>Medications</h4>
+                {manualMeds.map((med, index) => (
                   <div key={med.id} className="manual-med-row">
-                    <span className="med-row-num">#{idx + 1}</span>
+                    <span className="row-num">{index + 1}</span>
                     <input
                       type="text"
-                      placeholder="Medication name (e.g. Metformin)"
+                      placeholder="Medicine name (e.g. Metformin)"
                       value={med.name}
                       onChange={(e) => updateManualMed(med.id, "name", e.target.value)}
-                      required
+                      style={{ flex: 2 }}
                     />
                     <input
                       type="text"
                       placeholder="Strength (e.g. 500mg)"
                       value={med.strength}
                       onChange={(e) => updateManualMed(med.id, "strength", e.target.value)}
+                      style={{ flex: 1 }}
                     />
                     <input
                       type="text"
                       placeholder="Frequency (e.g. 1-0-1)"
                       value={med.frequency}
                       onChange={(e) => updateManualMed(med.id, "frequency", e.target.value)}
+                      style={{ flex: 1 }}
                     />
-                    <input
-                      type="text"
-                      placeholder="Timing (e.g. after food)"
+                    <select
                       value={med.timing}
                       onChange={(e) => updateManualMed(med.id, "timing", e.target.value)}
-                    />
+                      style={{ flex: 1.2 }}
+                    >
+                      <option value="after food">after food</option>
+                      <option value="before food">before food</option>
+                      <option value="with food">with food</option>
+                    </select>
                     {manualMeds.length > 1 && (
                       <button
                         type="button"
-                        className="remove-med-btn"
+                        className="remove-row-btn"
                         onClick={() => removeManualMedRow(med.id)}
-                        title="Remove row"
+                        title="Remove medicine"
                       >
-                        ✕
+                        &times;
                       </button>
                     )}
                   </div>
                 ))}
-              </div>
 
-              <div className="manual-form-footer">
                 <button
                   type="button"
                   className="add-med-row-btn"
                   onClick={addManualMedRow}
                 >
-                  + Add Another Medicine
+                  + Add another medicine
                 </button>
+              </div>
 
+              <div className="manual-sheet-footer">
+                <button
+                  type="button"
+                  className="cancel-manual-btn"
+                  onClick={() => setShowManualEntry(false)}
+                >
+                  Cancel
+                </button>
                 <button
                   type="button"
                   className="submit-manual-btn"
                   onClick={handleManualSubmit}
                 >
-                  <span>Review Medication Schedule</span>
-                  <ArrowRight size={16} weight="bold" />
+                  Continue to Check
                 </button>
               </div>
             </div>
           ) : (
-            <div className="upload-grid">
-              {/* 21st.dev / shadcn-style Dropzone */}
+            <div className="upload-main-stack">
+              {/* Dropzone */}
               <Dropzone
                 onFileSelect={async (file) => {
                   const objectUrl = URL.createObjectURL(file);
@@ -407,128 +439,79 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
                 }}
                 title={
                   language === "ta"
-                    ? "மருந்துச் சீட்டை இங்கே இழுத்துப் போடுங்கள்"
-                    : "Drag & drop your prescription"
+                    ? "மருந்துச் சீட்டை இங்கே இழுத்துப் போடுங்கள் அல்லது தேர்ந்தெடுக்கவும்"
+                    : "Drag and drop your prescription photo here"
                 }
                 draggingTitle={
                   language === "ta"
                     ? "கோப்பை இங்கே விடவும்"
-                    : "Drop your prescription file here"
+                    : "Drop prescription file here"
                 }
                 subtitle={
                   language === "ta"
                     ? "தெளிவான புகைப்படம் அல்லது மருத்துவ PDF ஆவணம்"
-                    : "High-resolution camera photos or clinical PDF documents"
+                    : "Clear camera photo (JPG, PNG) or clinical PDF document"
                 }
-                actionText={language === "ta" ? "கோப்பைத் தேர்ந்தெடு" : "Browse File"}
+                actionText={language === "ta" ? "படத்தைத் தேர்ந்தெடு" : "Add a prescription"}
               />
 
-              {/* Synthetic Sample Selection Card */}
-              <div className="sample-selection-card">
-                <div className="sample-card-header">
-                  <Flask size={22} color="var(--primary)" weight="bold" />
-                  <div>
-                    <h3 className="sample-card-title">Use Synthetic Demo Prescription</h3>
-                    <p className="sample-card-subtitle">
-                      Zero patient data. Evaluated against real AMD ROCm models.
-                    </p>
+              {/* Horizontal Strip of Real Prescription Thumbnails */}
+              <section className="thumbnail-strip-section">
+                <div className="thumbnail-strip-header">
+                  <div className="strip-title-row">
+                    <Sparkle size={18} color="var(--primary)" weight="fill" />
+                    <h3 className="thumbnail-strip-title">
+                      {language === "ta"
+                        ? "மாதிரி மருந்துச் சீட்டுகளை முயற்சிக்கவும்"
+                        : "Or try a sample prescription"}
+                    </h3>
                   </div>
-                </div>
-
-                <div className="sample-buttons-list">
-                  {/* Sample 1: English - Arunodhayam Clinic */}
-                  <button
-                    type="button"
-                    className="sample-option-btn clean-sample"
-                    onClick={() => handleUseSample("/rx_demo_001.png", "rx_demo_001.png")}
-                    title="Load Arunodhayam Community Health Clinic demo prescription"
-                  >
-                    <div className="sample-meta">
-                      <div className="sample-meta-badge ok">English &bull; 3 Medicines</div>
-                      <span className="sample-name">Arunodhayam Community Health Clinic (rx_demo_001.png)</span>
-                      <span className="sample-desc">
-                        Metformin 500mg, Atorvastatin 10mg, Amlodipine 5mg. Clear typography with standard dosing.
-                      </span>
-                    </div>
-                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
-                  </button>
-
-                  {/* Sample 2: English - City General Hospital */}
-                  <button
-                    type="button"
-                    className="sample-option-btn clean-sample"
-                    onClick={() => handleUseSample("/rx_demo_002.png", "rx_demo_002.png")}
-                    title="Load City General Hospital demo prescription"
-                  >
-                    <div className="sample-meta">
-                      <div className="sample-meta-badge ok">English &bull; 3 Medicines</div>
-                      <span className="sample-name">City General Hospital (rx_demo_002.png)</span>
-                      <span className="sample-desc">
-                        Pantoprazole 40mg, Metformin 500mg, Paracetamol 650mg. Structured inpatient layout.
-                      </span>
-                    </div>
-                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
-                  </button>
-
-                  {/* Sample 3: Bilingual - Apollo Clinic */}
-                  <button
-                    type="button"
-                    className="sample-option-btn bilingual-sample"
-                    onClick={() => handleUseSample("/rx_demo_003.png", "rx_demo_003.png")}
-                    title="Load Apollo Community Clinic bilingual prescription"
-                  >
-                    <div className="sample-meta">
-                      <div className="sample-meta-badge bilingual">Bilingual (English + தமிழ்)</div>
-                      <span className="sample-name">Apollo Community Clinic (rx_demo_003.png)</span>
-                      <span className="sample-desc">
-                        Metformin 500mg, Amlodipine 5mg, Atorvastatin 10mg. English drugs with Tamil timing instructions.
-                      </span>
-                    </div>
-                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
-                  </button>
-
-                  {/* Sample 4: Bilingual - Meenakshi Mission */}
-                  <button
-                    type="button"
-                    className="sample-option-btn bilingual-sample"
-                    onClick={() => handleUseSample("/rx_demo_004.png", "rx_demo_004.png")}
-                    title="Load Meenakshi Mission Hospital bilingual prescription"
-                  >
-                    <div className="sample-meta">
-                      <div className="sample-meta-badge bilingual">Bilingual (English + தமிழ்)</div>
-                      <span className="sample-name">Meenakshi Mission Hospital (rx_demo_004.png)</span>
-                      <span className="sample-desc">
-                        Pantoprazole 40mg, Atorvastatin 10mg, Paracetamol 650mg. Bilingual dosage instructions &amp; review notes.
-                      </span>
-                    </div>
-                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
-                  </button>
-
-                  {/* Sample 5: Tamil Heavy - Govt Primary Health Centre */}
-                  <button
-                    type="button"
-                    className="sample-option-btn tamil-sample"
-                    onClick={() => handleUseSample("/rx_demo_005.png", "rx_demo_005.png")}
-                    title="Load Government Primary Health Centre Tamil prescription"
-                  >
-                    <div className="sample-meta">
-                      <div className="sample-meta-badge tamil">Tamil Heavy (தமிழ்)</div>
-                      <span className="sample-name">அரசு ஆரம்ப சுகாதார நிலையம் (rx_demo_005.png)</span>
-                      <span className="sample-desc">
-                        மெட்ஃபோர்மின் (Metformin), அம்லோடிபைன் (Amlodipine), பான்டோபிரசோல் (Pantoprazole). Full Tamil clinical layout.
-                      </span>
-                    </div>
-                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
-                  </button>
-                </div>
-
-                <div className="safety-guarantee-note">
-                  <ShieldCheck size={18} color="var(--ok)" weight="bold" />
-                  <span>
-                    Deterministic Grounding: All extracted dosage times are tied to OCR evidence. No hallucination.
+                  <span className="thumbnail-strip-hint">
+                    {language === "ta"
+                      ? "உடனடியாகச் சோதிக்க ஒரு புகைப்படத்தைத் தொடவும்"
+                      : "Tap any paper to test immediately"}
                   </span>
                 </div>
-              </div>
+
+                <div className="thumbnail-scroll-strip" role="region" aria-label="Sample prescription thumbnails">
+                  {DEMO_SAMPLES.map((sample) => (
+                    <button
+                      key={sample.id}
+                      type="button"
+                      className="prescription-thumbnail-card"
+                      onClick={() => handleUseSample(sample)}
+                      title={`Load ${sample.titleEn}`}
+                    >
+                      {/* Real prescription preview image */}
+                      <div className="card-image-frame">
+                        <img
+                          src={sample.path}
+                          alt={sample.titleEn}
+                          className="rx-thumbnail-img"
+                          loading="lazy"
+                        />
+                        <span className={`rx-lang-badge ${sample.langType}`}>
+                          {sample.langTag}
+                        </span>
+                      </div>
+
+                      {/* Card meta */}
+                      <div className="card-info">
+                        <h4 className="card-clinic-title">
+                          {language === "ta" ? sample.titleTa : sample.titleEn}
+                        </h4>
+                        <p className="card-meds-summary">
+                          {language === "ta" ? sample.medsSummaryTa : sample.medsSummaryEn}
+                        </p>
+                        <div className="card-cta-row">
+                          <span>{language === "ta" ? "தொடங்க" : "Use paper"}</span>
+                          <ArrowRight size={13} weight="bold" />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </section>
             </div>
           )}
         </>

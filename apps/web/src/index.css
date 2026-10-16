@@ -1,40 +1,61 @@
 /* ==========================================================================
-   CareBridge AI Design System
-   Source: docs/design.md — Patient-facing, calm, trustworthy, high-contrast
+   CareBridge AI Design System v2
+   Source: docs/design-v2.md — "The paper is the interface."
+   Tactile warm paper, deep ink, highlighter yellow, dark ink-green engineer layer
    ========================================================================== */
 
 :root {
-  /* Design Tokens per docs/design.md */
-  --paper: #F5F1E8;       /* warm off-white, not pure white */
-  --paper-card: #FFFFFF;  /* clean contrast card background */
-  --paper-elevated: #EDE7D9;
-  --ink: #1C2826;         /* dark deep slate ink */
-  --ink-soft: #4B5A57;    /* muted slate for secondary instructions */
-  --primary: #0E5A56;     /* deep clinical teal */
-  --primary-hover: #09423F;
-  --primary-ink: #F5F1E8; /* warm off-white on teal */
-  --line: #D9D2C3;        /* warm subtle border */
-  --ok: #2F6B3F;          /* verified green */
-  --ok-bg: #EAF4EC;
-  --warn: #B76E00;        /* amber: "please verify" */
-  --warn-bg: #FDF4E5;
-  --danger: #A8231B;      /* emergency red */
-  --danger-bg: #FCEBEA;
-  --highlight: #F2D98A;   /* evidence highlight on the source image */
-  --highlight-border: #D8A524;
+  /* Surfaces: canvas #F4EFE6, card #FBF8F2, hairline #DDD5C6. Never pure white. */
+  --canvas: #F4EFE6;
+  --paper: #F4EFE6;
+  --card: #FBF8F2;
+  --card-elevated: #F6F1E7;
+  --hairline: #DDD5C6;
+  --border: #DDD5C6;
+
+  /* Ink & Text */
+  --ink: #17231F;
+  --ink-soft: #4A5753;
+  --ink-muted: #72807B;
+
+  /* Primary & Signature Accent */
+  --primary: #0B5F5A;        /* deep teal */
+  --primary-hover: #084945;
+  --primary-subtle: #E6F2F0;
+  --highlighter: #FFD54A;    /* signature highlighter yellow (backgrounds only) */
+  --highlighter-subtle: #FFF3C4;
+
+  /* Status Tokens (always icon + text, never colour alone) */
+  --ok: #0B5F5A;             /* matches text teal */
+  --ok-bg: #E7F3F1;
+  --warn: #B96A00;           /* amber "needs your check" */
+  --warn-bg: #FDF5E6;
+  --warn-border: #E8B66E;
+  --danger: #B3261E;         /* emergency red */
+  --danger-bg: #FDF0EF;
+  --unclear: #72807B;        /* could not read grey */
+  --unclear-bg: #EFEBE4;
+
+  /* Engineer Layer ("Under the hood" drawer) */
+  --eng-surface: #0D2622;
+  --eng-card: #13332E;
+  --eng-border: #1E443E;
+  --eng-text: #F4EFE6;
+  --eng-muted: #8DA19A;
+  --eng-accent: #3EA8A0;
 
   /* Typography */
-  --font-heading: "Fraunces", Georgia, serif;
+  --font-heading: "Fraunces Variable", "Fraunces", Georgia, serif;
   --font-body: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-tamil: "Noto Sans Tamil", "Instrument Sans", sans-serif;
+  --font-tamil: "Anek Tamil", "Noto Sans Tamil", "Instrument Sans", sans-serif;
   --font-mono: "JetBrains Mono", Consolas, monospace;
 
-  /* Sizing and Spacing */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --shadow-subtle: 0 1px 3px rgba(28, 40, 38, 0.06), 0 1px 2px rgba(28, 40, 38, 0.04);
-  --shadow-elevated: 0 4px 12px rgba(28, 40, 38, 0.08);
+  /* Shape & Elevation (radius 10 to 14px, borders over shadows) */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-subtle: 0 1px 2px rgba(23, 35, 31, 0.04), 0 2px 4px rgba(23, 35, 31, 0.02);
+  --shadow-floating: 0 8px 24px rgba(23, 35, 31, 0.08);
 
   color-scheme: light;
 }
@@ -46,7 +67,7 @@
 }
 
 html, body {
-  background-color: var(--paper);
+  background-color: var(--canvas);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 17px;
@@ -54,13 +75,28 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle paper grain texture overlay (3.5% opacity) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* Tamil script readability rules */
 :lang(ta), [lang="ta"] {
   font-family: var(--font-tamil);
   font-size: 18px;
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 /* Typography styles */
@@ -68,11 +104,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--ink);
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-h1 { font-size: 2.2rem; }
-h2 { font-size: 1.75rem; }
+h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 700; }
+h2 { font-size: clamp(1.6rem, 2.5vw, 2.1rem); }
 h3 { font-size: 1.35rem; }
 h4 { font-size: 1.15rem; }
 
@@ -80,23 +117,22 @@ p {
   margin-bottom: 0.5rem;
 }
 
-/* JetBrains Mono strictly for benchmark and medical metrics */
-.font-mono, .metric-value, .ocr-id {
+/* Monospace font strictly for engineer layer and raw data numbers */
+.font-mono {
   font-family: var(--font-mono);
   font-feature-settings: "tnum" 1, "zero" 1;
 }
 
-/* Visible keyboard focus rings */
+/* Focus rings */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2.5px solid var(--primary);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-/* Buttons */
 button {
   font-family: inherit;
   font-size: 0.95rem;
@@ -104,7 +140,7 @@ button {
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
 
 button:disabled {
@@ -112,172 +148,336 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* App container */
+/* ==========================================================================
+   App Layout & Shell
+   ========================================================================== */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--canvas);
 }
 
-/* App Header */
-.app-header {
-  background-color: var(--paper-card);
-  border-bottom: 1px solid var(--line);
-  padding: 0.85rem 1.75rem;
+/* Slim Offline Strip (Honesty rule) */
+.offline-top-strip {
+  background-color: #F8EFE2;
+  border-bottom: 1px solid #E4D5BC;
+  color: #7A4B00;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.28rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  letter-spacing: 0.01em;
+  z-index: 50;
+}
+
+/* Top bar: wordmark left; language switch, Under the hood, avatar right.
+   Must NEVER wrap or scroll sideways at 360, 768, 1440. */
+.app-top-bar {
+  background-color: var(--card);
+  border-bottom: 1px solid var(--hairline);
+  height: 56px;
+  padding: 0 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 45;
+  box-sizing: border-box;
 }
 
-.brand-wrapper {
+.top-bar-left {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-shrink: 0;
 }
 
-.brand-title {
+.brand-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.brand-wordmark {
   font-family: var(--font-heading);
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--primary);
   letter-spacing: -0.02em;
-}
-
-.brand-badge {
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
-  background-color: var(--paper-elevated);
-  color: var(--ink-soft);
-  padding: 0.15rem 0.5rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line);
-}
-
-.persistent-fixtures-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.76rem;
-  font-weight: 600;
-  font-family: var(--font-body);
-  color: #8c5200;
-  background-color: #fef8ee;
-  border: 1px solid #f1c77d;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-/* Navigation tabs */
-.nav-tab-list {
-  display: flex;
-  gap: 0.35rem;
-  background-color: var(--paper-elevated);
-  padding: 0.25rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--line);
-}
-
-.nav-tab-btn {
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--ink-soft);
-  border: none;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.nav-tab-btn.active {
-  background-color: var(--paper-card);
-  color: var(--ink);
+.brand-suffix {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
   font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* Segmented Language Switcher (EN | தமிழ்) */
+.lang-segmented-switch {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
+}
+
+.lang-segment-btn {
+  padding: 0.28rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lang-segment-btn:hover {
+  color: var(--ink);
+}
+
+.lang-segment-btn.active {
+  background-color: var(--card);
+  border-color: var(--hairline);
+  color: var(--primary);
+  font-weight: 700;
   box-shadow: var(--shadow-subtle);
 }
 
-/* Language toggle button */
-.lang-toggle-btn {
+/* Under the Hood Icon Button */
+.under-hood-btn {
+  width: 34px;
+  height: 34px;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  transition: all 0.15s ease;
+}
+
+.under-hood-btn:hover {
+  background-color: var(--canvas);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Patient Avatar */
+.patient-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary-subtle);
+  border: 1.5px solid var(--hairline);
+  color: var(--primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* ==========================================================================
+   App Shell Layout (Desktop Left Rail vs Mobile Bottom Bar)
+   ========================================================================== */
+.app-shell-body {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 56px);
+  position: relative;
+}
+
+/* Desktop Slim Left Rail */
+.desktop-left-rail {
+  width: 96px;
+  background-color: var(--card);
+  border-right: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 0;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.rail-nav-btn {
+  width: 78px;
+  padding: 0.65rem 0.25rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.4rem 0.8rem;
-  background-color: var(--paper-card);
-  border: 1px solid var(--line);
-  color: var(--ink);
-  font-weight: 500;
-  font-size: 0.88rem;
-}
-
-.lang-toggle-btn:hover {
-  background-color: var(--paper-elevated);
-}
-
-/* AMD Drawer Trigger */
-.amd-trigger-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.9rem;
-  background-color: #1A1A1A;
-  color: #ED1C24;
-  border: 1px solid #333333;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.amd-trigger-btn:hover {
-  background-color: #000000;
-  border-color: #ED1C24;
-}
-
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  padding: 1.5rem 2rem;
-  max-width: 1540px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Footer per docs/design.md */
-.app-footer {
-  border-top: 1px solid var(--line);
-  background-color: var(--paper-card);
-  padding: 1rem 2rem;
-  text-align: center;
-  font-size: 0.88rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.rail-nav-btn:hover {
+  background-color: var(--canvas);
+  color: var(--ink);
+}
+
+.rail-nav-btn.active {
+  background-color: var(--canvas);
+  color: var(--primary);
+  border-color: var(--hairline);
+  font-weight: 600;
+}
+
+/* Mobile Bottom Tab Bar */
+.mobile-bottom-tabs {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--card);
+  border-top: 1px solid var(--hairline);
+  z-index: 40;
+  padding: 0 0.5rem;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 -2px 8px rgba(23, 35, 31, 0.04);
+}
+
+.mobile-tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.mobile-tab-btn.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Feature Viewport Container */
+.feature-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive breakpoint for mobile navigation */
+@media (max-width: 768px) {
+  .desktop-left-rail {
+    display: none;
+  }
+
+  .mobile-bottom-tabs {
+    display: flex;
+  }
+
+  .feature-viewport {
+    padding: 1rem 1rem 5rem 1rem; /* bottom padding for mobile tab bar */
+  }
+
+  .app-top-bar {
+    padding: 0 0.85rem;
+  }
+}
+
+/* Small mobile (360px) guarantees */
+@media (max-width: 380px) {
+  .brand-suffix {
+    display: none;
+  }
+  .brand-wordmark {
+    font-size: 1.2rem;
+  }
+  .lang-segment-btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ==========================================================================
+   Universal Footer (Patient Layer)
+   ========================================================================== */
+.app-footer {
+  border-top: 1px solid var(--hairline);
+  background-color: var(--card);
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: auto;
 }
 
 .footer-notice {
   font-weight: 500;
+  margin-bottom: 0.4rem;
 }
 
 .footer-links {
-  margin-top: 0.35rem;
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
 }
 
 .footer-links a {
   color: var(--ink-soft);
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-size: 0.82rem;
+  transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-separator {
+  color: var(--hairline);
+  font-size: 0.85rem;
+  user-select: none;
 }
 
 /* Accessibility: Reduced Motion */

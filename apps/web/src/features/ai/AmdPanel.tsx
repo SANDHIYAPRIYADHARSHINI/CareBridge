@@ -6,6 +6,8 @@ import {
   X,
   Gauge,
   WarningCircle,
+  Flask,
+  CheckCircle,
 } from "@phosphor-icons/react";
 import type { BenchmarkSummary } from "../../types/ai";
 import { benchmarkSummaryFixture } from "../../fixtures";
@@ -16,6 +18,8 @@ interface AmdPanelProps {
   onClose: () => void;
   apiBaseUrl?: string;
   forceEmpty?: boolean;
+  useFixtures: boolean;
+  onToggleFixtures: (val: boolean) => void;
 }
 
 export const AmdPanel: React.FC<AmdPanelProps> = ({
@@ -23,42 +27,60 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
   onClose,
   apiBaseUrl = "http://localhost:8100",
   forceEmpty = false,
+  useFixtures,
+  onToggleFixtures,
 }) => {
   const [benchmarkData, setBenchmarkData] = useState<BenchmarkSummary | null>(null);
   const [loading, setLoading] = useState(false);
+  const [healthStatus, setHealthStatus] = useState<{
+    status: string;
+    model: string;
+    device: string;
+  } | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || forceEmpty) return;
 
-    if (forceEmpty) {
-      setBenchmarkData(null);
-      return;
-    }
-
-    const fetchBenchmark = async () => {
+    const fetchTelemetry = async () => {
       setLoading(true);
       try {
+        // Fetch health
+        try {
+          const healthRes = await fetch(`${apiBaseUrl}/v1/health`);
+          if (healthRes.ok) {
+            const hData = await healthRes.json();
+            setHealthStatus({
+              status: hData.status || "ok",
+              model: hData.model || "Gemma 2 9B (vLLM ROCm)",
+              device: hData.device || "AMD Instinct / ROCm",
+            });
+          } else {
+            setHealthStatus(null);
+          }
+        } catch {
+          setHealthStatus(null);
+        }
+
+        // Fetch benchmark
         const res = await fetch(`${apiBaseUrl}/v1/metrics/benchmark`);
         if (res.ok) {
           const data = await res.json();
           if (data && data.status !== "no_benchmark_yet" && data.benchmarks) {
             setBenchmarkData(data);
           } else {
-            // Real benchmark does not exist yet; default to unmeasured pending state
             setBenchmarkData(null);
           }
         } else {
           setBenchmarkData(null);
         }
       } catch {
-        // Network error or backend offline; default to unmeasured pending state
         setBenchmarkData(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBenchmark();
+    fetchTelemetry();
   }, [isOpen, apiBaseUrl, forceEmpty]);
 
   if (!isOpen) return null;
@@ -67,48 +89,106 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
   const isSample = Boolean(benchmarkData?.is_sample || benchmarkData?.status === "sample");
 
   return (
-    <div
-      className="amd-panel-drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-label="AMD ROCm Performance and Benchmark Dashboard"
-    >
-      {/* Header */}
+    <>
+      <div
+        className="amd-drawer-backdrop"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <aside
+        className="amd-panel-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Under the hood — Engineering & AMD Telemetry"
+      >
+      {/* Drawer Header */}
       <div className="amd-panel-header">
         <div className="amd-header-brand">
-          <span className="amd-brand-tag">AMD ROCm</span>
-          <h2 className="amd-title">Performance Telemetry</h2>
-          {isSample && (
-            <span className="amd-header-sample-badge">Sample data, not measured</span>
-          )}
+          <span className="amd-brand-tag">ENGINEER LAYER</span>
+          <h2 className="amd-title">Under the hood</h2>
+          <span className="amd-shortcut-hint">Hotkey: .</span>
         </div>
 
         <button
           className="amd-close-btn"
           onClick={onClose}
-          title="Close AMD Panel"
-          aria-label="Close AMD Panel"
+          title="Close drawer (.)"
+          aria-label="Close drawer"
         >
           <X size={18} />
         </button>
       </div>
 
-      {/* Content */}
+      {/* Drawer Content */}
       <div className="amd-panel-content">
+        {/* Dev Switch: Fixtures vs Live AI (Section 2: Moved into Under the Hood) */}
+        <div className="dev-switch-card">
+          <div className="dev-switch-header">
+            <Flask size={18} color="var(--eng-accent)" weight="bold" />
+            <span className="dev-switch-title">Backend Connection &amp; Data Source</span>
+          </div>
+          <p className="dev-switch-desc">
+            Toggle between the live Python FastAPI / vLLM ROCm backend on Port 8100 and offline synthetic demo fixtures.
+          </p>
+          <div className="dev-toggle-row">
+            <button
+              type="button"
+              className={`dev-toggle-btn ${!useFixtures ? "active" : ""}`}
+              onClick={() => onToggleFixtures(false)}
+            >
+              <span>Live AI (Port 8100)</span>
+            </button>
+            <button
+              type="button"
+              className={`dev-toggle-btn ${useFixtures ? "active" : ""}`}
+              onClick={() => onToggleFixtures(true)}
+            >
+              <span>Offline Fixtures</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Runtime Model & Device Status */}
+        <div className="amd-meta-box">
+          <div className="amd-meta-row">
+            <span className="amd-meta-label">Model Status</span>
+            <span className="amd-meta-val font-mono">
+              {healthStatus ? (
+                <span className="status-live-pill">
+                  <CheckCircle size={13} weight="bold" />
+                  <span>{healthStatus.model}</span>
+                </span>
+              ) : (
+                <span className="status-unconnected-pill">Model: not connected</span>
+              )}
+            </span>
+          </div>
+          <div className="amd-meta-row">
+            <span className="amd-meta-label">Compute Device</span>
+            <span className="amd-meta-val font-mono">
+              {healthStatus ? healthStatus.device : "AMD ROCm / CPU fallback"}
+            </span>
+          </div>
+          <div className="amd-meta-row">
+            <span className="amd-meta-label">Backend Target</span>
+            <span className="amd-meta-val font-mono">{apiBaseUrl}</span>
+          </div>
+        </div>
+
         {loading ? (
-          <div style={{ textAlign: "center", padding: "3rem", color: "#888" }}>
+          <div style={{ textAlign: "center", padding: "3rem", color: "var(--eng-muted)" }}>
             <Gauge size={32} className="skeleton-spinner" />
             <p style={{ marginTop: "0.5rem" }}>Querying AMD ROCm device counters...</p>
           </div>
         ) : !benchmarks || forceEmpty ? (
-          /* Empty State per docs/design.md: "shows 'no benchmark yet' when empty, never fake numbers" */
+          /* Empty State per docs/design-v2.md: "shows 'no benchmark yet' when empty, never fake numbers" */
           <div className="amd-empty-state">
-            <Cpu size={48} className="amd-empty-icon" />
+            <Cpu size={44} className="amd-empty-icon" />
             <h4>No Benchmark Yet</h4>
-            <p style={{ margin: "0.5rem 0 1rem 0" }}>
-              To populate live throughput, latency, and accuracy metrics on your AMD Instinct GPU:
+            <p style={{ margin: "0.5rem 0 1rem 0", color: "var(--eng-muted)", fontSize: "0.88rem" }}>
+              Run the benchmark suite against your AMD ROCm accelerator to measure real throughput and latency:
             </p>
-            <code>python eval/bench_latency.py --concurrency 1 4 8 16</code>
+            <code className="font-mono">python eval/bench_latency.py --concurrency 1 4 8 16</code>
             <div className="amd-preview-action">
               <button
                 type="button"
@@ -123,55 +203,34 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
           </div>
         ) : (
           <>
-            {/* Sample Warning Banner if unmeasured sample data is shown */}
+            {/* Sample Warning Banner */}
             {isSample && (
               <div className="amd-sample-banner" role="status">
-                <WarningCircle size={22} weight="bold" className="amd-sample-icon" />
+                <WarningCircle size={20} weight="bold" className="amd-sample-icon" />
                 <div className="amd-sample-banner-text">
-                  <div className="amd-sample-headline">Sample data, not measured</div>
+                  <div className="amd-sample-headline">Sample layout preview, not measured</div>
                   <div className="amd-sample-subtext">
-                    This telemetry is illustrative layout preview data. Measured performance requires running eval scripts on AMD ROCm hardware.
+                    Illustrative preview data. Live numbers are recorded when running eval scripts on AMD hardware.
                   </div>
                 </div>
                 <button
                   type="button"
                   className="amd-sample-reset-btn"
                   onClick={() => setBenchmarkData(null)}
-                  title="Switch back to live pending status"
+                  title="Switch back to live state"
                 >
-                  Clear Preview
+                  Clear
                 </button>
               </div>
             )}
 
-            {/* Hardware & Model Specifications */}
-            <div className="amd-meta-box">
-              <div className="amd-meta-row">
-                <span className="amd-meta-label">Accelerator</span>
-                <span className="amd-meta-val font-mono">{benchmarkData?.gpu}</span>
-              </div>
-              <div className="amd-meta-row">
-                <span className="amd-meta-label">Model Weights</span>
-                <span className="amd-meta-val font-mono">{benchmarkData?.model}</span>
-              </div>
-              <div className="amd-meta-row">
-                <span className="amd-meta-label">Evaluated At</span>
-                <span className="amd-meta-val font-mono">
-                  {isSample ? "Sample data, not measured" : benchmarkData?.generated_at}
-                </span>
-              </div>
-            </div>
-
-            {/* Concurrency & Latency Table */}
-            <div>
+            {/* Concurrency Scaling Table */}
+            <div className="amd-section-card">
               <div className="amd-section-header-row">
                 <h3 className="amd-section-title">
-                  <Speedometer size={18} color="#ED1C24" />
+                  <Speedometer size={16} color="var(--eng-accent)" />
                   <span>ROCm vLLM Concurrency Scaling</span>
                 </h3>
-                {isSample && (
-                  <span className="amd-section-sample-label">Sample data, not measured</span>
-                )}
               </div>
 
               <div className="benchmark-table-wrapper">
@@ -190,7 +249,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
                         <td className="font-mono">{row.concurrency}x</td>
                         <td className="font-mono">{row.p50_ms.toFixed(1)} ms</td>
                         <td className="font-mono">{row.p95_ms.toFixed(1)} ms</td>
-                        <td className="font-mono" style={{ color: "#ED1C24", fontWeight: 600 }}>
+                        <td className="font-mono" style={{ color: "var(--eng-accent)", fontWeight: 600 }}>
                           {row.tokens_per_sec.toFixed(1)} t/s
                         </td>
                       </tr>
@@ -201,15 +260,12 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             </div>
 
             {/* Quality & Safety Gates */}
-            <div>
+            <div className="amd-section-card">
               <div className="amd-section-header-row">
                 <h3 className="amd-section-title">
-                  <ShieldCheck size={18} color="#4CAF50" />
-                  <span>Clinical Extraction & Safety Metrics</span>
+                  <ShieldCheck size={16} color="var(--eng-accent)" />
+                  <span>Extraction &amp; Safety Verification</span>
                 </h3>
-                {isSample && (
-                  <span className="amd-section-sample-label">Sample data, not measured</span>
-                )}
               </div>
 
               <div className="accuracy-grid">
@@ -229,7 +285,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
 
                 <div className="accuracy-metric-card">
                   <div className="accuracy-metric-label">Emergency Recall</div>
-                  <div className="accuracy-metric-value font-mono" style={{ color: "#4CAF50" }}>
+                  <div className="accuracy-metric-value font-mono" style={{ color: "var(--eng-accent)" }}>
                     {(benchmarks.red_flag_emergency_recall * 100).toFixed(0)}%
                   </div>
                 </div>
@@ -242,17 +298,10 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
                 </div>
               </div>
             </div>
-
-            {/* Footer Notice */}
-            <p style={{ fontSize: "0.78rem", color: "#888888", textAlign: "center", margin: 0 }}>
-              {isSample
-                ? "Sample data, not measured; awaiting live run of eval/bench_latency.py on AMD ROCm."
-                : "Metrics measured against synthetic prescription evaluation dataset (eval/data)."}
-            </p>
           </>
         )}
       </div>
-    </div>
+    </aside>
+    </>
   );
 };
-

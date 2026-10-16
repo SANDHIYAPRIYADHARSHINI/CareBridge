@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  UploadSimple,
+  Sun,
+  PlusCircle,
   FileText,
   ChatCircleDots,
-  Cpu,
-  Translate,
+  Sliders,
+  User,
   Flask,
 } from "@phosphor-icons/react";
 import {
@@ -13,21 +14,22 @@ import {
   ChatPanel,
   AmdPanel,
 } from "./features/ai";
+import { TodayScreen } from "./features/today/TodayScreen";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import type { ExtractionResult } from "./types/ai";
 import { extractionFlaggedFixture } from "./fixtures";
 import { isEnvUseFixtures } from "./services/aiApi";
-import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs";
 import "./index.css";
+
+export type TabKey = "today" | "add" | "check" | "ask";
 
 export function App() {
   // Navigation & Routing state
   const [currentRoute, setCurrentRoute] = useState<"app" | "privacy" | "404">("app");
-  const [activeTab, setActiveTab] = useState<"upload" | "review" | "chat">("upload");
+  const [activeTab, setActiveTab] = useState<TabKey>("add");
   const [language, setLanguage] = useState<"en" | "ta">("en");
   const [isAmdDrawerOpen, setIsAmdDrawerOpen] = useState(false);
-  const [forceEmptyAmd, setForceEmptyAmd] = useState(false);
   const [, setHighlightedLineIds] = useState<string[]>([]);
 
   // Prescription data state
@@ -36,27 +38,43 @@ export function App() {
   const [currentImageUrl, setCurrentImageUrl] = useState<string>("/rx_demo_001.png");
   const [confirmedExtraction, setConfirmedExtraction] = useState<ExtractionResult | null>(null);
 
-  // Sync route on initial load and popstate
+  // Sync route and ?dev=1 on initial load and popstate
   useEffect(() => {
     const handleLocationChange = () => {
       const path = window.location.pathname.toLowerCase();
       const hash = window.location.hash.toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+
+      // Check ?dev=1
+      if (params.get("dev") === "1") {
+        setIsAmdDrawerOpen(true);
+      }
 
       if (path === "/privacy" || hash === "#privacy") {
         setCurrentRoute("privacy");
       } else if (
         path === "/" ||
         path === "" ||
+        path === "/today" ||
+        path === "/add" ||
         path === "/upload" ||
+        path === "/check" ||
         path === "/review" ||
+        path === "/ask" ||
         path === "/chat" ||
+        hash === "#today" ||
+        hash === "#add" ||
         hash === "#upload" ||
+        hash === "#check" ||
         hash === "#review" ||
+        hash === "#ask" ||
         hash === "#chat"
       ) {
         setCurrentRoute("app");
-        if (path === "/review" || hash === "#review") setActiveTab("review");
-        if (path === "/chat" || hash === "#chat") setActiveTab("chat");
+        if (path === "/today" || hash === "#today") setActiveTab("today");
+        if (path === "/add" || path === "/upload" || hash === "#add" || hash === "#upload") setActiveTab("add");
+        if (path === "/check" || path === "/review" || hash === "#check" || hash === "#review") setActiveTab("check");
+        if (path === "/ask" || path === "/chat" || hash === "#ask" || hash === "#chat") setActiveTab("ask");
       } else {
         setCurrentRoute("404");
       }
@@ -71,7 +89,25 @@ export function App() {
     };
   }, []);
 
-  const navigateTo = (path: string, newTab?: "upload" | "review" | "chat") => {
+  // Keyboard shortcut: '.' toggles Under the hood drawer
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+      if (e.key === ".") {
+        setIsAmdDrawerOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const navigateTo = (path: string, newTab?: TabKey) => {
     window.history.pushState({}, "", path);
     if (path === "/privacy") {
       setCurrentRoute("privacy");
@@ -87,7 +123,7 @@ export function App() {
   const handleExtractionSuccess = (result: ExtractionResult, imageUrl: string) => {
     setCurrentExtraction(result);
     setCurrentImageUrl(imageUrl);
-    setActiveTab("review");
+    setActiveTab("check");
   };
 
   // Called when patient confirms in PrescriptionReview
@@ -95,14 +131,14 @@ export function App() {
     if (currentExtraction) {
       setConfirmedExtraction(currentExtraction);
     }
-    setActiveTab("chat");
+    setActiveTab("today");
   };
 
   // Render standalone Privacy Page
   if (currentRoute === "privacy") {
     return (
       <div className="app-container" lang={language}>
-        <PrivacyPage onBack={() => navigateTo("/", "upload")} language={language} />
+        <PrivacyPage onBack={() => navigateTo("/", "add")} language={language} />
         <footer className="app-footer">
           <p className="footer-notice">
             Synthetic demo data. Not medical advice. Clinicians decide.
@@ -116,7 +152,7 @@ export function App() {
   if (currentRoute === "404") {
     return (
       <div className="app-container" lang={language}>
-        <NotFoundPage onBack={() => navigateTo("/", "upload")} language={language} />
+        <NotFoundPage onBack={() => navigateTo("/", "add")} language={language} />
         <footer className="app-footer">
           <p className="footer-notice">
             Synthetic demo data. Not medical advice. Clinicians decide.
@@ -129,149 +165,231 @@ export function App() {
   return (
     <div className="app-container" lang={language}>
       {/* ------------------------------------------------------------------ */}
-      {/* App Header per docs/design.md                                      */}
+      {/* Slim Top Strip: Honesty rule per docs/design-v2.md Section 2       */}
       {/* ------------------------------------------------------------------ */}
-      <header className="app-header">
-        <div
-          className="brand-wrapper"
-          onClick={() => setActiveTab("upload")}
-          style={{ cursor: "pointer" }}
-        >
-          <h1 className="brand-title">CareBridge AI</h1>
-          <span className="brand-badge">AMD ROCm Track 2</span>
-          {useFixtures && (
-            <span
-              className="persistent-fixtures-badge header-fixtures-badge"
-              role="status"
-              title="Application is currently operating in offline fixtures demo mode"
-            >
-              <Flask size={14} weight="bold" />
-              <span>Offline sample data, not live AI</span>
-            </span>
-          )}
+      {useFixtures && (
+        <div className="offline-top-strip" role="status">
+          <Flask size={14} weight="bold" />
+          <span>Offline sample data, not live AI</span>
+        </div>
+      )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/* App Top Bar per docs/design-v2.md Section 4                        */}
+      {/* Wordmark left; EN|தமிழ் switch, Under the hood, avatar right        */}
+      {/* Never wraps or scrolls sideways at 360, 768, 1440                   */}
+      {/* ------------------------------------------------------------------ */}
+      <header className="app-top-bar">
+        <div className="top-bar-left">
+          <div
+            className="brand-link"
+            onClick={() => setActiveTab("today")}
+            role="button"
+            tabIndex={0}
+            title="Go to Today"
+          >
+            <span className="brand-wordmark">CareBridge AI</span>
+          </div>
         </div>
 
-        {/* 21st.dev / shadcn-style Navigation tabs */}
-        <Tabs
-          value={activeTab}
-          onValueChange={(val) => {
-            const nextTab = val as "upload" | "review" | "chat";
-            if (nextTab === "review" && !currentExtraction) {
-              setCurrentExtraction(extractionFlaggedFixture);
-              setCurrentImageUrl("/rx_demo_001.png");
-            }
-            setActiveTab(nextTab);
-          }}
-        >
-          <TabsList aria-label="Main Navigation">
-            <TabsTrigger value="upload">
-              <UploadSimple size={18} weight="bold" />
-              <span>Upload Rx</span>
-            </TabsTrigger>
+        <div className="top-bar-right">
+          {/* Segmented language switch: EN | தமிழ் */}
+          <div className="lang-segmented-switch" role="radiogroup" aria-label="Language selection">
+            <button
+              type="button"
+              className={`lang-segment-btn ${language === "en" ? "active" : ""}`}
+              onClick={() => setLanguage("en")}
+              aria-label="Switch to English"
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              className={`lang-segment-btn ${language === "ta" ? "active" : ""}`}
+              onClick={() => setLanguage("ta")}
+              aria-label="தமிழுக்கு மாறவும்"
+            >
+              தமிழ்
+            </button>
+          </div>
 
-            <TabsTrigger value="review">
-              <FileText size={18} weight="bold" />
-              <span>Review</span>
-            </TabsTrigger>
-
-            <TabsTrigger value="chat">
-              <ChatCircleDots size={18} weight="bold" />
-              <span>Ask Companion</span>
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-
-        {/* Header Actions */}
-        <div className="header-actions">
-          {/* Live vs Fixture Toggle */}
+          {/* Under the hood icon button (hotkey: .) */}
           <button
             type="button"
-            className="lang-toggle-btn"
-            onClick={() => setUseFixtures((prev) => !prev)}
-            title="Toggle between Live AI backend (Port 8100) and Offline Synthetic Fixtures"
+            className="under-hood-btn"
+            onClick={() => setIsAmdDrawerOpen(true)}
+            title="Under the hood (Press .)"
+            aria-label="Open Under the hood engineer drawer"
           >
-            <Flask size={16} />
-            <span>{useFixtures ? "Offline Fixtures" : "Live AI"}</span>
+            <Sliders size={18} weight="bold" />
           </button>
 
-          {/* Language Toggle */}
-          <button
-            type="button"
-            className="lang-toggle-btn"
-            onClick={() => setLanguage((prev) => (prev === "en" ? "ta" : "en"))}
-            title="Toggle between English and Tamil"
-          >
-            <Translate size={16} />
-            <span>{language === "en" ? "தமிழ்" : "English"}</span>
-          </button>
-
-          {/* AMD ROCm Telemetry Panel Button */}
-          <button
-            type="button"
-            className="amd-trigger-btn"
-            onClick={() => {
-              setForceEmptyAmd(false);
-              setIsAmdDrawerOpen(true);
-            }}
-            title="Inspect AMD ROCm performance and latency benchmarks"
-          >
-            <Cpu size={16} weight="bold" />
-            <span>AMD Benchmarks</span>
-          </button>
+          {/* Patient Avatar */}
+          <div className="patient-avatar" title="Patient Profile">
+            <User size={16} weight="bold" />
+          </div>
         </div>
       </header>
 
       {/* ------------------------------------------------------------------ */}
-      {/* Main Feature Viewport                                              */}
+      {/* Shell Body: Left Rail on Desktop + Mobile Bottom Tabs              */}
       {/* ------------------------------------------------------------------ */}
-      <main className="main-content">
-        {activeTab === "upload" && (
-          <UploadScreen
-            onExtractionSuccess={handleExtractionSuccess}
-            useFixtures={useFixtures}
-            onToggleFixtures={(val) => setUseFixtures(val)}
-            language={language}
-          />
-        )}
+      <div className="app-shell-body">
+        {/* Desktop Slim Left Rail */}
+        <nav className="desktop-left-rail" aria-label="Primary Navigation">
+          <button
+            type="button"
+            className={`rail-nav-btn ${activeTab === "today" ? "active" : ""}`}
+            onClick={() => setActiveTab("today")}
+          >
+            <Sun size={20} weight={activeTab === "today" ? "fill" : "regular"} />
+            <span>{language === "ta" ? "இன்று" : "Today"}</span>
+          </button>
 
-        {activeTab === "review" && (
-          <PrescriptionReview
-            extraction={currentExtraction || extractionFlaggedFixture}
-            imageUrl={currentImageUrl}
-            useFixtures={useFixtures}
-            onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
-            onConfirmReminders={handleConfirmReminders}
-            onReUpload={() => setActiveTab("upload")}
-          />
-        )}
+          <button
+            type="button"
+            className={`rail-nav-btn ${activeTab === "add" ? "active" : ""}`}
+            onClick={() => setActiveTab("add")}
+          >
+            <PlusCircle size={20} weight={activeTab === "add" ? "fill" : "regular"} />
+            <span>{language === "ta" ? "சேர்க்க" : "Add"}</span>
+          </button>
 
-        {activeTab === "chat" && (
-          <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-            <ChatPanel
+          <button
+            type="button"
+            className={`rail-nav-btn ${activeTab === "check" ? "active" : ""}`}
+            onClick={() => {
+              if (!currentExtraction) {
+                setCurrentExtraction(extractionFlaggedFixture);
+                setCurrentImageUrl("/rx_demo_001.png");
+              }
+              setActiveTab("check");
+            }}
+          >
+            <FileText size={20} weight={activeTab === "check" ? "fill" : "regular"} />
+            <span>{language === "ta" ? "சரிபார்" : "Check"}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`rail-nav-btn ${activeTab === "ask" ? "active" : ""}`}
+            onClick={() => setActiveTab("ask")}
+          >
+            <ChatCircleDots size={20} weight={activeTab === "ask" ? "fill" : "regular"} />
+            <span>{language === "ta" ? "கேள்" : "Ask"}</span>
+          </button>
+        </nav>
+
+        {/* Feature Viewport Container */}
+        <main className="feature-viewport">
+          {activeTab === "today" && (
+            <TodayScreen
               language={language}
-              onLanguageChange={(lang) => setLanguage(lang)}
-              confirmedExtraction={confirmedExtraction || currentExtraction}
-              useFixtures={useFixtures}
-              onCitationClick={(lineIds) => {
-                setHighlightedLineIds(lineIds);
-                alert(`Highlighted OCR evidence line(s): ${lineIds.join(", ")} on source prescription`);
+              confirmedExtraction={confirmedExtraction}
+              onNavigateToAdd={() => setActiveTab("add")}
+              onNavigateToCheck={() => {
+                if (!currentExtraction) {
+                  setCurrentExtraction(extractionFlaggedFixture);
+                  setCurrentImageUrl("/rx_demo_001.png");
+                }
+                setActiveTab("check");
               }}
             />
-          </div>
-        )}
-      </main>
+          )}
+
+          {activeTab === "add" && (
+            <UploadScreen
+              onExtractionSuccess={handleExtractionSuccess}
+              useFixtures={useFixtures}
+              onToggleFixtures={(val) => setUseFixtures(val)}
+              language={language}
+            />
+          )}
+
+          {activeTab === "check" && (
+            <PrescriptionReview
+              extraction={currentExtraction || extractionFlaggedFixture}
+              imageUrl={currentImageUrl}
+              useFixtures={useFixtures}
+              onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
+              onConfirmReminders={handleConfirmReminders}
+              onReUpload={() => setActiveTab("add")}
+            />
+          )}
+
+          {activeTab === "ask" && (
+            <div style={{ maxWidth: "860px", margin: "0 auto", width: "100%" }}>
+              <ChatPanel
+                language={language}
+                onLanguageChange={(lang) => setLanguage(lang)}
+                confirmedExtraction={confirmedExtraction || currentExtraction}
+                useFixtures={useFixtures}
+                onCitationClick={(lineIds) => {
+                  setHighlightedLineIds(lineIds);
+                }}
+              />
+            </div>
+          )}
+        </main>
+      </div>
+
+      {/* Mobile Bottom Tab Bar */}
+      <nav className="mobile-bottom-tabs" aria-label="Mobile Navigation">
+        <button
+          type="button"
+          className={`mobile-tab-btn ${activeTab === "today" ? "active" : ""}`}
+          onClick={() => setActiveTab("today")}
+        >
+          <Sun size={20} weight={activeTab === "today" ? "fill" : "regular"} />
+          <span>{language === "ta" ? "இன்று" : "Today"}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`mobile-tab-btn ${activeTab === "add" ? "active" : ""}`}
+          onClick={() => setActiveTab("add")}
+        >
+          <PlusCircle size={20} weight={activeTab === "add" ? "fill" : "regular"} />
+          <span>{language === "ta" ? "சேர்க்க" : "Add"}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`mobile-tab-btn ${activeTab === "check" ? "active" : ""}`}
+          onClick={() => {
+            if (!currentExtraction) {
+              setCurrentExtraction(extractionFlaggedFixture);
+              setCurrentImageUrl("/rx_demo_001.png");
+            }
+            setActiveTab("check");
+          }}
+        >
+          <FileText size={20} weight={activeTab === "check" ? "fill" : "regular"} />
+          <span>{language === "ta" ? "சரிபார்" : "Check"}</span>
+        </button>
+
+        <button
+          type="button"
+          className={`mobile-tab-btn ${activeTab === "ask" ? "active" : ""}`}
+          onClick={() => setActiveTab("ask")}
+        >
+          <ChatCircleDots size={20} weight={activeTab === "ask" ? "fill" : "regular"} />
+          <span>{language === "ta" ? "கேள்" : "Ask"}</span>
+        </button>
+      </nav>
 
       {/* ------------------------------------------------------------------ */}
-      {/* AMD ROCm Benchmark Drawer                                          */}
+      {/* Under the hood Drawer (Engineer Layer)                             */}
       {/* ------------------------------------------------------------------ */}
       <AmdPanel
         isOpen={isAmdDrawerOpen}
         onClose={() => setIsAmdDrawerOpen(false)}
-        forceEmpty={forceEmptyAmd}
+        useFixtures={useFixtures}
+        onToggleFixtures={(val) => setUseFixtures(val)}
       />
 
       {/* ------------------------------------------------------------------ */}
-      {/* Universal Footer per docs/design.md                                */}
+      {/* Universal Footer (Patient Layer per docs/design-v2.md Section 7)    */}
       {/* ------------------------------------------------------------------ */}
       <footer className="app-footer">
         <p className="footer-notice">
@@ -287,6 +405,7 @@ export function App() {
           >
             Privacy Policy
           </a>
+          <span className="footer-separator">&bull;</span>
           <a
             href="#terms"
             onClick={(e) => {
@@ -296,23 +415,7 @@ export function App() {
           >
             Terms of Use
           </a>
-          <button
-            type="button"
-            style={{
-              background: "none",
-              border: "none",
-              color: "var(--ink-soft)",
-              textDecoration: "underline",
-              cursor: "pointer",
-              fontSize: "inherit",
-            }}
-            onClick={() => {
-              setForceEmptyAmd((prev) => !prev);
-              setIsAmdDrawerOpen(true);
-            }}
-          >
-            Demo: {forceEmptyAmd ? "Switch to Populated Benchmark" : "Test 'No Benchmark Yet' State"}
-          </button>
+          <span className="footer-separator">&bull;</span>
           <a href="mailto:support@carebridge.health">
             Contact Support
           </a>
