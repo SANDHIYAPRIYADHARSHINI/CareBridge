@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str | list[str] = "http://localhost:5173,http://localhost:3000"
     TESSERACT_CMD: str | None = None
 
+    # Emergency and crisis hotline configurations (TO_VERIFY)
+    EMERGENCY_NUMBER: str = "108"  # National emergency ambulance service in India (TO_VERIFY)
+    CRISIS_HELPLINE_NUMBER: str = "14416"  # Tele-MANAS mental health helpline India (TO_VERIFY)
+    CRISIS_HELPLINE_NAME: str = "Tele-MANAS (TO_VERIFY)"
+
     HOST: str = "0.0.0.0"
     PORT: int = 8100
 

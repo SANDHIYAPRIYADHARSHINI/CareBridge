@@ -1,0 +1,44 @@
+[
+  {
+    "id": "GEN-METFORMIN",
+    "name": "Metformin",
+    "source_url": "https://medlineplus.gov/druginfo/meds/a684058.html",
+    "needs_human_verification": true,
+    "drug_class": "",
+    "description": "",
+    "common_uses": "",
+    "typical_dosage_forms": [],
+    "how_to_take": "",
+    "important_precautions": "",
+    "common_side_effects": [],
+    "serious_side_effects_emergency": []
+  },
+  {
+    "id": "GEN-ATORVASTATIN",
+    "name": "Atorvastatin",
+    "source_url": "https://medlineplus.gov/druginfo/meds/a600045.html",
+    "needs_human_verification": true,
+    "drug_class": "",
+    "description": "",
+    "common_uses": "",
+    "typical_dosage_forms": [],
+    "how_to_take": "",
+    "important_precautions": "",
+    "common_side_effects": [],
+    "serious_side_effects_emergency": []
+  },
+  {
+    "id": "GEN-AMLODIPINE",
+    "name": "Amlodipine",
+    "source_url": "https://medlineplus.gov/druginfo/meds/a692044.html",
+    "needs_human_verification": true,
+    "drug_class": "",
+    "description": "",
+    "common_uses": "",
+    "typical_dosage_forms": [],
+    "how_to_take": "",
+    "important_precautions": "",
+    "common_side_effects": [],
+    "serious_side_effects_emergency": []
+  }
+]

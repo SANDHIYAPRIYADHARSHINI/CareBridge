@@ -1,0 +1,265 @@
+{
+  "version": "1.0.0",
+  "helpline_config_notes": "Crisis and emergency phone numbers are dynamically loaded from app.config.Settings (EMERGENCY_NUMBER, CRISIS_HELPLINE_NUMBER, CRISIS_HELPLINE_NAME), which are currently marked TO_VERIFY.",
+  "categories": [
+    {
+      "id": "emergency_symptom",
+      "name": "Acute Emergency Symptoms",
+      "default_level": "L3",
+      "suggested_contact": "emergency",
+      "description": "Life-threatening acute symptoms such as severe chest pain, breathing difficulty, stroke signs, severe bleeding, unconsciousness, seizures, anaphylaxis, or overdose.",
+      "en_patterns": [
+        "chest pain",
+        "pressure in chest",
+        "pressure in my chest",
+        "crushing chest pain",
+        "radiating to jaw",
+        "radiating to left arm",
+        "shortness of breath",
+        "difficulty breathing",
+        "cannot breathe",
+        "can't breathe",
+        "struggling to breathe",
+        "suffocating",
+        "gasping for air",
+        "stroke",
+        "facial droop",
+        "face drooping",
+        "slurred speech",
+        "arm numbness and weakness",
+        "severe bleeding",
+        "hemorrhage",
+        "vomiting blood",
+        "coughing up blood",
+        "unconscious",
+        "loss of consciousness",
+        "passed out",
+        "unresponsive",
+        "fainted",
+        "seizure",
+        "convulsions",
+        "anaphylaxis",
+        "severe allergic reaction",
+        "throat swelling",
+        "tongue swelling shut",
+        "overdose",
+        "took entire bottle of pills",
+        "took too many pills",
+        "swallowed all tablets"
+      ],
+      "ta_patterns": [
+        {"text": "நெஞ்சு வலி", "needs_native_review": true},
+        {"text": "மார்பில் கடுமையான வலி", "needs_native_review": true},
+        {"text": "மார்பு வலி", "needs_native_review": true},
+        {"text": "மூச்சுத் திணறல்", "needs_native_review": true},
+        {"text": "மூச்சு விட முடியவில்லை", "needs_native_review": true},
+        {"text": "மூச்சுக்குத் தவிப்பு", "needs_native_review": true},
+        {"text": "மூச்சு அடைக்கிறது", "needs_native_review": true},
+        {"text": "பக்கவாதம்", "needs_native_review": true},
+        {"text": "முகம் ஒருபக்கமாக கோணுகிறது", "needs_native_review": true},
+        {"text": "பேச்சு குளறுகிறது", "needs_native_review": true},
+        {"text": "கை மரத்துப்போதல்", "needs_native_review": true},
+        {"text": "ரத்தப்போக்கு", "needs_native_review": true},
+        {"text": "அதிக ரத்தப்போக்கு", "needs_native_review": true},
+        {"text": "கடுமையான ரத்தப்போக்கு", "needs_native_review": true},
+        {"text": "ரத்த வாந்தி", "needs_native_review": true},
+        {"text": "மயக்கம்", "needs_native_review": true},
+        {"text": "சுயநினைவு இல்லை", "needs_native_review": true},
+        {"text": "சுயநினைவு", "needs_native_review": true},
+        {"text": "வலிப்பு", "needs_native_review": true},
+        {"text": "கடுமையான ஒவ்வாமை", "needs_native_review": true},
+        {"text": "ஒவ்வாமை", "needs_native_review": true},
+        {"text": "தொண்டை வீங்கி", "needs_native_review": true},
+        {"text": "மருந்து அளவு மீறியது", "needs_native_review": true},
+        {"text": "அதிக மாத்திரை", "needs_native_review": true},
+        {"text": "அதிக மாத்திரைகளை", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "self_harm",
+      "name": "Self-Harm and Crisis",
+      "default_level": "L3",
+      "suggested_contact": "crisis_line",
+      "description": "Suicidal ideation, self-harm language, severe hopelessness, or intent to end life.",
+      "en_patterns": [
+        "suicide",
+        "kill myself",
+        "want to die",
+        "end my life",
+        "better off dead",
+        "harm myself",
+        "self-harm",
+        "cutting myself",
+        "take my own life",
+        "tired of living",
+        "no reason to live",
+        "wish i was dead"
+      ],
+      "ta_patterns": [
+        {"text": "தற்கொலை", "needs_native_review": true},
+        {"text": "செத்துவிடலாம்", "needs_native_review": true},
+        {"text": "உயிரை மாய்த்துக் கொள்ள", "needs_native_review": true},
+        {"text": "சாக வேண்டும்", "needs_native_review": true},
+        {"text": "வாழ விருப்பமில்லை", "needs_native_review": true},
+        {"text": "தன்னைத்தானே காயப்படுத்திக்கொள்ள", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "dose_change",
+      "name": "Medication Dose or Discontinuation Change",
+      "default_level": "L2",
+      "suggested_contact": "doctor",
+      "description": "Requests to stop, skip, double, increase, or adjust prescribed doses without physician consultation.",
+      "en_patterns": [
+        "stop taking",
+        "can i stop",
+        "should i stop",
+        "stop medicine",
+        "skip a dose",
+        "skip dose",
+        "missed a dose can i take two",
+        "double the dose",
+        "double dose",
+        "take two pills instead of one",
+        "take extra",
+        "take extra pill",
+        "increase dose",
+        "increase my dose",
+        "reduce dose",
+        "lower my dose",
+        "cut pill in half",
+        "change dose",
+        "change my dosage",
+        "quit medication"
+      ],
+      "ta_patterns": [
+        {"text": "மருந்தை நிறுத்தலாமா", "needs_native_review": true},
+        {"text": "மாத்திரை எடுப்பதை நிறுத்தட்டுமா", "needs_native_review": true},
+        {"text": "நிறுத்திவிடலாமா", "needs_native_review": true},
+        {"text": "நிறுத்தலாமா", "needs_native_review": true},
+        {"text": "ஒரு வேலை மாத்திரையை விடலாமா", "needs_native_review": true},
+        {"text": "இரண்டு மாத்திரை", "needs_native_review": true},
+        {"text": "அளவை கூட்டலாமா", "needs_native_review": true},
+        {"text": "அளவை குறைக்கலாமா", "needs_native_review": true},
+        {"text": "மாத்திரையை பாதியாக உடைக்கலாமா", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "interaction",
+      "name": "Drug Interactions",
+      "default_level": "L2",
+      "suggested_contact": "doctor",
+      "description": "Drug-drug, drug-alcohol, or drug-food combination questions requiring clinical review.",
+      "en_patterns": [
+        "can i take with alcohol",
+        "drink alcohol with",
+        "beer with",
+        "wine with",
+        "interaction between",
+        "interact with",
+        "take together",
+        "can i take both",
+        "safe to mix",
+        "combine these medicines",
+        "take with milk",
+        "grapefruit with"
+      ],
+      "ta_patterns": [
+        {"text": "மது அருந்தலாமா", "needs_native_review": true},
+        {"text": "ஆல்கஹால்", "needs_native_review": true},
+        {"text": "ஆல்கஹாலுடன்", "needs_native_review": true},
+        {"text": "இரண்டு மாத்திரைகளை ஒன்றாக", "needs_native_review": true},
+        {"text": "ஒன்றாக எடுத்துக்கொள்வது ஆபத்தா", "needs_native_review": true},
+        {"text": "பால் குடிக்கலாமா", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "special_population",
+      "name": "Pregnancy, Lactation, and Pediatric Dosing",
+      "default_level": "L2",
+      "suggested_contact": "doctor",
+      "description": "Safety in pregnancy, breastfeeding, infants/children, or kidney/liver impairment.",
+      "en_patterns": [
+        "pregnant",
+        "pregnancy",
+        "breastfeeding",
+        "nursing mother",
+        "give to baby",
+        "give to infant",
+        "child dose",
+        "kidney disease dosing",
+        "liver failure dosing",
+        "safe while pregnant"
+      ],
+      "ta_patterns": [
+        {"text": "கர்ப்ப காலத்தில்", "needs_native_review": true},
+        {"text": "கர்ப்பிணி", "needs_native_review": true},
+        {"text": "தாய்ப்பால்", "needs_native_review": true},
+        {"text": "குழந்தைக்கு கொடுக்கலாமா", "needs_native_review": true},
+        {"text": "சிறுநீரக பாதிப்பு", "needs_native_review": true},
+        {"text": "கல்லீரல் பாதிப்பு", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "diagnosis_request",
+      "name": "Diagnostic Requests",
+      "default_level": "L2",
+      "suggested_contact": "doctor",
+      "description": "Asking the assistant to diagnose a disease or condition from symptoms.",
+      "en_patterns": [
+        "what disease do i have",
+        "diagnose me",
+        "what illness is this",
+        "do i have cancer",
+        "do i have diabetes",
+        "what is wrong with me",
+        "tell me my diagnosis"
+      ],
+      "ta_patterns": [
+        {"text": "எனக்கு என்ன நோய்", "needs_native_review": true},
+        {"text": "நோய் என்னவென்று சொல்லுங்கள்", "needs_native_review": true},
+        {"text": "புற்றுநோய்", "needs_native_review": true},
+        {"text": "என் உடம்புக்கு என்ன பிரச்சனை", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "pill_identification",
+      "name": "Pill Identification by Visual Appearance",
+      "default_level": "L2",
+      "suggested_contact": "pharmacist",
+      "description": "Attempts to identify unknown pills by physical appearance, color, or shape alone.",
+      "en_patterns": [
+        "identify this pill",
+        "small round white pill",
+        "blue oval pill",
+        "yellow capsule with numbers",
+        "what is this pill by looking at it",
+        "identify tablet by color"
+      ],
+      "ta_patterns": [
+        {"text": "வெள்ளை நிற உருண்டை மாத்திரை", "needs_native_review": true},
+        {"text": "நீல நிற மாத்திரை", "needs_native_review": true},
+        {"text": "நிறத்தை வைத்து மாத்திரை பெயர்", "needs_native_review": true}
+      ]
+    },
+    {
+      "id": "side_effect_general",
+      "name": "General Side-Effects Inquiry",
+      "default_level": "L1",
+      "suggested_contact": "pharmacist",
+      "description": "General non-acute questions about known leaflet side effects, answerable with pharmacist confirmation advisory.",
+      "en_patterns": [
+        "side effects of",
+        "common side effects",
+        "will this cause nausea",
+        "does it make you dizzy",
+        "headache after taking"
+      ],
+      "ta_patterns": [
+        {"text": "பக்க விளைவுகள்", "needs_native_review": true},
+        {"text": "மயக்கம் வருமா", "needs_native_review": true},
+        {"text": "தலைவலி ஏற்படுமா", "needs_native_review": true}
+      ]
+    }
+  ]
+}

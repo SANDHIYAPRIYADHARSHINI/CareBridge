@@ -9,6 +9,21 @@ from app.core.ocr import (
     is_tamil_text,
     validate_tesseract,
 )
+from app.core.rag import (
+    BaseEmbedder,
+    DocumentChunk,
+    SentenceTransformerEmbedder,
+    chunk_document,
+    retrieve_top_k,
+)
+from app.core.safety import (
+    GroundingGate,
+    RedFlagMatch,
+    RedFlagRouter,
+    TemplatedRefusals,
+    check_preservation,
+    get_redflag_router,
+)
 from app.core.verification import apply_evidence_gate, verify_prescription_rules
 
 __all__ = [
@@ -25,4 +40,16 @@ __all__ = [
     "apply_evidence_gate",
     "verify_prescription_rules",
     "extract_prescription",
+    "RedFlagRouter",
+    "RedFlagMatch",
+    "GroundingGate",
+    "TemplatedRefusals",
+    "check_preservation",
+    "get_redflag_router",
+    "BaseEmbedder",
+    "SentenceTransformerEmbedder",
+    "DocumentChunk",
+    "chunk_document",
+    "retrieve_top_k",
 ]
+
