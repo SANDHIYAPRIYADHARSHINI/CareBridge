@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: carebridge-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-carebridge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-carebridge_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-carebridge_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-carebridge} -d ${POSTGRES_DB:-carebridge_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carebridge-main-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-carebridge}:${POSTGRES_PASSWORD:-carebridge_secret}@db:5432/${POSTGRES_DB:-carebridge_db}
+      - SECRET_KEY=${SECRET_KEY:-carebridge-dev-jwt-secret-key-change-in-production}
+      - ALGORITHM=${ALGORITHM:-HS256}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+      - AI_SERVICE_URL=${AI_SERVICE_URL:-http://carebridge-ai-service:8100}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+
+volumes:
+  postgres_data:
