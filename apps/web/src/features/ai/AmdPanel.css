@@ -1,0 +1,219 @@
+/* ==========================================================================
+   AmdPanel Component Styles
+   ========================================================================== */
+
+.amd-panel-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 520px;
+  max-width: 92vw;
+  height: 100vh;
+  background-color: #121212;
+  color: #E0E0E0;
+  border-left: 2px solid #ED1C24;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.45);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  animation: drawer-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawer-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.amd-panel-header {
+  padding: 1.25rem 1.5rem;
+  background-color: #1A1A1A;
+  border-bottom: 1px solid #2A2A2A;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.amd-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.amd-brand-tag {
+  background-color: #ED1C24;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+.amd-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.amd-close-btn {
+  background: transparent;
+  border: 1px solid #333333;
+  color: #AAAAAA;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.amd-close-btn:hover {
+  background-color: #2A2A2A;
+  color: #FFFFFF;
+}
+
+.amd-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Hardware Specs Card */
+.amd-meta-box {
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.amd-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+}
+
+.amd-meta-label {
+  color: #888888;
+}
+
+.amd-meta-val {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* Metrics Section */
+.amd-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: #FFFFFF;
+  font-weight: 600;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Concurrency Table */
+.benchmark-table-wrapper {
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.benchmark-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  text-align: left;
+}
+
+.benchmark-table th {
+  background-color: #202020;
+  color: #AAAAAA;
+  padding: 0.65rem 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #2D2D2D;
+}
+
+.benchmark-table td {
+  padding: 0.65rem 0.85rem;
+  color: #DDDDDD;
+  border-bottom: 1px solid #242424;
+}
+
+.benchmark-table tr:hover td {
+  background-color: #222222;
+}
+
+/* Accuracy Metrics Cards Grid */
+.accuracy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.accuracy-metric-card {
+  background-color: #181818;
+  border: 1px solid #282828;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.accuracy-metric-label {
+  font-size: 0.78rem;
+  color: #888888;
+  margin-bottom: 0.25rem;
+}
+
+.accuracy-metric-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+/* Empty State per design.md */
+.amd-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: #181818;
+  border: 1px dashed #333333;
+  border-radius: var(--radius-md);
+  color: #888888;
+}
+
+.amd-empty-icon {
+  margin-bottom: 0.75rem;
+  color: #555555;
+}
+
+.amd-empty-state h4 {
+  color: #CCCCCC;
+  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+}
+
+.amd-empty-state p {
+  font-size: 0.85rem;
+  color: #777777;
+}
+
+.amd-empty-state code {
+  background-color: #222222;
+  color: #ED1C24;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}

@@ -1,0 +1,140 @@
+/* ==========================================================================
+   VoiceButton Component Styles
+   ========================================================================== */
+
+.voice-button-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.voice-record-btn {
+  background-color: var(--primary);
+  color: var(--primary-ink);
+  border: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-subtle);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+.voice-record-btn:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.voice-record-btn.recording {
+  background-color: var(--danger);
+  animation: pulse-danger 1.5s infinite;
+}
+
+@keyframes pulse-danger {
+  0% { box-shadow: 0 0 0 0 rgba(168, 35, 27, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(168, 35, 27, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(168, 35, 27, 0); }
+}
+
+/* Waveform visualizer */
+.waveform-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.waveform-bar {
+  width: 3px;
+  background-color: #FFFFFF;
+  border-radius: 2px;
+  animation: wave-anim 0.8s ease-in-out infinite alternate;
+}
+
+.waveform-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+.waveform-bar:nth-child(2) { height: 16px; animation-delay: 0.25s; }
+.waveform-bar:nth-child(3) { height: 10px; animation-delay: 0.4s; }
+.waveform-bar:nth-child(4) { height: 14px; animation-delay: 0.15s; }
+
+@keyframes wave-anim {
+  0% { height: 4px; }
+  100% { height: 16px; }
+}
+
+/* Transcript Confirmation Card */
+.transcript-confirm-overlay {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 0;
+  width: 340px;
+  background-color: var(--paper-card);
+  border: 1.5px solid var(--warn);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-elevated);
+  z-index: 50;
+  animation: fade-in-up 0.2s ease-out;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.confirm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--warn);
+  margin-bottom: 0.5rem;
+}
+
+.transcript-quote {
+  background-color: var(--paper-elevated);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--line);
+}
+
+.transcript-quote mark {
+  background-color: var(--highlight);
+  color: var(--ink);
+  padding: 0 3px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.confirm-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  border-radius: var(--radius-sm);
+}
+
+.confirm-submit-btn {
+  background-color: var(--primary);
+  color: var(--primary-ink);
+  border: none;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
