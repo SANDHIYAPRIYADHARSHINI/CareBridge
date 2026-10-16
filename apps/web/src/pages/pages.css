@@ -102,8 +102,9 @@
 }
 
 .medical-disclaimer-box {
-  border-left: 4px solid var(--ok);
-  background-color: #FAF8F4;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background-color: var(--paper-elevated);
 }
 
 .page-footer {

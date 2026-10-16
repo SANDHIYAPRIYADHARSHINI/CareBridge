@@ -1,0 +1,140 @@
+/* ==========================================================================
+   dropzone.css — 21st.dev / shadcn-style file upload dropzone
+   Source: docs/design.md — Calm, clinical, borders over shadows, anti-slop
+   ========================================================================== */
+
+.cb-dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1.75rem;
+  background-color: var(--paper-card);
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  user-select: none;
+  min-height: 290px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  box-shadow: var(--shadow-subtle);
+}
+
+.cb-dropzone:hover:not(.disabled) {
+  border-color: var(--primary);
+  background-color: var(--paper-elevated);
+}
+
+.cb-dropzone.dragging {
+  border-color: var(--primary);
+  border-style: solid;
+  background-color: var(--paper-elevated);
+}
+
+.cb-dropzone.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cb-dropzone:focus-visible {
+  outline: 2.5px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.cb-dropzone-input {
+  display: none;
+}
+
+.cb-dropzone-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--paper-elevated);
+  border: 1px solid var(--line);
+  color: var(--primary);
+  margin-bottom: 1.15rem;
+  transition: transform 0.15s ease;
+}
+
+.cb-dropzone:hover .cb-dropzone-icon-box {
+  transform: translateY(-2px);
+}
+
+.cb-dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.35rem;
+  max-width: 380px;
+}
+
+.cb-dropzone-title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.cb-dropzone-subtitle {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.cb-dropzone-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.45rem;
+}
+
+.cb-dropzone-formats {
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.cb-dropzone-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background-color: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+}
+
+.cb-dropzone-limit {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.cb-dropzone-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--paper-card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-subtle);
+}
+
+.cb-dropzone:hover .cb-dropzone-button {
+  border-color: var(--primary);
+  background-color: var(--paper-card);
+  color: var(--primary);
+}

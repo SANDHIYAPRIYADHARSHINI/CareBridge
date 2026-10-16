@@ -246,7 +246,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             {/* Footer Notice */}
             <p style={{ fontSize: "0.78rem", color: "#888888", textAlign: "center", margin: 0 }}>
               {isSample
-                ? "Sample data, not measured — Awaiting live run of eval/bench_latency.py on AMD ROCm."
+                ? "Sample data, not measured; awaiting live run of eval/bench_latency.py on AMD ROCm."
                 : "Metrics measured against synthetic prescription evaluation dataset (eval/data)."}
             </p>
           </>

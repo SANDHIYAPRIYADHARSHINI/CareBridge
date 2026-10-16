@@ -16,6 +16,39 @@
 }
 
 /* --------------------------------------------------------------------------
+   Persistent Fixtures Banner
+   -------------------------------------------------------------------------- */
+.review-fixtures-banner {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.15rem;
+  background-color: #fef8ee;
+  border: 1px solid #f1c77d;
+  border-radius: var(--radius-md);
+  margin-bottom: -0.25rem;
+}
+
+.review-fixtures-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #8c5200;
+  letter-spacing: 0.01em;
+}
+
+.review-fixtures-note {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
    Left Column: Document Viewer
    -------------------------------------------------------------------------- */
 .doc-viewer-panel {

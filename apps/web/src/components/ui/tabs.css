@@ -1,0 +1,69 @@
+/* ==========================================================================
+   tabs.css — 21st.dev / shadcn-style segmented tabs restyled with CareBridge tokens
+   Source: docs/design.md — Borders over shadows, modest radius, calm styling
+   ========================================================================== */
+
+.cb-tabs {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.cb-tabs-list {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--paper-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+}
+
+.cb-tabs-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cb-tabs-trigger:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.cb-tabs-trigger.active {
+  background-color: var(--paper-card);
+  color: var(--ink);
+  font-weight: 600;
+  border-color: var(--line);
+  box-shadow: var(--shadow-subtle);
+}
+
+.cb-tabs-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cb-tabs-trigger:focus-visible {
+  outline: 2.5px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.cb-tabs-content {
+  margin-top: 1rem;
+}
+
+.cb-tabs-content:focus-visible {
+  outline: none;
+}

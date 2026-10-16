@@ -260,7 +260,6 @@ def find_dataset_dir(custom_path: str | None = None) -> Path:
     # Candidate default paths
     candidates = [
         BASE_DIR.parent.parent / "demo",
-        BASE_DIR / "demo",
         BASE_DIR / "eval" / "data",
     ]
     for c in candidates:

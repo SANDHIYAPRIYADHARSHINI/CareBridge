@@ -45,7 +45,6 @@ from app.schemas.prescription import (  # noqa: E402
 ROOT_DIR = BASE_DIR.parent.parent
 TARGET_DIRS = [
     ROOT_DIR / "demo",
-    BASE_DIR / "demo",
 ]
 
 CANVAS_WIDTH = 1200

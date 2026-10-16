@@ -33,7 +33,7 @@ export const SkeletonLoader = ({ customMessage }: SkeletonLoaderProps) => {
         <p className="skeleton-narrative-message">
           {customMessage || NARRATIVE_STAGES[currentIdx]}
         </p>
-        <span className="skeleton-subtext">Verified by deterministic rules — not guessing</span>
+        <span className="skeleton-subtext">Verified by deterministic rules, not guessing</span>
       </div>
       <div className="skeleton-bars">
         <div className="skeleton-bar-line short"></div>

@@ -357,7 +357,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           <div className="emergency-panel-card">
             <div className="emergency-badge">
               <Heartbeat size={16} weight="bold" />
-              <span>Emergency Detected — LLM Bypassed</span>
+              <span>Emergency Detected: LLM Bypassed</span>
             </div>
 
             <h1 className="emergency-title">Possible Medical Emergency</h1>

@@ -18,6 +18,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import type { ExtractionResult } from "./types/ai";
 import { extractionFlaggedFixture } from "./fixtures";
 import { isEnvUseFixtures } from "./services/aiApi";
+import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs";
 import "./index.css";
 
 export function App() {
@@ -32,7 +33,7 @@ export function App() {
   // Prescription data state
   const [useFixtures, setUseFixtures] = useState<boolean>(isEnvUseFixtures());
   const [currentExtraction, setCurrentExtraction] = useState<ExtractionResult | null>(null);
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>("/rx_001.png");
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>("/rx_demo_001.png");
   const [confirmedExtraction, setConfirmedExtraction] = useState<ExtractionResult | null>(null);
 
   // Sync route on initial load and popstate
@@ -138,44 +139,47 @@ export function App() {
         >
           <h1 className="brand-title">CareBridge AI</h1>
           <span className="brand-badge">AMD ROCm Track 2</span>
+          {useFixtures && (
+            <span
+              className="persistent-fixtures-badge header-fixtures-badge"
+              role="status"
+              title="Application is currently operating in offline fixtures demo mode"
+            >
+              <Flask size={14} weight="bold" />
+              <span>Offline sample data, not live AI</span>
+            </span>
+          )}
         </div>
 
-        {/* Navigation tabs */}
-        <nav className="nav-tab-list" aria-label="Main Navigation">
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === "upload" ? "active" : ""}`}
-            onClick={() => setActiveTab("upload")}
-          >
-            <UploadSimple size={18} weight="bold" />
-            <span>Upload Rx</span>
-          </button>
+        {/* 21st.dev / shadcn-style Navigation tabs */}
+        <Tabs
+          value={activeTab}
+          onValueChange={(val) => {
+            const nextTab = val as "upload" | "review" | "chat";
+            if (nextTab === "review" && !currentExtraction) {
+              setCurrentExtraction(extractionFlaggedFixture);
+              setCurrentImageUrl("/rx_demo_001.png");
+            }
+            setActiveTab(nextTab);
+          }}
+        >
+          <TabsList aria-label="Main Navigation">
+            <TabsTrigger value="upload">
+              <UploadSimple size={18} weight="bold" />
+              <span>Upload Rx</span>
+            </TabsTrigger>
 
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === "review" ? "active" : ""}`}
-            onClick={() => {
-              if (!currentExtraction) {
-                // If user navigates directly to review, populate default demo fixture
-                setCurrentExtraction(extractionFlaggedFixture);
-                setCurrentImageUrl("/rx_001.png");
-              }
-              setActiveTab("review");
-            }}
-          >
-            <FileText size={18} weight="bold" />
-            <span>Review</span>
-          </button>
+            <TabsTrigger value="review">
+              <FileText size={18} weight="bold" />
+              <span>Review</span>
+            </TabsTrigger>
 
-          <button
-            type="button"
-            className={`nav-tab-btn ${activeTab === "chat" ? "active" : ""}`}
-            onClick={() => setActiveTab("chat")}
-          >
-            <ChatCircleDots size={18} weight="bold" />
-            <span>Ask Companion</span>
-          </button>
-        </nav>
+            <TabsTrigger value="chat">
+              <ChatCircleDots size={18} weight="bold" />
+              <span>Ask Companion</span>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
 
         {/* Header Actions */}
         <div className="header-actions">
@@ -234,6 +238,7 @@ export function App() {
           <PrescriptionReview
             extraction={currentExtraction || extractionFlaggedFixture}
             imageUrl={currentImageUrl}
+            useFixtures={useFixtures}
             onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
             onConfirmReminders={handleConfirmReminders}
             onReUpload={() => setActiveTab("upload")}

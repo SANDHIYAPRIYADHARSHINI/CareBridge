@@ -9,6 +9,7 @@ import {
   ArrowRight,
   ShieldCheck,
   UploadSimple,
+  Flask,
 } from "@phosphor-icons/react";
 import type { ExtractionResult, Medicine } from "../../types/ai";
 import "./PrescriptionReview.css";
@@ -16,6 +17,7 @@ import "./PrescriptionReview.css";
 interface PrescriptionReviewProps {
   extraction: ExtractionResult;
   imageUrl?: string;
+  useFixtures?: boolean;
   onHoverLine?: (lineIds: string[]) => void;
   onConfirmReminders?: () => void;
   onReUpload?: () => void;
@@ -23,7 +25,8 @@ interface PrescriptionReviewProps {
 
 export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
   extraction,
-  imageUrl = "/rx_001.png",
+  imageUrl = "/rx_demo_001.png",
+  useFixtures = false,
   onHoverLine,
   onConfirmReminders,
   onReUpload,
@@ -68,6 +71,18 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
 
   return (
     <div className="prescription-review-layout" aria-label="Prescription verification interface">
+      {/* Persistent Fixtures Notice */}
+      {useFixtures && (
+        <div className="review-fixtures-banner" role="status" aria-label="Fixtures mode status banner">
+          <div className="review-fixtures-badge">
+            <Flask size={18} weight="bold" />
+            <span>Offline sample data, not live AI</span>
+          </div>
+          <span className="review-fixtures-note">
+            Prescription fields shown below are from synthetic demo fixtures. To run live inference on AMD ROCm, toggle Live AI in the header.
+          </span>
+        </div>
+      )}
       {/* ------------------------------------------------------------------ */}
       {/* Left Column: Zoomable Document Viewer with Interactive OCR Overlay */}
       {/* ------------------------------------------------------------------ */}

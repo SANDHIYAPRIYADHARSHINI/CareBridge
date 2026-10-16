@@ -1,8 +1,6 @@
-import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+import { useState } from "react";
 import {
-  UploadSimple,
   Flask,
-  FileText,
   WarningCircle,
   PencilSimple,
   ArrowRight,
@@ -12,6 +10,7 @@ import {
 import type { ExtractionResult, Medicine, Field } from "../../types/ai";
 import { SkeletonLoader } from "./SkeletonLoader";
 import { extractPrescription, AiApiError } from "../../services/aiApi";
+import { Dropzone } from "../../components/ui/dropzone";
 import "./UploadScreen.css";
 
 interface UploadScreenProps {
@@ -36,7 +35,6 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
   onToggleFixtures,
   language = "en",
 }) => {
-  const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorInfo, setErrorInfo] = useState<{
     code: string;
@@ -58,8 +56,6 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       duration: "30 days",
     },
   ]);
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Helper to make a Field object
   const makeField = (value: string | null): Field => ({
@@ -91,36 +87,6 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
         message: err.message || "An unexpected error occurred while analyzing the prescription.",
         isModelUnavailable: isUnavailable || isNetwork,
       });
-    }
-  };
-
-  // Drag and Drop handlers
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      await processFile(file, file.name, objectUrl);
-    }
-  };
-
-  const handleFileInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      await processFile(file, file.name, objectUrl);
     }
   };
 
@@ -229,7 +195,7 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
       },
     };
 
-    onExtractionSuccess(manualResult, "/rx_001.png");
+    onExtractionSuccess(manualResult, "/rx_demo_001.png");
   };
 
   return (
@@ -307,7 +273,7 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
                   className="calm-btn secondary"
                   onClick={() => {
                     onToggleFixtures(true);
-                    handleUseSample("/rx_001.png", "rx_001.png");
+                    handleUseSample("/rx_demo_001.png", "rx_demo_001.png");
                   }}
                 >
                   <Flask size={16} />
@@ -433,45 +399,29 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
             </div>
           ) : (
             <div className="upload-grid">
-              {/* Dropzone Card */}
-              <div
-                className={`dropzone-card ${isDragging ? "dragging" : ""}`}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click();
+              {/* 21st.dev / shadcn-style Dropzone */}
+              <Dropzone
+                onFileSelect={async (file) => {
+                  const objectUrl = URL.createObjectURL(file);
+                  await processFile(file, file.name, objectUrl);
                 }}
-                aria-label="Prescription dropzone. Drag and drop file or click to select."
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp,application/pdf"
-                  onChange={handleFileInputChange}
-                  style={{ display: "none" }}
-                  id="prescription-file-input"
-                />
-
-                <div className="dropzone-icon-circle">
-                  <UploadSimple size={32} weight="bold" color="var(--primary)" />
-                </div>
-
-                <h3 className="dropzone-prompt">
-                  {isDragging ? "Drop your prescription file here" : "Drag & drop your prescription"}
-                </h3>
-                <p className="dropzone-hint">
-                  Supports JPG, PNG, WEBP, or PDF (up to 15MB)
-                </p>
-
-                <div className="dropzone-action-btn">
-                  <FileText size={16} weight="bold" />
-                  <span>Browse File</span>
-                </div>
-              </div>
+                title={
+                  language === "ta"
+                    ? "மருந்துச் சீட்டை இங்கே இழுத்துப் போடுங்கள்"
+                    : "Drag & drop your prescription"
+                }
+                draggingTitle={
+                  language === "ta"
+                    ? "கோப்பை இங்கே விடவும்"
+                    : "Drop your prescription file here"
+                }
+                subtitle={
+                  language === "ta"
+                    ? "தெளிவான புகைப்படம் அல்லது மருத்துவ PDF ஆவணம்"
+                    : "High-resolution camera photos or clinical PDF documents"
+                }
+                actionText={language === "ta" ? "கோப்பைத் தேர்ந்தெடு" : "Browse File"}
+              />
 
               {/* Synthetic Sample Selection Card */}
               <div className="sample-selection-card">
@@ -486,35 +436,86 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
                 </div>
 
                 <div className="sample-buttons-list">
-                  {/* Sample 1: Flagged / Review Flow */}
+                  {/* Sample 1: English - Arunodhayam Clinic */}
                   <button
                     type="button"
-                    className="sample-option-btn flagged-sample"
-                    onClick={() => handleUseSample("/rx_001.png", "rx_001.png")}
-                    title="Load Kaveri Clinic synthetic prescription (features amber review warning for handwritten strength)"
+                    className="sample-option-btn clean-sample"
+                    onClick={() => handleUseSample("/rx_demo_001.png", "rx_demo_001.png")}
+                    title="Load Arunodhayam Community Health Clinic demo prescription"
                   >
                     <div className="sample-meta">
-                      <div className="sample-meta-badge warn">Needs Patient Verification</div>
-                      <span className="sample-name">Kaveri Clinic Prescription (rx_001.png)</span>
+                      <div className="sample-meta-badge ok">English &bull; 3 Medicines</div>
+                      <span className="sample-name">Arunodhayam Community Health Clinic (rx_demo_001.png)</span>
                       <span className="sample-desc">
-                        Metformin 500mg, Atorvastatin, Amlodipine. Contains a field requiring patient verification.
+                        Metformin 500mg, Atorvastatin 10mg, Amlodipine 5mg. Clear typography with standard dosing.
                       </span>
                     </div>
                     <ArrowRight size={18} weight="bold" className="sample-arrow" />
                   </button>
 
-                  {/* Sample 2: Clean Verified Flow */}
+                  {/* Sample 2: English - City General Hospital */}
                   <button
                     type="button"
                     className="sample-option-btn clean-sample"
-                    onClick={() => handleUseSample("/rx_002.png", "rx_002.png")}
-                    title="Load clean synthetic prescription (fully verified by deterministic rules)"
+                    onClick={() => handleUseSample("/rx_demo_002.png", "rx_demo_002.png")}
+                    title="Load City General Hospital demo prescription"
                   >
                     <div className="sample-meta">
-                      <div className="sample-meta-badge ok">Fully Verified by Rules</div>
-                      <span className="sample-name">City General Hospital (rx_002.png)</span>
+                      <div className="sample-meta-badge ok">English &bull; 3 Medicines</div>
+                      <span className="sample-name">City General Hospital (rx_demo_002.png)</span>
                       <span className="sample-desc">
-                        Clear clinical typography with all strengths, frequencies, and directions fully validated.
+                        Pantoprazole 40mg, Metformin 500mg, Paracetamol 650mg. Structured inpatient layout.
+                      </span>
+                    </div>
+                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
+                  </button>
+
+                  {/* Sample 3: Bilingual - Apollo Clinic */}
+                  <button
+                    type="button"
+                    className="sample-option-btn bilingual-sample"
+                    onClick={() => handleUseSample("/rx_demo_003.png", "rx_demo_003.png")}
+                    title="Load Apollo Community Clinic bilingual prescription"
+                  >
+                    <div className="sample-meta">
+                      <div className="sample-meta-badge bilingual">Bilingual (English + தமிழ்)</div>
+                      <span className="sample-name">Apollo Community Clinic (rx_demo_003.png)</span>
+                      <span className="sample-desc">
+                        Metformin 500mg, Amlodipine 5mg, Atorvastatin 10mg. English drugs with Tamil timing instructions.
+                      </span>
+                    </div>
+                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
+                  </button>
+
+                  {/* Sample 4: Bilingual - Meenakshi Mission */}
+                  <button
+                    type="button"
+                    className="sample-option-btn bilingual-sample"
+                    onClick={() => handleUseSample("/rx_demo_004.png", "rx_demo_004.png")}
+                    title="Load Meenakshi Mission Hospital bilingual prescription"
+                  >
+                    <div className="sample-meta">
+                      <div className="sample-meta-badge bilingual">Bilingual (English + தமிழ்)</div>
+                      <span className="sample-name">Meenakshi Mission Hospital (rx_demo_004.png)</span>
+                      <span className="sample-desc">
+                        Pantoprazole 40mg, Atorvastatin 10mg, Paracetamol 650mg. Bilingual dosage instructions &amp; review notes.
+                      </span>
+                    </div>
+                    <ArrowRight size={18} weight="bold" className="sample-arrow" />
+                  </button>
+
+                  {/* Sample 5: Tamil Heavy - Govt Primary Health Centre */}
+                  <button
+                    type="button"
+                    className="sample-option-btn tamil-sample"
+                    onClick={() => handleUseSample("/rx_demo_005.png", "rx_demo_005.png")}
+                    title="Load Government Primary Health Centre Tamil prescription"
+                  >
+                    <div className="sample-meta">
+                      <div className="sample-meta-badge tamil">Tamil Heavy (தமிழ்)</div>
+                      <span className="sample-name">அரசு ஆரம்ப சுகாதார நிலையம் (rx_demo_005.png)</span>
+                      <span className="sample-desc">
+                        மெட்ஃபோர்மின் (Metformin), அம்லோடிபைன் (Amlodipine), பான்டோபிரசோல் (Pantoprazole). Full Tamil clinical layout.
                       </span>
                     </div>
                     <ArrowRight size={18} weight="bold" className="sample-arrow" />

@@ -156,6 +156,22 @@ button:disabled {
   border: 1px solid var(--line);
 }
 
+.persistent-fixtures-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: #8c5200;
+  background-color: #fef8ee;
+  border: 1px solid #f1c77d;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
