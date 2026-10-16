@@ -1,0 +1,578 @@
+{
+  "is_dry_run": true,
+  "evaluated_at": "2026-10-16T09:24:23Z",
+  "synthetic_benchmark": {
+    "dataset_name": "Synthetic Benchmark Set (eval/data, Invented Drugs)",
+    "total_docs": 30,
+    "clean_docs": 20,
+    "corrupted_docs": 10,
+    "flag_recall_on_corrupted": 0.7,
+    "false_flag_rate_on_clean": 0.1,
+    "overall_accuracy": 0.6148,
+    "citation_validity_rate": 0.9483,
+    "field_scores": {
+      "prescriber.name": {
+        "total": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "citations_checked": 30,
+        "citations_valid": 30,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.hospital": {
+        "total": 30,
+        "correct": 24,
+        "accuracy": 0.8,
+        "citations_checked": 24,
+        "citations_valid": 24,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.registration_no": {
+        "total": 30,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.date": {
+        "total": 30,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "patient.name": {
+        "total": 30,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "patient.age": {
+        "total": 30,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "follow_up": {
+        "total": 30,
+        "correct": 27,
+        "accuracy": 0.9,
+        "citations_checked": 27,
+        "citations_valid": 27,
+        "citation_support_rate": 1.0
+      },
+      "medicine.name": {
+        "total": 92,
+        "correct": 85,
+        "accuracy": 0.9239,
+        "citations_checked": 78,
+        "citations_valid": 78,
+        "citation_support_rate": 1.0
+      },
+      "medicine.strength": {
+        "total": 92,
+        "correct": 84,
+        "accuracy": 0.913,
+        "citations_checked": 74,
+        "citations_valid": 74,
+        "citation_support_rate": 1.0
+      },
+      "medicine.form": {
+        "total": 92,
+        "correct": 21,
+        "accuracy": 0.2283,
+        "citations_checked": 26,
+        "citations_valid": 0,
+        "citation_support_rate": 0.0
+      },
+      "medicine.frequency": {
+        "total": 92,
+        "correct": 87,
+        "accuracy": 0.9457,
+        "citations_checked": 78,
+        "citations_valid": 78,
+        "citation_support_rate": 1.0
+      },
+      "medicine.duration": {
+        "total": 92,
+        "correct": 85,
+        "accuracy": 0.9239,
+        "citations_checked": 78,
+        "citations_valid": 78,
+        "citation_support_rate": 1.0
+      },
+      "medicine.timing": {
+        "total": 92,
+        "correct": 82,
+        "accuracy": 0.8913,
+        "citations_checked": 81,
+        "citations_valid": 81,
+        "citation_support_rate": 1.0
+      },
+      "medicine.instructions": {
+        "total": 92,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 7,
+        "citations_valid": 7,
+        "citation_support_rate": 1.0
+      }
+    },
+    "details": [
+      {
+        "doc_id": "doc-syn-rx-001",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-002",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-003",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-004",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 4
+      },
+      {
+        "doc_id": "doc-syn-rx-005",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-006",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-007",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-008",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 4
+      },
+      {
+        "doc_id": "doc-syn-rx-009",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-010",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-011",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-012",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-013",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-014",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-015",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-016",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 4
+      },
+      {
+        "doc_id": "doc-syn-rx-017",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-018",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-019",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-020",
+        "is_corrupted": false,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 4
+      },
+      {
+        "doc_id": "doc-syn-rx-021",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-022",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-023",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-024",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-025",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-026",
+        "is_corrupted": true,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-027",
+        "is_corrupted": true,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 2
+      },
+      {
+        "doc_id": "doc-syn-rx-028",
+        "is_corrupted": true,
+        "has_flags": false,
+        "overall_status": "ready",
+        "flags": [],
+        "medicines_count": 4
+      },
+      {
+        "doc_id": "doc-syn-rx-029",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "DUPLICATE_DRUG"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-syn-rx-030",
+        "is_corrupted": true,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "DUPLICATE_DRUG"
+        ],
+        "medicines_count": 2
+      }
+    ]
+  },
+  "demo_benchmark": {
+    "dataset_name": "Demo Set (demo/, Real Generic Drugs)",
+    "total_docs": 5,
+    "clean_docs": 5,
+    "corrupted_docs": 0,
+    "flag_recall_on_corrupted": 1.0,
+    "false_flag_rate_on_clean": 1.0,
+    "overall_accuracy": 0.5265,
+    "citation_validity_rate": 0.8889,
+    "field_scores": {
+      "prescriber.name": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 5,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.hospital": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 5,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.registration_no": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 5,
+        "citation_support_rate": 1.0
+      },
+      "prescriber.date": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 4,
+        "citation_support_rate": 0.8
+      },
+      "patient.name": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 4,
+        "citation_support_rate": 0.8
+      },
+      "patient.age": {
+        "total": 5,
+        "correct": 5,
+        "accuracy": 1.0,
+        "citations_checked": 5,
+        "citations_valid": 5,
+        "citation_support_rate": 1.0
+      },
+      "follow_up": {
+        "total": 5,
+        "correct": 0,
+        "accuracy": 0.0,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "medicine.name": {
+        "total": 30,
+        "correct": 15,
+        "accuracy": 0.5,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "medicine.strength": {
+        "total": 30,
+        "correct": 15,
+        "accuracy": 0.5,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "medicine.form": {
+        "total": 30,
+        "correct": 10,
+        "accuracy": 0.3333,
+        "citations_checked": 5,
+        "citations_valid": 4,
+        "citation_support_rate": 0.8
+      },
+      "medicine.frequency": {
+        "total": 30,
+        "correct": 15,
+        "accuracy": 0.5,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "medicine.duration": {
+        "total": 30,
+        "correct": 15,
+        "accuracy": 0.5,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      },
+      "medicine.timing": {
+        "total": 30,
+        "correct": 14,
+        "accuracy": 0.4667,
+        "citations_checked": 1,
+        "citations_valid": 0,
+        "citation_support_rate": 0.0
+      },
+      "medicine.instructions": {
+        "total": 30,
+        "correct": 15,
+        "accuracy": 0.5,
+        "citations_checked": 0,
+        "citations_valid": 0,
+        "citation_support_rate": 1.0
+      }
+    },
+    "details": [
+      {
+        "doc_id": "doc-demo-rx-001",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-demo-rx-002",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-demo-rx-003",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-demo-rx-004",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      },
+      {
+        "doc_id": "doc-demo-rx-005",
+        "is_corrupted": false,
+        "has_flags": true,
+        "overall_status": "needs_review",
+        "flags": [
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH",
+          "MISSING_STRENGTH"
+        ],
+        "medicines_count": 3
+      }
+    ]
+  }
+}

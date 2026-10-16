@@ -105,6 +105,44 @@ class FakeLLM:
             raw={"id": "fake-resp-1", "choices": [{"message": {"content": self.default_text}}]},
         )
 
+    async def generate_vision(
+        self,
+        prompt: str,
+        image: Any,
+        system_prompt: str | None = None,
+        json_mode: bool = True,
+        temperature: float = 0.1,
+        max_tokens: int = 4096,
+    ) -> LLMResponse:
+        self.calls.append(
+            {
+                "type": "vision",
+                "prompt": prompt,
+                "system_prompt": system_prompt,
+                "json_mode": json_mode,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+            }
+        )
+
+        metrics = Metrics(
+            latency_ms=85.0,
+            model="fake-llm-vision",
+            tokens_in=300,
+            tokens_out=150,
+            gpu="mock-gpu",
+        )
+
+        return LLMResponse(
+            content=self.default_text,
+            parsed_json=self.default_response_json,
+            metrics=metrics,
+            raw={"id": "fake-vision-1", "choices": [{"message": {"content": self.default_text}}]},
+        )
+
+    async def close(self) -> None:
+        pass
+
 
 class FakeSTT(BaseSTT):
     """Deterministic in-memory speech-to-text fake for unit testing."""

@@ -1,0 +1,51 @@
+services:
+  ai-service:
+    build:
+      context: ./services/ai
+      dockerfile: Dockerfile
+    container_name: carebridge-ai-service
+    ports:
+      - "8100:8100"
+    environment:
+      - MOCK_MODE=${MOCK_MODE:-true}
+      - LLM_BASE_URL=${LLM_BASE_URL:-http://localhost:8000/v1}
+      - LLM_API_KEY=${LLM_API_KEY:-local}
+      - LLM_MODEL=${LLM_MODEL:-google/gemma-3-27b-it}
+      - WHISPER_MODEL=${WHISPER_MODEL:-openai/whisper-large-v3-turbo}
+      - EMBED_MODEL=${EMBED_MODEL:-BAAI/bge-m3}
+      - OCR_LANGS=${OCR_LANGS:-eng+tam}
+      - MAX_UPLOAD_MB=${MAX_UPLOAD_MB:-10}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8100/v1/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  vllm-rocm:
+    profiles: ["gpu", "rocm"]
+    image: ${VLLM_ROCM_IMAGE:-rocm/vllm:latest}
+    container_name: carebridge-vllm-rocm
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+    environment:
+      - HF_TOKEN=${HF_TOKEN:-}
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    command: >
+      vllm serve ${LLM_MODEL:-google/gemma-3-27b-it}
+        --host 0.0.0.0
+        --port 8000
+        --max-model-len 8192
+        --limit-mm-per-prompt image=2
+        --gpu-memory-utilization 0.60
+        --trust-remote-code
+        --dtype bfloat16
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
