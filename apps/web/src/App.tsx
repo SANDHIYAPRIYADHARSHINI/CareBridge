@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  UploadSimple,
   FileText,
   ChatCircleDots,
   Cpu,
@@ -7,27 +8,122 @@ import {
   Flask,
 } from "@phosphor-icons/react";
 import {
+  UploadScreen,
   PrescriptionReview,
   ChatPanel,
   AmdPanel,
 } from "./features/ai";
-import {
-  extractionOkFixture,
-  extractionFlaggedFixture,
-} from "./fixtures";
+import { PrivacyPage } from "./pages/PrivacyPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import type { ExtractionResult } from "./types/ai";
+import { extractionFlaggedFixture } from "./fixtures";
+import { isEnvUseFixtures } from "./services/aiApi";
 import "./index.css";
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<"review" | "chat">("review");
+  // Navigation & Routing state
+  const [currentRoute, setCurrentRoute] = useState<"app" | "privacy" | "404">("app");
+  const [activeTab, setActiveTab] = useState<"upload" | "review" | "chat">("upload");
   const [language, setLanguage] = useState<"en" | "ta">("en");
   const [isAmdDrawerOpen, setIsAmdDrawerOpen] = useState(false);
-  const [useFlaggedData, setUseFlaggedData] = useState(true); // default to flagged to show amber check
   const [forceEmptyAmd, setForceEmptyAmd] = useState(false);
   const [, setHighlightedLineIds] = useState<string[]>([]);
 
-  const currentExtraction = useFlaggedData
-    ? extractionFlaggedFixture
-    : extractionOkFixture;
+  // Prescription data state
+  const [useFixtures, setUseFixtures] = useState<boolean>(isEnvUseFixtures());
+  const [currentExtraction, setCurrentExtraction] = useState<ExtractionResult | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>("/rx_001.png");
+  const [confirmedExtraction, setConfirmedExtraction] = useState<ExtractionResult | null>(null);
+
+  // Sync route on initial load and popstate
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+
+      if (path === "/privacy" || hash === "#privacy") {
+        setCurrentRoute("privacy");
+      } else if (
+        path === "/" ||
+        path === "" ||
+        path === "/upload" ||
+        path === "/review" ||
+        path === "/chat" ||
+        hash === "#upload" ||
+        hash === "#review" ||
+        hash === "#chat"
+      ) {
+        setCurrentRoute("app");
+        if (path === "/review" || hash === "#review") setActiveTab("review");
+        if (path === "/chat" || hash === "#chat") setActiveTab("chat");
+      } else {
+        setCurrentRoute("404");
+      }
+    };
+
+    handleLocationChange();
+    window.addEventListener("popstate", handleLocationChange);
+    window.addEventListener("hashchange", handleLocationChange);
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+      window.removeEventListener("hashchange", handleLocationChange);
+    };
+  }, []);
+
+  const navigateTo = (path: string, newTab?: "upload" | "review" | "chat") => {
+    window.history.pushState({}, "", path);
+    if (path === "/privacy") {
+      setCurrentRoute("privacy");
+    } else if (path === "/" || path === "") {
+      setCurrentRoute("app");
+      if (newTab) setActiveTab(newTab);
+    } else {
+      setCurrentRoute("404");
+    }
+  };
+
+  // Called when upload / extraction finishes successfully
+  const handleExtractionSuccess = (result: ExtractionResult, imageUrl: string) => {
+    setCurrentExtraction(result);
+    setCurrentImageUrl(imageUrl);
+    setActiveTab("review");
+  };
+
+  // Called when patient confirms in PrescriptionReview
+  const handleConfirmReminders = () => {
+    if (currentExtraction) {
+      setConfirmedExtraction(currentExtraction);
+    }
+    setActiveTab("chat");
+  };
+
+  // Render standalone Privacy Page
+  if (currentRoute === "privacy") {
+    return (
+      <div className="app-container" lang={language}>
+        <PrivacyPage onBack={() => navigateTo("/", "upload")} language={language} />
+        <footer className="app-footer">
+          <p className="footer-notice">
+            Synthetic demo data. Not medical advice. Clinicians decide.
+          </p>
+        </footer>
+      </div>
+    );
+  }
+
+  // Render standalone 404 Page
+  if (currentRoute === "404") {
+    return (
+      <div className="app-container" lang={language}>
+        <NotFoundPage onBack={() => navigateTo("/", "upload")} language={language} />
+        <footer className="app-footer">
+          <p className="footer-notice">
+            Synthetic demo data. Not medical advice. Clinicians decide.
+          </p>
+        </footer>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container" lang={language}>
@@ -35,7 +131,11 @@ export function App() {
       {/* App Header per docs/design.md                                      */}
       {/* ------------------------------------------------------------------ */}
       <header className="app-header">
-        <div className="brand-wrapper">
+        <div
+          className="brand-wrapper"
+          onClick={() => setActiveTab("upload")}
+          style={{ cursor: "pointer" }}
+        >
           <h1 className="brand-title">CareBridge AI</h1>
           <span className="brand-badge">AMD ROCm Track 2</span>
         </div>
@@ -44,11 +144,27 @@ export function App() {
         <nav className="nav-tab-list" aria-label="Main Navigation">
           <button
             type="button"
+            className={`nav-tab-btn ${activeTab === "upload" ? "active" : ""}`}
+            onClick={() => setActiveTab("upload")}
+          >
+            <UploadSimple size={18} weight="bold" />
+            <span>Upload Rx</span>
+          </button>
+
+          <button
+            type="button"
             className={`nav-tab-btn ${activeTab === "review" ? "active" : ""}`}
-            onClick={() => setActiveTab("review")}
+            onClick={() => {
+              if (!currentExtraction) {
+                // If user navigates directly to review, populate default demo fixture
+                setCurrentExtraction(extractionFlaggedFixture);
+                setCurrentImageUrl("/rx_001.png");
+              }
+              setActiveTab("review");
+            }}
           >
             <FileText size={18} weight="bold" />
-            <span>Prescription Review</span>
+            <span>Review</span>
           </button>
 
           <button
@@ -63,15 +179,15 @@ export function App() {
 
         {/* Header Actions */}
         <div className="header-actions">
-          {/* Sample Switcher (Flagged vs Verified) */}
+          {/* Live vs Fixture Toggle */}
           <button
             type="button"
             className="lang-toggle-btn"
-            onClick={() => setUseFlaggedData((prev) => !prev)}
-            title="Toggle between amber warning and verified prescription state"
+            onClick={() => setUseFixtures((prev) => !prev)}
+            title="Toggle between Live AI backend (Port 8100) and Offline Synthetic Fixtures"
           >
             <Flask size={16} />
-            <span>{useFlaggedData ? "Showing Amber Flag" : "Showing Verified"}</span>
+            <span>{useFixtures ? "Offline Fixtures" : "Live AI"}</span>
           </button>
 
           {/* Language Toggle */}
@@ -105,18 +221,32 @@ export function App() {
       {/* Main Feature Viewport                                              */}
       {/* ------------------------------------------------------------------ */}
       <main className="main-content">
-        {activeTab === "review" ? (
-          <PrescriptionReview
-            extraction={currentExtraction}
-            imageUrl="/rx_001.png"
-            onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
-            onConfirmReminders={() => alert("Reminders confirmed and synced with care schedule!")}
+        {activeTab === "upload" && (
+          <UploadScreen
+            onExtractionSuccess={handleExtractionSuccess}
+            useFixtures={useFixtures}
+            onToggleFixtures={(val) => setUseFixtures(val)}
+            language={language}
           />
-        ) : (
+        )}
+
+        {activeTab === "review" && (
+          <PrescriptionReview
+            extraction={currentExtraction || extractionFlaggedFixture}
+            imageUrl={currentImageUrl}
+            onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
+            onConfirmReminders={handleConfirmReminders}
+            onReUpload={() => setActiveTab("upload")}
+          />
+        )}
+
+        {activeTab === "chat" && (
           <div style={{ maxWidth: "800px", margin: "0 auto" }}>
             <ChatPanel
               language={language}
               onLanguageChange={(lang) => setLanguage(lang)}
+              confirmedExtraction={confirmedExtraction || currentExtraction}
+              useFixtures={useFixtures}
               onCitationClick={(lineIds) => {
                 setHighlightedLineIds(lineIds);
                 alert(`Highlighted OCR evidence line(s): ${lineIds.join(", ")} on source prescription`);
@@ -136,22 +266,41 @@ export function App() {
       />
 
       {/* ------------------------------------------------------------------ */}
-      {/* Footer per docs/design.md                                          */}
+      {/* Universal Footer per docs/design.md                                */}
       {/* ------------------------------------------------------------------ */}
       <footer className="app-footer">
         <p className="footer-notice">
           Synthetic demo data. Not medical advice. Clinicians decide.
         </p>
         <div className="footer-links">
-          <a href="#privacy" onClick={(e) => { e.preventDefault(); alert("CareBridge AI adheres to zero-retention stateless processing."); }}>
+          <a
+            href="/privacy"
+            onClick={(e) => {
+              e.preventDefault();
+              navigateTo("/privacy");
+            }}
+          >
             Privacy Policy
           </a>
-          <a href="#terms" onClick={(e) => { e.preventDefault(); alert("CareBridge AI Terms of Use: Patient decision support only."); }}>
+          <a
+            href="#terms"
+            onClick={(e) => {
+              e.preventDefault();
+              alert("CareBridge AI Terms of Use: Patient decision support only. Clinicians make all final decisions.");
+            }}
+          >
             Terms of Use
           </a>
           <button
             type="button"
-            style={{ background: "none", border: "none", color: "var(--ink-soft)", textDecoration: "underline", cursor: "pointer", fontSize: "inherit" }}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--ink-soft)",
+              textDecoration: "underline",
+              cursor: "pointer",
+              fontSize: "inherit",
+            }}
             onClick={() => {
               setForceEmptyAmd((prev) => !prev);
               setIsAmdDrawerOpen(true);

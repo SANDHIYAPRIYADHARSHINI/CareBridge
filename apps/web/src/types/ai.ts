@@ -146,3 +146,42 @@ export interface BenchmarkSummary {
   };
 }
 
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface ChatDocument {
+  doc_id: string;
+  type: "prescription" | "discharge" | "report";
+  title: string;
+  structured?: Record<string, any>;
+  ocr_lines?: OcrLine[];
+  text?: string;
+}
+
+export interface ChatRequest {
+  messages: ChatMessage[];
+  language?: "en" | "ta" | "auto";
+  documents?: ChatDocument[];
+  use_reference?: boolean;
+}
+
+export interface TranscribeResponse {
+  request_id: string;
+  text: string;
+  language: string;
+  confidence: number;
+  needs_confirmation: boolean;
+  metrics: Metrics;
+}
+
+export interface ApiErrorDetail {
+  error: {
+    code: string;
+    message: string;
+    retryable?: boolean;
+  };
+}
+
+

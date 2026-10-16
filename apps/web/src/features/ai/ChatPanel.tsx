@@ -9,17 +9,14 @@ import {
   FirstAid,
   Heartbeat,
   Check,
+  CircleNotch,
+  FileText,
 } from "@phosphor-icons/react";
-import type { ChatResponse, Citation } from "../../types/ai";
+import type { ChatResponse, Citation, ExtractionResult, ChatDocument, ChatRequest } from "../../types/ai";
 import { VoiceButton } from "./VoiceButton";
-import {
-  chatEmergencyL3Fixture,
-  chatRefusalL2Fixture,
-  chatSupportedFixture,
-} from "../../fixtures";
 import { EMERGENCY_CONFIG } from "../../config/emergency";
+import { sendChatMessage } from "../../services/aiApi";
 import "./ChatPanel.css";
-
 
 interface ChatMessage {
   id: string;
@@ -32,12 +29,16 @@ interface ChatPanelProps {
   language?: "en" | "ta";
   onCitationClick?: (lineIds: string[]) => void;
   onLanguageChange?: (lang: "en" | "ta") => void;
+  confirmedExtraction?: ExtractionResult | null;
+  useFixtures?: boolean;
 }
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({
   language = "en",
   onCitationClick,
   onLanguageChange,
+  confirmedExtraction,
+  useFixtures = false,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -45,19 +46,20 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       sender: "assistant",
       text:
         language === "ta"
-          ? "வணக்கம்! உங்கள் மருத்துவ ஆவணங்கள் அடிப்படையில் உங்கள் மருந்து மற்றும் நேரம் குறித்து என்னிடம் கேட்கலாம்."
-          : "Hello! I am your care companion. You can ask me when to take your medicines or explain instructions from your prescription.",
+          ? "வணக்கம்! உங்கள் சரிபார்க்கப்பட்ட மருத்துவ ஆவணங்கள் அடிப்படையில் உங்கள் மருந்து மற்றும் நேரம் குறித்து என்னிடம் கேட்கலாம்."
+          : "Hello! I am your care companion. You can ask me when to take your medicines, dosage times, or explain instructions from your prescription.",
     },
   ]);
   const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [emergencyModalOpen, setEmergencyModalOpen] = useState(false);
   const [emergencyPayload, setEmergencyPayload] = useState<ChatResponse | null>(null);
   const [noteAdded, setNoteAdded] = useState(false);
 
-  // Send message simulation
-  const handleSendMessage = (textToSend?: string) => {
-    const query = textToSend || inputText;
-    if (!query.trim()) return;
+  // Send message to live backend or fixture switch
+  const handleSendMessage = async (textToSend?: string) => {
+    const query = (textToSend || inputText).trim();
+    if (!query || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -67,54 +69,69 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
     setMessages((prev) => [...prev, userMsg]);
     setInputText("");
+    setIsLoading(true);
 
-    // Simulate response based on safety routing
-    const qLower = query.toLowerCase();
-
-    // L3 Emergency check
-    if (
-      qLower.includes("chest pain") ||
-      qLower.includes("cannot breathe") ||
-      qLower.includes("நெஞ்சு வலி") ||
-      qLower.includes("மூச்சு")
-    ) {
-      setEmergencyPayload(chatEmergencyL3Fixture);
-      setEmergencyModalOpen(true);
-      const assistantMsg: ChatMessage = {
-        id: `asst-${Date.now()}`,
-        sender: "assistant",
-        text: chatEmergencyL3Fixture.answer,
-        responseMeta: chatEmergencyL3Fixture,
-      };
-      setMessages((prev) => [...prev, assistantMsg]);
-      return;
+    // Prepare ChatDocument from confirmed extraction if available
+    const documents: ChatDocument[] = [];
+    if (confirmedExtraction) {
+      documents.push({
+        doc_id: confirmedExtraction.document_id,
+        type: "prescription",
+        title: `Prescription (${confirmedExtraction.prescriber?.hospital?.value || "Clinic"})`,
+        structured: {
+          patient: confirmedExtraction.patient,
+          prescriber: confirmedExtraction.prescriber,
+          medicines: confirmedExtraction.medicines,
+          flags: confirmedExtraction.flags,
+        },
+        ocr_lines: confirmedExtraction.ocr.lines,
+      });
     }
 
-    // L2 Clinical advice check
-    if (
-      qLower.includes("stop") ||
-      qLower.includes("change dose") ||
-      qLower.includes("double") ||
-      qLower.includes("நிறுத்தலாமா")
-    ) {
-      const assistantMsg: ChatMessage = {
-        id: `asst-${Date.now()}`,
-        sender: "assistant",
-        text: chatRefusalL2Fixture.answer,
-        responseMeta: chatRefusalL2Fixture,
-      };
-      setMessages((prev) => [...prev, assistantMsg]);
-      return;
-    }
-
-    // Default L0 Grounded response
-    const assistantMsg: ChatMessage = {
-      id: `asst-${Date.now()}`,
-      sender: "assistant",
-      text: chatSupportedFixture.answer,
-      responseMeta: chatSupportedFixture,
+    const chatRequest: ChatRequest = {
+      messages: [
+        ...messages.map((m) => ({
+          role: m.sender,
+          content: m.text,
+        })),
+        { role: "user", content: query },
+      ],
+      language: language,
+      documents,
+      use_reference: true,
     };
-    setMessages((prev) => [...prev, assistantMsg]);
+
+    try {
+      const response = await sendChatMessage(chatRequest, useFixtures);
+      setIsLoading(false);
+
+      // Check L3 Emergency escalation
+      if (response.escalation?.level === "L3") {
+        setEmergencyPayload(response);
+        setEmergencyModalOpen(true);
+      }
+
+      const assistantMsg: ChatMessage = {
+        id: `asst-${Date.now()}`,
+        sender: "assistant",
+        text: response.answer,
+        responseMeta: response,
+      };
+
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch {
+
+      setIsLoading(false);
+      const errorMsg: ChatMessage = {
+        id: `asst-err-${Date.now()}`,
+        sender: "assistant",
+        text:
+          language === "ta"
+            ? "மன்னிக்கவும், தகவல் தொடர்பு பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்."
+            : "I am unable to answer right now due to a network or service issue. Please try again in a moment.",
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
   };
 
   const handleCitationChipClick = (cid: string, citations?: Citation[]) => {
@@ -158,6 +175,24 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         <div className="chat-header-title">
           <ChatCircleText size={22} color="var(--primary)" weight="bold" />
           <span>Ask CareBridge</span>
+          {confirmedExtraction && (
+            <span
+              style={{
+                fontSize: "0.78rem",
+                backgroundColor: "var(--ok-bg)",
+                color: "var(--ok)",
+                padding: "0.2rem 0.5rem",
+                borderRadius: "var(--radius-sm)",
+                fontWeight: 600,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                marginLeft: "0.5rem",
+              }}
+            >
+              <FileText size={14} /> Grounded on Confirmed Rx
+            </span>
+          )}
         </div>
 
         <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -202,7 +237,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             )}
 
             {/* L2 Clinical Escalation Banner per docs/design.md */}
-            {msg.responseMeta?.escalation.level === "L2" && (
+            {msg.responseMeta?.escalation?.level === "L2" && (
               <div className="escalation-l2-banner" role="alert">
                 <div className="escalation-header">
                   <Warning size={19} weight="bold" color="var(--warn)" />
@@ -242,6 +277,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             )}
           </div>
         ))}
+
+        {isLoading && (
+          <div className="chat-message assistant">
+            <span className="message-sender">CareBridge Companion</span>
+            <div className="message-bubble loading-bubble">
+              <CircleNotch size={18} className="skeleton-spinner" weight="bold" />
+              <span>Verifying medical knowledge & citations on AMD ROCm...</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Quick Prompt Chips */}
@@ -283,17 +328,20 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           placeholder={language === "ta" ? "உங்கள் கேள்வியைத் தட்டச்சு செய்யவும்..." : "Ask about your medication, timing, or dosage..."}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          disabled={isLoading}
         />
 
         <VoiceButton
           language={language}
           onTranscriptSubmitted={(transcript) => handleSendMessage(transcript)}
+          disabled={isLoading}
+          useFixtures={useFixtures}
         />
 
         <button
           type="submit"
           className="chat-send-btn"
-          disabled={!inputText.trim()}
+          disabled={!inputText.trim() || isLoading}
           title="Send message"
           aria-label="Send message"
         >
@@ -332,7 +380,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               </span>
             </a>
 
-
             <div className="emergency-secondary-row">
               <a href={`tel:${EMERGENCY_CONFIG.teleManas.number}`} className="emergency-sub-btn">
                 <PhoneCall size={18} />
@@ -342,7 +389,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                     : `Tele-MANAS (${EMERGENCY_CONFIG.teleManas.number})`}
                 </span>
               </a>
-
 
               <button
                 type="button"

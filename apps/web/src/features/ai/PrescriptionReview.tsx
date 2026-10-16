@@ -8,6 +8,7 @@ import {
   ArrowsCounterClockwise,
   ArrowRight,
   ShieldCheck,
+  UploadSimple,
 } from "@phosphor-icons/react";
 import type { ExtractionResult, Medicine } from "../../types/ai";
 import "./PrescriptionReview.css";
@@ -17,6 +18,7 @@ interface PrescriptionReviewProps {
   imageUrl?: string;
   onHoverLine?: (lineIds: string[]) => void;
   onConfirmReminders?: () => void;
+  onReUpload?: () => void;
 }
 
 export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
@@ -24,7 +26,9 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
   imageUrl = "/rx_001.png",
   onHoverLine,
   onConfirmReminders,
+  onReUpload,
 }) => {
+
   const [zoomLevel, setZoomLevel] = useState<number>(1.0);
   const [highlightedLineIds, setHighlightedLineIds] = useState<string[]>([]);
   const [acknowledgedMedIds, setAcknowledgedMedIds] = useState<Record<string, boolean>>({});
@@ -106,7 +110,21 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
             >
               <ArrowsCounterClockwise size={16} />
             </button>
+            {onReUpload && (
+              <button
+                type="button"
+                className="zoom-btn"
+                onClick={onReUpload}
+                title="Upload a different prescription"
+                aria-label="Upload a different prescription"
+                style={{ width: "auto", padding: "0 0.5rem", fontSize: "0.8rem", gap: "0.25rem", display: "inline-flex", alignItems: "center" }}
+              >
+                <UploadSimple size={14} />
+                <span>New Rx</span>
+              </button>
+            )}
           </div>
+
         </div>
 
         <div className="doc-viewer-viewport">

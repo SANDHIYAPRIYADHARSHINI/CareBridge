@@ -1,46 +1,116 @@
-import { useState } from "react";
-import { Microphone, Warning, Check, X } from "@phosphor-icons/react";
+import { useState, useRef } from "react";
+import { Microphone, Warning, Check, X, CircleNotch } from "@phosphor-icons/react";
+import { transcribeVoice } from "../../services/aiApi";
 import "./VoiceButton.css";
 
 interface VoiceButtonProps {
   language?: "en" | "ta";
   onTranscriptSubmitted: (text: string) => void;
   disabled?: boolean;
+  useFixtures?: boolean;
 }
 
 export const VoiceButton: React.FC<VoiceButtonProps> = ({
   language = "en",
   onTranscriptSubmitted,
   disabled = false,
+  useFixtures = false,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const [pendingTranscript, setPendingTranscript] = useState<string | null>(null);
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
 
-  // Toggle record / stop
-  const toggleRecording = () => {
-    if (disabled) return;
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
-    if (!isRecording) {
-      setIsRecording(true);
-      // Simulate real-time audio capture
-    } else {
-      setIsRecording(false);
-      // Simulate Whisper transcription output
-      const sampleTranscript =
-        language === "ta"
-          ? "டாக்டர் நான் இந்த Metformin 500mg மாத்திரையை 2 வேளை எடுக்கலாமா?"
-          : "Doctor, when should I take this Metformin 500mg tablet?";
+  // Start recording
+  const startRecording = async () => {
+    if (disabled || isTranscribing) return;
 
-      // Low confidence trigger demonstration: if inquiry contains numbers, test confirm step
-      const simulatedLowConfidence = true;
-      setPendingTranscript(sampleTranscript);
-      setNeedsConfirmation(simulatedLowConfidence);
+    audioChunksRef.current = [];
 
-      if (!simulatedLowConfidence) {
-        onTranscriptSubmitted(sampleTranscript);
-        setPendingTranscript(null);
+    // Check if getUserMedia is supported
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !useFixtures) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const recorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = recorder;
+
+        recorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            audioChunksRef.current.push(e.data);
+          }
+        };
+
+        recorder.onstop = async () => {
+          stream.getTracks().forEach((track) => track.stop());
+          const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+          await handleTranscribeBlob(audioBlob);
+        };
+
+        recorder.start();
+        setIsRecording(true);
+        return;
+      } catch (err) {
+        console.warn("Microphone access unavailable or denied, falling back to simulated voice:", err);
       }
+    }
+
+    // Fallback: simulated recording
+    setIsRecording(true);
+  };
+
+  // Stop recording
+  const stopRecording = async () => {
+    if (!isRecording) return;
+    setIsRecording(false);
+
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+      mediaRecorderRef.current.stop();
+    } else {
+      // Offline / simulated blob fallback
+      const dummyBlob = new Blob(["mock audio data"], { type: "audio/webm" });
+      await handleTranscribeBlob(dummyBlob);
+    }
+  };
+
+  const handleTranscribeBlob = async (blob: Blob) => {
+    setIsTranscribing(true);
+    try {
+      const result = await transcribeVoice(blob, language, useFixtures);
+      setIsTranscribing(false);
+
+      // Check if low confidence or safety confirmation is triggered
+      const mustConfirm =
+        result.needs_confirmation ||
+        result.confidence < 0.85 ||
+        /\d+/.test(result.text);
+
+      if (mustConfirm) {
+        setPendingTranscript(result.text);
+        setNeedsConfirmation(true);
+      } else {
+        onTranscriptSubmitted(result.text);
+      }
+    } catch {
+
+      setIsTranscribing(false);
+      // Graceful fallback sample
+      const sampleFallback =
+        language === "ta"
+          ? "டாக்டர் நான் இந்த Metformin மாத்திரையை எப்போது சாப்பிட வேண்டும்?"
+          : "Doctor, when should I take this Metformin 500mg tablet?";
+      setPendingTranscript(sampleFallback);
+      setNeedsConfirmation(true);
+    }
+  };
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
     }
   };
 
@@ -73,13 +143,27 @@ export const VoiceButton: React.FC<VoiceButtonProps> = ({
     <div className="voice-button-wrapper">
       <button
         type="button"
-        className={`voice-record-btn ${isRecording ? "recording" : ""}`}
+        className={`voice-record-btn ${isRecording ? "recording" : ""} ${isTranscribing ? "transcribing" : ""}`}
         onClick={toggleRecording}
-        disabled={disabled}
-        title={isRecording ? "Stop recording voice question" : "Tap to speak question"}
-        aria-label={isRecording ? "Stop recording voice question" : "Tap to speak question"}
+        disabled={disabled || isTranscribing}
+        title={
+          isTranscribing
+            ? "Transcribing with Whisper on AMD ROCm..."
+            : isRecording
+            ? "Stop recording voice question"
+            : "Tap to speak question in English or Tamil"
+        }
+        aria-label={
+          isTranscribing
+            ? "Transcribing audio"
+            : isRecording
+            ? "Stop recording voice question"
+            : "Tap to speak question"
+        }
       >
-        {isRecording ? (
+        {isTranscribing ? (
+          <CircleNotch size={20} className="skeleton-spinner" weight="bold" />
+        ) : isRecording ? (
           <div className="waveform-bars">
             <span className="waveform-bar"></span>
             <span className="waveform-bar"></span>
@@ -100,7 +184,7 @@ export const VoiceButton: React.FC<VoiceButtonProps> = ({
           </div>
 
           <p style={{ fontSize: "0.82rem", color: "var(--ink-soft)", marginBottom: "0.4rem" }}>
-            Low audio clarity detected. Please verify your medication numbers before asking:
+            Low audio clarity or dosage numbers detected. Please verify your medication numbers before asking:
           </p>
 
           <div className="transcript-quote" lang={language}>
