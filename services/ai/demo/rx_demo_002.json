@@ -1,0 +1,491 @@
+{
+  "request_id": "req-demo-002",
+  "document_id": "doc-demo-rx-002",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "VASANTHAM FAMILY MEDICAL CENTRE",
+        "bbox": [
+          120,
+          70,
+          602,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L2",
+        "text": "15 Anna Salai, Madurai - 625001 | Ph: 0452-2531092",
+        "bbox": [
+          120,
+          115,
+          506,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L3",
+        "text": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)    Reg: TN-MC-28401",
+        "bbox": [
+          120,
+          165,
+          711,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L4",
+        "text": "Patient: S. Revathi    Age: 38 F    Date: 15-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          490,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L5",
+        "text": "1. Tab Pantoprazole 40mg - 1-0-0 empty stomach morning x 15 days",
+        "bbox": [
+          120,
+          370,
+          668,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L6",
+        "text": "    Directions: Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+        "bbox": [
+          120,
+          406,
+          663,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L7",
+        "text": "2. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+        "bbox": [
+          120,
+          460,
+          516,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L8",
+        "text": "    Directions: Take 1 tablet twice daily after meals with water.",
+        "bbox": [
+          120,
+          496,
+          478,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L9",
+        "text": "3. Tab Paracetamol 650mg - SOS after food as needed x 5 days",
+        "bbox": [
+          120,
+          550,
+          613,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L10",
+        "text": "    Directions: Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+        "bbox": [
+          120,
+          586,
+          635,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L11",
+        "text": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+        "bbox": [
+          120,
+          680,
+          584,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L12",
+        "text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+        "bbox": [
+          120,
+          1530,
+          625,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)",
+      "raw": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-28401",
+      "raw": "TN-MC-28401",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "hospital": {
+      "value": "VASANTHAM FAMILY MEDICAL CENTRE",
+      "raw": "VASANTHAM FAMILY MEDICAL CENTRE",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "15-Oct-2026",
+      "raw": "15-Oct-2026",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "S. Revathi",
+      "raw": "S. Revathi",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "age": {
+      "value": "38",
+      "raw": "38",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Pantoprazole",
+        "raw": "Pantoprazole",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "strength": {
+        "value": "40mg",
+        "raw": "40mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "timing": {
+        "value": "empty stomach morning",
+        "raw": "empty stomach morning",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "duration": {
+        "value": "15 days",
+        "raw": "15 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+        "raw": "Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5",
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Metformin",
+        "raw": "Metformin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "strength": {
+        "value": "500mg",
+        "raw": "500mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "timing": {
+        "value": "after food",
+        "raw": "after food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet twice daily after meals.",
+        "raw": "Take 1 tablet twice daily after meals.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7",
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Paracetamol",
+        "raw": "Paracetamol",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "strength": {
+        "value": "650mg",
+        "raw": "650mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "frequency": {
+        "value": "SOS",
+        "raw": "SOS",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "timing": {
+        "value": "after food as needed",
+        "raw": "after food as needed",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "duration": {
+        "value": "5 days",
+        "raw": "5 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "instructions": {
+        "value": "Take 1 tablet as needed for fever or pain (maximum 3 tablets per day).",
+        "raw": "Take 1 tablet as needed for fever or pain (maximum 3 tablets per day).",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9",
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": null,
+        "slots": [],
+        "as_needed": true
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+    "raw": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+    "status": "found",
+    "confidence": 0.98,
+    "evidence_line_ids": [
+      "L11"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "demo_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}

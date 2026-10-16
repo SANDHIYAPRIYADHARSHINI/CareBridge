@@ -1,0 +1,493 @@
+{
+  "request_id": "req-demo-003",
+  "document_id": "doc-demo-rx-003",
+  "source": {
+    "type": "image",
+    "page_count": 1
+  },
+  "ocr": {
+    "engine": "synthetic_ground_truth",
+    "lines": [
+      {
+        "id": "L1",
+        "text": "SENTHAMIZH WELFARE CLINIC / செந்தமிழ் நலவாழ்வு மையம்",
+        "bbox": [
+          120,
+          70,
+          1035,
+          38
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L2",
+        "text": "204 Velachery Main Road, Chennai - 600042 | Ph: 044-22441920",
+        "bbox": [
+          120,
+          115,
+          622,
+          22
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L3",
+        "text": "Dr. V. Malathi, MBBS, MD (Internal Med)    Reg: TN-MC-39182",
+        "bbox": [
+          120,
+          165,
+          662,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L4",
+        "text": "நோயாளி / Patient: K. Lakshmi    வயது / Age: 62 F    தேதி / Date: 15-Oct-2026",
+        "bbox": [
+          120,
+          230,
+          817,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L5",
+        "text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப் பின் / after food x 30 days",
+        "bbox": [
+          120,
+          370,
+          738,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L6",
+        "text": "    விவரம்: உணவுக்குப் பின் ஒரு மாத்திரை / 1 tab after food twice daily.",
+        "bbox": [
+          120,
+          406,
+          642,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L7",
+        "text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு முன் / morning before food x 30 days",
+        "bbox": [
+          120,
+          460,
+          897,
+          23
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L8",
+        "text": "    விவரம்: தினமும் காலையில் ஒரு மாத்திரை / Take 1 tab morning before food.",
+        "bbox": [
+          120,
+          496,
+          714,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L9",
+        "text": "3. Tab Atorvastatin 10mg - 0-0-1 இரவு உணவுக்குப் பின் / night after food x 30 days",
+        "bbox": [
+          120,
+          550,
+          861,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L10",
+        "text": "    விவரம்: இரவு உணவுக்குப் பின் தூங்கும் முன் / Take 1 tab at bedtime after dinner.",
+        "bbox": [
+          120,
+          586,
+          730,
+          20
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L11",
+        "text": "அடுத்த பரிசோதனை / Follow-up: 1 மாதத்திற்குப் பின் இரத்த அழுத்த அட்டவணையுடன் வரவும் (Review in 1 month).",
+        "bbox": [
+          120,
+          680,
+          1322,
+          24
+        ],
+        "page": 1,
+        "conf": 0.98
+      },
+      {
+        "id": "L12",
+        "text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+        "bbox": [
+          120,
+          1530,
+          625,
+          18
+        ],
+        "page": 1,
+        "conf": 0.98
+      }
+    ]
+  },
+  "prescriber": {
+    "name": {
+      "value": "Dr. V. Malathi, MBBS, MD (Internal Med)",
+      "raw": "Dr. V. Malathi, MBBS, MD (Internal Med)",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "registration_no": {
+      "value": "TN-MC-39182",
+      "raw": "TN-MC-39182",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L3"
+      ]
+    },
+    "hospital": {
+      "value": "SENTHAMIZH WELFARE CLINIC / செந்தமிழ் நலவாழ்வு மையம்",
+      "raw": "SENTHAMIZH WELFARE CLINIC / செந்தமிழ் நலவாழ்வு மையம்",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L1"
+      ]
+    },
+    "date": {
+      "value": "15-Oct-2026",
+      "raw": "15-Oct-2026",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "patient": {
+    "name": {
+      "value": "K. Lakshmi",
+      "raw": "K. Lakshmi",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    },
+    "age": {
+      "value": "62",
+      "raw": "62",
+      "status": "found",
+      "confidence": 0.99,
+      "evidence_line_ids": [
+        "L4"
+      ]
+    }
+  },
+  "medicines": [
+    {
+      "id": "med-1",
+      "name": {
+        "value": "Metformin",
+        "raw": "Metformin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "strength": {
+        "value": "500mg",
+        "raw": "500mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-1",
+        "raw": "1-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "timing": {
+        "value": "உணவுக்குப் பின் / after food",
+        "raw": "உணவுக்குப் பின் / after food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5"
+        ]
+      },
+      "instructions": {
+        "value": "உணவுக்குப் பின் ஒரு மாத்திரை / 1 tab after food twice daily.",
+        "raw": "உணவுக்குப் பின் ஒரு மாத்திரை / 1 tab after food twice daily.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L5",
+          "L6"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 2,
+        "slots": [
+          "morning",
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-2",
+      "name": {
+        "value": "Amlodipine",
+        "raw": "Amlodipine",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "strength": {
+        "value": "5mg",
+        "raw": "5mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "frequency": {
+        "value": "1-0-0",
+        "raw": "1-0-0",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "timing": {
+        "value": "காலை உணவுக்கு முன் / morning before food",
+        "raw": "காலை உணவுக்கு முன் / morning before food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7"
+        ]
+      },
+      "instructions": {
+        "value": "தினமும் காலையில் தண்ணீருடன் உட்கொள்ளவும் / Take 1 tab morning before food.",
+        "raw": "தினமும் காலையில் தண்ணீருடன் உட்கொள்ளவும் / Take 1 tab morning before food.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L7",
+          "L8"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "morning"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    },
+    {
+      "id": "med-3",
+      "name": {
+        "value": "Atorvastatin",
+        "raw": "Atorvastatin",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "strength": {
+        "value": "10mg",
+        "raw": "10mg",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "form": {
+        "value": "tablet",
+        "raw": "Tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "dose": {
+        "value": "1",
+        "raw": "1 tab",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "frequency": {
+        "value": "0-0-1",
+        "raw": "0-0-1",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "timing": {
+        "value": "இரவு உணவுக்குப் பின் / night after food",
+        "raw": "இரவு உணவுக்குப் பின் / night after food",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "duration": {
+        "value": "30 days",
+        "raw": "30 days",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9"
+        ]
+      },
+      "instructions": {
+        "value": "இரவு உணவுக்குப் பின் உட்கொள்ளவும் / Take 1 tab at bedtime after food.",
+        "raw": "இரவு உணவுக்குப் பின் உட்கொள்ளவும் / Take 1 tab at bedtime after food.",
+        "status": "found",
+        "confidence": 0.98,
+        "evidence_line_ids": [
+          "L9",
+          "L10"
+        ]
+      },
+      "frequency_normalized": {
+        "times_per_day": 1,
+        "slots": [
+          "night"
+        ],
+        "as_needed": false
+      },
+      "suggestions": [],
+      "status": "verified_by_rules"
+    }
+  ],
+  "follow_up": {
+    "value": "அடுத்த பரிசோதனை / Follow-up: 1 மாதத்திற்குப் பின் இரத்த அழுத்த அட்டவணையுடன் வரவும் (Review in 1 month).",
+    "raw": "அடுத்த பரிசோதனை / Follow-up: 1 மாதத்திற்குப் பின் இரத்த அழுத்த அட்டவணையுடன் வரவும் (Review in 1 month).",
+    "status": "found",
+    "confidence": 0.98,
+    "evidence_line_ids": [
+      "L11"
+    ]
+  },
+  "flags": [],
+  "overall_status": "ready",
+  "review_reasons": [],
+  "metrics": {
+    "latency_ms": 0.0,
+    "model": "demo_generator",
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "gpu": "CPU"
+  },
+  "corruption_details": null
+}
