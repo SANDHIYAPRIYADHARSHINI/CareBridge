@@ -1,4 +1,5 @@
 import type { BenchmarkSummary, ChatResponse, ExtractionResult } from "../types/ai";
+import { EMERGENCY_CONFIG } from "../config/emergency";
 
 export const extractionOkFixture: ExtractionResult = {
   request_id: "req-mock-extract-ok-001",
@@ -180,7 +181,7 @@ export const chatRefusalL2Fixture: ChatResponse = {
 export const chatEmergencyL3Fixture: ChatResponse = {
   request_id: "req-mock-chat-003",
   language: "en",
-  answer: "This sounds like a life-threatening medical emergency. Please call emergency services immediately (108) or go to the nearest emergency room. Do not attempt to drive yourself.",
+  answer: `This sounds like a life-threatening medical emergency. Please call emergency services immediately (${EMERGENCY_CONFIG.ambulance.number}) or go to the nearest emergency room. Do not attempt to drive yourself.`,
   citations: [],
   support_status: "unsupported",
   escalation: {
@@ -193,16 +194,22 @@ export const chatEmergencyL3Fixture: ChatResponse = {
   suggested_actions: [
     {
       type: "call_emergency",
-      payload: { number: "108", description: "National Ambulance Emergency Helpline" },
+      payload: {
+        number: EMERGENCY_CONFIG.ambulance.number,
+        description: EMERGENCY_CONFIG.ambulance.description,
+        status: EMERGENCY_CONFIG.ambulance.status,
+      },
     },
   ],
   metrics: { latency_ms: 12.0, model: "rule_engine:redflag_router", gpu: "none" },
 };
 
 export const benchmarkSummaryFixture: BenchmarkSummary = {
+  status: "sample",
+  is_sample: true,
   model: "google/gemma-3-27b-it",
   gpu: "AMD Instinct MI300X (ROCm 6.2)",
-  generated_at: "2026-10-15T18:00:00Z",
+  generated_at: "Sample Preview (Unmeasured)",
   benchmarks: {
     concurrency_table: [
       { concurrency: 1, p50_ms: 280.4, p95_ms: 340.2, tokens_per_sec: 78.5 },
@@ -217,3 +224,4 @@ export const benchmarkSummaryFixture: BenchmarkSummary = {
     red_flag_emergency_recall: 1.0,
   },
 };
+

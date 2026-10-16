@@ -217,3 +217,118 @@
   border-radius: 3px;
   font-family: var(--font-mono);
 }
+
+.amd-preview-action {
+  margin-top: 1.25rem;
+}
+
+.amd-preview-btn {
+  background-color: #222222;
+  border: 1px solid #444444;
+  color: #DDDDDD;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.amd-preview-btn:hover {
+  background-color: #2D2D2D;
+  border-color: #F59E0B;
+  color: #FBBF24;
+}
+
+/* Sample data explicit badges & banners */
+.amd-header-sample-badge {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-left: 0.5rem;
+}
+
+.amd-sample-banner {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-left: 3px solid #F59E0B;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.amd-sample-icon {
+  color: #F59E0B;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.amd-sample-banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.amd-sample-headline {
+  color: #FBBF24;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.amd-sample-subtext {
+  color: #CCCCCC;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.amd-sample-reset-btn {
+  background: transparent;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #FBBF24;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  align-self: center;
+  transition: all 0.2s ease;
+}
+
+.amd-sample-reset-btn:hover {
+  background: rgba(245, 158, 11, 0.2);
+  color: #FFFFFF;
+}
+
+.amd-section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.amd-section-header-row .amd-section-title {
+  margin-bottom: 0;
+}
+
+.amd-section-sample-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+

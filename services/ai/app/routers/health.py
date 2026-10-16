@@ -42,10 +42,29 @@ async def health(
     settings: Settings = Depends(get_settings),
     embedder: BaseEmbedder = Depends(get_active_embedder),
 ) -> dict[str, Any]:
-    """Returns system status, reporting the device actually used and the embedder in use."""
+    """Returns system status, reporting device actually used and the embedder actually loaded."""
     gpu_info = detect_gpu() if not settings.MOCK_MODE else "AMD Instinct Mock (Local Dev)"
     device = get_inference_device() if not settings.MOCK_MODE else "mock-gpu"
-    embedder_name = f"{embedder.__class__.__name__} ({settings.EMBED_MODEL})"
+
+    # Inspect the embedder actually loaded in memory
+    is_fallback = getattr(embedder, "is_fallback", False)
+    if hasattr(embedder, "loaded_model_name"):
+        actually_loaded = embedder.loaded_model_name
+    elif hasattr(embedder, "_get_model"):
+        model = embedder._get_model()
+        if hasattr(model, "loaded_model_name"):
+            actually_loaded = model.loaded_model_name
+            is_fallback = getattr(model, "is_fallback", True)
+        else:
+            actually_loaded = f"{model.__class__.__name__} ({settings.EMBED_MODEL})"
+    else:
+        actually_loaded = f"{embedder.__class__.__name__} ({settings.EMBED_MODEL})"
+
+    warning = (
+        f"n-gram fallback in use: {settings.EMBED_MODEL} is not loaded"
+        if is_fallback
+        else None
+    )
 
     return {
         "status": "ok",
@@ -55,5 +74,8 @@ async def health(
         "device": device,
         "stt_model": settings.WHISPER_MODEL,
         "embed_model": settings.EMBED_MODEL,
-        "embedder": embedder_name,
+        "embedder": actually_loaded,
+        "embedder_loaded": actually_loaded,
+        "warning": warning,
     }
+

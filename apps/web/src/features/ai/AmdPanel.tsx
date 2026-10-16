@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   X,
   Gauge,
+  WarningCircle,
 } from "@phosphor-icons/react";
 import type { BenchmarkSummary } from "../../types/ai";
 import { benchmarkSummaryFixture } from "../../fixtures";
@@ -40,17 +41,18 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
         const res = await fetch(`${apiBaseUrl}/v1/metrics/benchmark`);
         if (res.ok) {
           const data = await res.json();
-          if (data && data.benchmarks) {
+          if (data && data.status !== "no_benchmark_yet" && data.benchmarks) {
             setBenchmarkData(data);
           } else {
-            setBenchmarkData(benchmarkSummaryFixture);
+            // Real benchmark does not exist yet; default to unmeasured pending state
+            setBenchmarkData(null);
           }
         } else {
-          setBenchmarkData(benchmarkSummaryFixture);
+          setBenchmarkData(null);
         }
-      } catch (err) {
-        // Fallback to fixture in mock mode
-        setBenchmarkData(benchmarkSummaryFixture);
+      } catch {
+        // Network error or backend offline; default to unmeasured pending state
+        setBenchmarkData(null);
       } finally {
         setLoading(false);
       }
@@ -62,6 +64,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
   if (!isOpen) return null;
 
   const benchmarks = benchmarkData?.benchmarks;
+  const isSample = Boolean(benchmarkData?.is_sample || benchmarkData?.status === "sample");
 
   return (
     <div
@@ -75,6 +78,9 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
         <div className="amd-header-brand">
           <span className="amd-brand-tag">AMD ROCm</span>
           <h2 className="amd-title">Performance Telemetry</h2>
+          {isSample && (
+            <span className="amd-header-sample-badge">Sample data, not measured</span>
+          )}
         </div>
 
         <button
@@ -103,9 +109,41 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
               To populate live throughput, latency, and accuracy metrics on your AMD Instinct GPU:
             </p>
             <code>python eval/bench_latency.py --concurrency 1 4 8 16</code>
+            <div className="amd-preview-action">
+              <button
+                type="button"
+                className="amd-preview-btn"
+                onClick={() =>
+                  setBenchmarkData({ ...benchmarkSummaryFixture, is_sample: true, status: "sample" })
+                }
+              >
+                Preview Sample Benchmark Layout
+              </button>
+            </div>
           </div>
         ) : (
           <>
+            {/* Sample Warning Banner if unmeasured sample data is shown */}
+            {isSample && (
+              <div className="amd-sample-banner" role="status">
+                <WarningCircle size={22} weight="bold" className="amd-sample-icon" />
+                <div className="amd-sample-banner-text">
+                  <div className="amd-sample-headline">Sample data, not measured</div>
+                  <div className="amd-sample-subtext">
+                    This telemetry is illustrative layout preview data. Measured performance requires running eval scripts on AMD ROCm hardware.
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="amd-sample-reset-btn"
+                  onClick={() => setBenchmarkData(null)}
+                  title="Switch back to live pending status"
+                >
+                  Clear Preview
+                </button>
+              </div>
+            )}
+
             {/* Hardware & Model Specifications */}
             <div className="amd-meta-box">
               <div className="amd-meta-row">
@@ -118,16 +156,23 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
               </div>
               <div className="amd-meta-row">
                 <span className="amd-meta-label">Evaluated At</span>
-                <span className="amd-meta-val font-mono">{benchmarkData?.generated_at}</span>
+                <span className="amd-meta-val font-mono">
+                  {isSample ? "Sample data, not measured" : benchmarkData?.generated_at}
+                </span>
               </div>
             </div>
 
             {/* Concurrency & Latency Table */}
             <div>
-              <h3 className="amd-section-title">
-                <Speedometer size={18} color="#ED1C24" />
-                <span>ROCm vLLM Concurrency Scaling</span>
-              </h3>
+              <div className="amd-section-header-row">
+                <h3 className="amd-section-title">
+                  <Speedometer size={18} color="#ED1C24" />
+                  <span>ROCm vLLM Concurrency Scaling</span>
+                </h3>
+                {isSample && (
+                  <span className="amd-section-sample-label">Sample data, not measured</span>
+                )}
+              </div>
 
               <div className="benchmark-table-wrapper">
                 <table className="benchmark-table">
@@ -157,10 +202,15 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
 
             {/* Quality & Safety Gates */}
             <div>
-              <h3 className="amd-section-title">
-                <ShieldCheck size={18} color="#4CAF50" />
-                <span>Clinical Extraction & Safety Metrics</span>
-              </h3>
+              <div className="amd-section-header-row">
+                <h3 className="amd-section-title">
+                  <ShieldCheck size={18} color="#4CAF50" />
+                  <span>Clinical Extraction & Safety Metrics</span>
+                </h3>
+                {isSample && (
+                  <span className="amd-section-sample-label">Sample data, not measured</span>
+                )}
+              </div>
 
               <div className="accuracy-grid">
                 <div className="accuracy-metric-card">
@@ -194,8 +244,10 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             </div>
 
             {/* Footer Notice */}
-            <p style={{ fontSize: "0.78rem", color: "#666666", textAlign: "center" }}>
-              Metrics measured against synthetic prescription evaluation dataset (eval/data).
+            <p style={{ fontSize: "0.78rem", color: "#888888", textAlign: "center", margin: 0 }}>
+              {isSample
+                ? "Sample data, not measured — Awaiting live run of eval/bench_latency.py on AMD ROCm."
+                : "Metrics measured against synthetic prescription evaluation dataset (eval/data)."}
             </p>
           </>
         )}
@@ -203,3 +255,4 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
     </div>
   );
 };
+

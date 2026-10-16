@@ -17,7 +17,9 @@ import {
   chatRefusalL2Fixture,
   chatSupportedFixture,
 } from "../../fixtures";
+import { EMERGENCY_CONFIG } from "../../config/emergency";
 import "./ChatPanel.css";
+
 
 interface ChatMessage {
   id: string;
@@ -317,17 +319,30 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 "This sounds like a life-threatening medical emergency. Please call emergency services immediately or visit the nearest emergency room."}
             </p>
 
-            {/* Big Emergency Call Button */}
-            <a href="tel:108" className="emergency-call-btn">
+            {/* Big Emergency Call Button from centralized TO_VERIFY config */}
+            <a
+              href={`tel:${EMERGENCY_CONFIG.ambulance.number}`}
+              className="emergency-call-btn"
+            >
               <PhoneCall size={26} weight="bold" />
-              <span>Call Emergency: 108</span>
+              <span>
+                {language === "ta"
+                  ? `${EMERGENCY_CONFIG.ambulance.labelTa}: ${EMERGENCY_CONFIG.ambulance.number}`
+                  : `Call Emergency: ${EMERGENCY_CONFIG.ambulance.number}`}
+              </span>
             </a>
 
+
             <div className="emergency-secondary-row">
-              <a href="tel:14416" className="emergency-sub-btn">
+              <a href={`tel:${EMERGENCY_CONFIG.teleManas.number}`} className="emergency-sub-btn">
                 <PhoneCall size={18} />
-                <span>Tele-MANAS (14416)</span>
+                <span>
+                  {language === "ta"
+                    ? `${EMERGENCY_CONFIG.teleManas.labelTa} (${EMERGENCY_CONFIG.teleManas.number})`
+                    : `Tele-MANAS (${EMERGENCY_CONFIG.teleManas.number})`}
+                </span>
               </a>
+
 
               <button
                 type="button"

@@ -40,6 +40,16 @@ class DocumentChunk:
 class BaseEmbedder(ABC):
     """Abstract interface for dense multilingual text embedding models."""
 
+    @property
+    def is_fallback(self) -> bool:
+        """Returns True if the embedder is running in fallback mode."""
+        return False
+
+    @property
+    def loaded_model_name(self) -> str:
+        """Returns the identifier/class of the model actually loaded."""
+        return self.__class__.__name__
+
     @abstractmethod
     async def embed_texts(self, texts: list[str]) -> np.ndarray:
         """Returns a 2D float32 numpy array of shape (len(texts), dim), L2-normalized."""
@@ -58,6 +68,21 @@ class SentenceTransformerEmbedder(BaseEmbedder):
         self.settings = get_settings()
         self.model_name = model_name or self.settings.EMBED_MODEL
         self._model: Any = None
+
+    @property
+    def is_fallback(self) -> bool:
+        """Returns True if the n-gram fallback embedder is currently active."""
+        model = self._get_model()
+        return isinstance(model, _FallbackNgramEmbedder)
+
+    @property
+    def loaded_model_name(self) -> str:
+        """Returns the description of the embedder actually loaded."""
+        model = self._get_model()
+        if isinstance(model, _FallbackNgramEmbedder):
+            return f"_FallbackNgramEmbedder (n-gram fallback for {self.model_name})"
+        return f"SentenceTransformer ({self.model_name})"
+
 
     def _get_model(self) -> Any:
         if self._model is None:
@@ -98,8 +123,12 @@ class SentenceTransformerEmbedder(BaseEmbedder):
 class _FallbackNgramEmbedder:
     """Deterministic CPU multilingual character n-gram bag embedder for environments without GPU."""
 
+    is_fallback: bool = True
+    loaded_model_name: str = "_FallbackNgramEmbedder"
+
     def __init__(self, dim: int = 384) -> None:
         self.dim = dim
+
 
     def _hash_vector(self, text: str) -> np.ndarray:
         vec = np.zeros(self.dim, dtype=np.float32)

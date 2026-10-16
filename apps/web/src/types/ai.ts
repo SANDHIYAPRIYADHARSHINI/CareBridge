@@ -130,10 +130,13 @@ export interface ConcurrencyPoint {
 }
 
 export interface BenchmarkSummary {
+  status?: string;
+  is_sample?: boolean;
+  message?: string;
   model: string;
   gpu: string;
-  generated_at: string;
-  benchmarks: {
+  generated_at?: string;
+  benchmarks?: {
     concurrency_table: ConcurrencyPoint[];
     extraction_accuracy: number;
     flag_recall: number;
@@ -142,3 +145,4 @@ export interface BenchmarkSummary {
     red_flag_emergency_recall: number;
   };
 }
+
