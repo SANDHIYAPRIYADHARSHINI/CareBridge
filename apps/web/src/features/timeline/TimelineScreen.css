@@ -1,0 +1,268 @@
+.timeline-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.timeline-banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+}
+
+.timeline-title {
+  font-family: var(--font-display, "Instrument Sans", sans-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.timeline-sub {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+/* Filters */
+.timeline-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.75rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  background: #e2e8f0;
+}
+
+.filter-btn.active {
+  background: #0d9488;
+  color: #ffffff;
+  border-color: #0d9488;
+}
+
+/* Timeline Track */
+.timeline-track {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.timeline-node {
+  display: flex;
+  gap: 1.25rem;
+  position: relative;
+  padding-bottom: 1.75rem;
+}
+
+.timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 36px;
+  flex-shrink: 0;
+}
+
+.node-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+.node-icon-circle.prescription {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.node-icon-circle.reminder {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.node-icon-circle.appointment {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.node-icon-circle.report {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.node-icon-circle.discharge {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 36px;
+  bottom: 0;
+  left: 17px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.timeline-content-card {
+  flex: 1;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.node-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.node-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.badges-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.type-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.type-tag.prescription {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.type-tag.reminder {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.type-tag.appointment {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.type-tag.report {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.type-tag.discharge {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.node-title {
+  font-family: var(--font-display, "Instrument Sans", sans-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.node-desc {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.node-footer {
+  margin-top: 0.5rem;
+}
+
+.doc-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #0d9488;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.doc-link-btn:hover {
+  text-decoration: underline;
+}
+
+.timeline-governance-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md, 12px);
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.timeline-governance-card .shield-icon {
+  color: #0d9488;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .timeline-banner {
+    flex-direction: column;
+  }
+}
