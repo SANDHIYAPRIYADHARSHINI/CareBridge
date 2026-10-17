@@ -1,6 +1,6 @@
 import enum
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -28,18 +28,21 @@ class Hospital(Base):
     contact_number: Mapped[str] = mapped_column(String(50), nullable=False)
 
     emergency_available: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    bed_capacity: Mapped[int] = mapped_column(Integer, default=100, nullable=False)
-    beds_available: Mapped[int] = mapped_column(Integer, default=20, nullable=False)
-    icu_capacity: Mapped[int] = mapped_column(Integer, default=20, nullable=False)
-    icu_available: Mapped[int] = mapped_column(Integer, default=5, nullable=False)
+    emergency_status: Mapped[str] = mapped_column(String(100), default="24/7 Active Admission", nullable=False)
+    bed_capacity: Mapped[int | None] = mapped_column(Integer, default=100, nullable=True)
+    beds_available: Mapped[int | None] = mapped_column(Integer, default=20, nullable=True)
+    icu_capacity: Mapped[int | None] = mapped_column(Integer, default=20, nullable=True)
+    icu_available: Mapped[int | None] = mapped_column(Integer, default=5, nullable=True)
 
-    status: Mapped[str] = mapped_column(String(50), default="normal", nullable=False)  # normal, busy, critical
+    status: Mapped[str] = mapped_column(String(50), default="normal", nullable=False)  # normal, busy, critical, unknown
     wait_time_minutes: Mapped[int | None] = mapped_column(Integer, default=15, nullable=True)
     facilities: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
 
     is_simulated: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    data_source: Mapped[str] = mapped_column(String(255), default="Government Emergency Telemetry (Simulated)", nullable=False)
+    data_source_type: Mapped[str] = mapped_column(String(50), default="simulated", nullable=False)  # simulated, verified, outdated, unavailable
     last_updated: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC), nullable=False
     )
 
     # Relationships

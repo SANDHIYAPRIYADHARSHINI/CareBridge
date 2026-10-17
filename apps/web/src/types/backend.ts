@@ -97,6 +97,8 @@ export interface TimelineResponse {
   events: TimelineEvent[];
 }
 
+export type CapacityDataSourceType = "simulated" | "verified" | "outdated" | "unavailable";
+
 export interface Hospital {
   id: string;
   name: string;
@@ -105,16 +107,19 @@ export interface Hospital {
   longitude: number;
   contact_number: string;
   emergency_available: boolean;
-  bed_capacity: number;
-  beds_available: number;
-  icu_capacity: number;
-  icu_available: number;
-  wait_time_minutes?: number;
+  emergency_status?: string;
+  bed_capacity?: number | null;
+  beds_available?: number | null;
+  icu_capacity?: number | null;
+  icu_available?: number | null;
+  wait_time_minutes?: number | null;
   facilities?: string[];
-  distance_km?: number;
-  status: "normal" | "busy" | "critical";
+  distance_km?: number | null;
+  status: "normal" | "busy" | "critical" | "unknown";
   last_updated: string;
   is_simulated: boolean;
+  data_source?: string;
+  data_source_type?: CapacityDataSourceType;
 }
 
 export type AppointmentStatus = "pending" | "confirmed" | "cancelled" | "completed";

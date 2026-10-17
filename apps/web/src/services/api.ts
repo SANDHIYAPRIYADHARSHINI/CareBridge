@@ -260,6 +260,8 @@ export interface HospitalFilterParams {
   query?: string;
   emergency_only?: boolean;
   facility?: string;
+  status?: string;
+  data_source_type?: string;
   lat?: number;
   lon?: number;
 }
@@ -271,6 +273,8 @@ export async function getHospitals(
   if (params?.query) queryParams.append("query", params.query);
   if (params?.emergency_only) queryParams.append("emergency_only", "true");
   if (params?.facility && params.facility !== "all") queryParams.append("facility", params.facility);
+  if (params?.status && params.status !== "all") queryParams.append("status", params.status);
+  if (params?.data_source_type && params.data_source_type !== "all") queryParams.append("data_source_type", params.data_source_type);
   if (params?.lat !== undefined) queryParams.append("lat", params.lat.toString());
   if (params?.lon !== undefined) queryParams.append("lon", params.lon.toString());
 
@@ -281,6 +285,34 @@ export async function getHospitals(
 export async function getHospitalById(hospitalId: string): Promise<Hospital> {
   return apiFetch<Hospital>(`/hospitals/${hospitalId}`);
 }
+
+export async function updateHospitalCapacity(
+  hospitalId: string,
+  payload: Partial<Hospital>
+): Promise<Hospital> {
+  return apiFetch<Hospital>(`/hospitals/${hospitalId}/capacity`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function simulateHospitalCrowd(hospitalId: string): Promise<Hospital> {
+  return apiFetch<Hospital>(`/hospitals/${hospitalId}/simulate-crowd`, {
+    method: "POST",
+  });
+}
+
+export async function simulateBatchCapacityUpdate(): Promise<{
+  message: string;
+  updated_count: number;
+  timestamp: string;
+}> {
+  return apiFetch<{ message: string; updated_count: number; timestamp: string }>(
+    "/hospitals/simulate-batch-update",
+    { method: "POST" }
+  );
+}
+
 
 
 
