@@ -16,6 +16,7 @@ class HospitalBase(BaseModel):
     icu_available: int = 5
     status: str = "normal"
     wait_time_minutes: int | None = 15
+    facilities: list[str] = []
     is_simulated: bool = True
 
 
@@ -26,5 +27,6 @@ class HospitalCreate(HospitalBase):
 class HospitalResponse(HospitalBase):
     id: str
     last_updated: datetime
+    distance_km: float | None = None
 
     model_config = ConfigDict(from_attributes=True)
