@@ -1,19 +1,22 @@
 from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.database import get_db
-from app.models.user import User
-from app.models.reminder import MedicineReminder, DoseLog, DoseStatus
+from app.models.audit import AuditLog
+from app.models.consent import CaregiverConsent, ConsentStatus
+from app.models.reminder import DoseLog, DoseStatus, MedicineReminder
+from app.models.user import User, UserRole
+from app.routers.auth import get_current_user
 from app.schemas.reminder import (
-    ReminderCreate,
-    ReminderResponse,
     DoseLogCreate,
     DoseLogResponse,
+    ReminderCreate,
+    ReminderResponse,
 )
-from app.routers.auth import get_current_user
 
 router = APIRouter(prefix="/reminders", tags=["Medicine Reminders"])
 
@@ -24,6 +27,7 @@ async def create_reminder(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    """Creates a new medicine reminder for the authenticated patient."""
     reminder = MedicineReminder(
         patient_id=current_user.id,
         medicine_name=payload.medicine_name,
@@ -44,12 +48,60 @@ async def create_reminder(
 
 @router.get("/", response_model=list[ReminderResponse])
 async def list_reminders(
+    patient_id: str | None = None,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Lists reminders. If a caregiver accesses a patient's reminders,
+    verifies consent for `can_view_reminders` and logs an audit record.
+    """
+    target_patient_id = current_user.id
+
+    if patient_id and patient_id != current_user.id:
+        if current_user.role != UserRole.CAREGIVER:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Unauthorized access to patient reminders.",
+            )
+
+        # Check consent
+        res = await db.execute(
+            select(CaregiverConsent).where(
+                CaregiverConsent.patient_id == patient_id,
+                CaregiverConsent.caregiver_id == current_user.id,
+                CaregiverConsent.status == ConsentStatus.APPROVED,
+            )
+        )
+        consent = res.scalar_one_or_none()
+        if not consent or not consent.can_view_reminders:
+            audit = AuditLog(
+                actor_id=current_user.id,
+                patient_id=patient_id,
+                action="access_denied_reminders",
+                resource="reminders",
+                details={"reason": "Missing reminders scope in consent"},
+            )
+            db.add(audit)
+            await db.commit()
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Caregiver has not been granted permission to view medication reminders.",
+            )
+
+        target_patient_id = patient_id
+        audit = AuditLog(
+            actor_id=current_user.id,
+            patient_id=patient_id,
+            action="access_granted_reminders",
+            resource="reminders",
+        )
+        db.add(audit)
+        await db.commit()
+
     res = await db.execute(
         select(MedicineReminder)
-        .where(MedicineReminder.patient_id == current_user.id)
+        .where(MedicineReminder.patient_id == target_patient_id)
         .options(selectinload(MedicineReminder.dose_logs))
     )
     return res.scalars().all()
@@ -62,6 +114,7 @@ async def log_dose(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    """Allows patient to mark a scheduled dose as taken or missed, updating supply count."""
     res = await db.execute(
         select(MedicineReminder).where(
             MedicineReminder.id == reminder_id,
@@ -72,7 +125,6 @@ async def log_dose(
     if not reminder:
         raise HTTPException(status_code=404, detail="Reminder not found.")
 
-    # Decrement remaining supply when dose is taken
     taken_at = None
     if payload.status == DoseStatus.TAKEN:
         taken_at = datetime.utcnow()

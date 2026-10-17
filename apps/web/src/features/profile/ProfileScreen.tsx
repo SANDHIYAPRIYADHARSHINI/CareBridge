@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   User as UserIcon,
   ShieldCheck,
@@ -9,9 +9,16 @@ import {
   PhoneCall,
   FloppyDisk,
   WarningCircle,
+  ClockCounterClockwise,
 } from "@phosphor-icons/react";
-import type { CaregiverConsent } from "../../types/backend";
+import type { CaregiverConsent, AuditLogResponse } from "../../types/backend";
 import { StateFeedback } from "../../components/ui/StateFeedback";
+import {
+  getPatientConsents,
+  updateConsentStatus,
+  getAuditLogs,
+} from "../../services/api";
+import { useAuth } from "../auth";
 import "./ProfileScreen.css";
 
 interface ProfileScreenProps {
@@ -60,40 +67,108 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   userRole,
   onRoleChange,
 }) => {
+  const { user } = useAuth();
   const [consents, setConsents] = useState<CaregiverConsent[]>(INITIAL_CONSENTS);
+  const [auditLogs, setAuditLogs] = useState<AuditLogResponse[]>([]);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
   const isTa = language === "ta";
 
   // Form states
-  const [patientName, setPatientName] = useState("Kaviya Sundaram");
-  const [patientEmail] = useState("kaviya.sundaram@example.com");
-  const [patientPhone, setPatientPhone] = useState("+91 98401 23456");
+  const [patientName, setPatientName] = useState(user?.full_name || "Kaviya Sundaram");
+  const [patientEmail] = useState(user?.email || "kaviya.sundaram@example.com");
+  const [patientPhone, setPatientPhone] = useState(user?.phone_number || "+91 98401 23456");
   const [emergencyContact, setEmergencyContact] = useState("Dr. Anitha Nathan (+91 94440 98765)");
 
-  const handleTogglePermission = (
+  // Sync with auth user if changed
+  useEffect(() => {
+    if (user) {
+      setPatientName(user.full_name);
+      setPatientPhone(user.phone_number || "+91 98401 23456");
+    }
+  }, [user]);
+
+  // Load consents and audit logs
+  useEffect(() => {
+    async function fetchConsentData() {
+      try {
+        const remoteConsents = await getPatientConsents();
+        if (remoteConsents && remoteConsents.length > 0) {
+          setConsents(remoteConsents);
+        }
+      } catch {
+        // Fallback to initial mock data if offline
+      }
+
+      try {
+        const logs = await getAuditLogs();
+        if (logs) {
+          setAuditLogs(logs);
+        }
+      } catch {
+        // Fallback or empty audit logs
+      }
+    }
+
+    fetchConsentData();
+  }, []);
+
+  const handleTogglePermission = async (
     consentId: string,
     key: keyof CaregiverConsent["permissions"]
   ) => {
+    const current = consents.find((c) => c.id === consentId);
+    if (!current) return;
+
+    const updatedPermissions = {
+      ...current.permissions,
+      [key]: !current.permissions[key],
+    };
+
     setConsents((prev) =>
-      prev.map((c) => {
-        if (c.id === consentId) {
-          return {
-            ...c,
-            permissions: {
-              ...c.permissions,
-              [key]: !c.permissions[key],
-            },
-          };
-        }
-        return c;
-      })
+      prev.map((c) =>
+        c.id === consentId ? { ...c, permissions: updatedPermissions } : c
+      )
     );
+
+    try {
+      await updateConsentStatus(consentId, {
+        status: current.status,
+        permissions: updatedPermissions,
+      });
+      setActionMessage(isTa ? "அனுமதி புதுப்பிக்கப்பட்டது" : "Permission updated successfully");
+      setTimeout(() => setActionMessage(null), 2500);
+      const refreshedLogs = await getAuditLogs();
+      setAuditLogs(refreshedLogs);
+    } catch {
+      // Offline fallback
+    }
   };
 
-  const handleConsentAction = (consentId: string, newStatus: "approved" | "revoked") => {
+  const handleConsentAction = async (consentId: string, newStatus: "approved" | "revoked") => {
+    const current = consents.find((c) => c.id === consentId);
+    if (!current) return;
+
     setConsents((prev) =>
       prev.map((c) => (c.id === consentId ? { ...c, status: newStatus } : c))
     );
+
+    try {
+      await updateConsentStatus(consentId, {
+        status: newStatus,
+        permissions: current.permissions,
+      });
+      setActionMessage(
+        newStatus === "approved"
+          ? isTa ? "பராமரிப்பாளருக்கு அனுமதி வழங்கப்பட்டது" : "Caregiver access approved"
+          : isTa ? "பராமரிப்பாளர் அணுகல் ரத்து செய்யப்பட்டது" : "Caregiver access revoked"
+      );
+      setTimeout(() => setActionMessage(null), 2500);
+      const refreshedLogs = await getAuditLogs();
+      setAuditLogs(refreshedLogs);
+    } catch {
+      // Offline fallback
+    }
   };
 
   const handleSaveProfile = (e: React.FormEvent) => {
@@ -122,6 +197,14 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           state="success"
           title={isTa ? "சுயவிவரம் புதுப்பிக்கப்பட்டது!" : "Profile Saved!"}
           message={isTa ? "உங்கள் மாற்றங்கள் வெற்றிகரமாக சேமிக்கப்பட்டன." : "Your profile settings have been successfully updated."}
+        />
+      )}
+
+      {actionMessage && (
+        <StateFeedback
+          state="success"
+          title={isTa ? "அனுமதி புதுப்பிக்கப்பட்டது!" : "Consent Updated"}
+          message={actionMessage}
         />
       )}
 
@@ -382,6 +465,51 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                 ? "பராமரிப்பாளர் எந்தவொரு பதிவை பார்த்தாலும் உங்கள் தணிக்கைப் பதிவேட்டில் தானாக பதிவு செய்யப்படும்."
                 : "Every time a caregiver accesses any of your clinical records, an entry is permanently written to your audit log."}
             </span>
+          </div>
+
+          {/* Live Access Audit Trail */}
+          <div className="audit-log-section">
+            <div className="audit-log-title">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
+                <ClockCounterClockwise size={16} weight="bold" />
+                <span>{isTa ? "அணுகல் தணிக்கைப் பதிவு (Audit Trail)" : "Caregiver Access Audit Trail"}</span>
+              </div>
+              <span className="audit-log-badge">
+                {auditLogs.length} {isTa ? "பதிவுகள்" : "Events"}
+              </span>
+            </div>
+
+            <div className="audit-log-list">
+              {auditLogs.length === 0 ? (
+                <div className="audit-log-empty">
+                  {isTa ? "தணிக்கை பதிவுகள் எதுவும் இல்லை." : "No access logs recorded yet."}
+                </div>
+              ) : (
+                auditLogs.map((log) => {
+                  const dateStr = new Date(log.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  });
+                  return (
+                    <div key={log.id} className="audit-log-entry">
+                      <div className="audit-entry-main">
+                        <div>
+                          <span className="audit-entry-actor">
+                            {log.actor_name || log.actor_id}
+                          </span>{" "}
+                          ({log.actor_role || "caregiver"})
+                        </div>
+                        <div className="audit-entry-action">
+                          {log.action}: {log.resource}
+                        </div>
+                      </div>
+                      <div className="audit-entry-time">{dateStr}</div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </section>
       </div>
