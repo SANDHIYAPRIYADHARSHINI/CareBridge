@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from app.config import settings
 from app.database import init_db
 from app.routers import (
+    ai_router,
     appointments_router,
     auth_router,
     consent_router,
@@ -78,6 +79,7 @@ app.include_router(reminders_router)
 app.include_router(timeline_router)
 app.include_router(hospitals_router)
 app.include_router(appointments_router)
+app.include_router(ai_router)
 
 
 @app.get("/")

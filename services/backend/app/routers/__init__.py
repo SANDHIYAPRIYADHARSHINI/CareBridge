@@ -1,3 +1,4 @@
+from app.routers.ai import router as ai_router
 from app.routers.appointments import router as appointments_router
 from app.routers.auth import router as auth_router
 from app.routers.consent import router as consent_router
@@ -7,6 +8,7 @@ from app.routers.reminders import router as reminders_router
 from app.routers.timeline import router as timeline_router
 
 __all__ = [
+    "ai_router",
     "health_router",
     "auth_router",
     "consent_router",

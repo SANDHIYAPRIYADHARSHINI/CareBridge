@@ -11,6 +11,7 @@ import {
 } from "@phosphor-icons/react";
 import type { BenchmarkSummary } from "../../types/ai";
 import { benchmarkSummaryFixture } from "../../fixtures";
+import { getAiHealth, getAiBenchmark } from "../../services/aiApi";
 import "./AmdPanel.css";
 
 interface AmdPanelProps {
@@ -44,36 +45,17 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
     const fetchTelemetry = async () => {
       setLoading(true);
       try {
-        // Fetch health
-        try {
-          const healthRes = await fetch(`${apiBaseUrl}/v1/health`);
-          if (healthRes.ok) {
-            const hData = await healthRes.json();
-            setHealthStatus({
-              status: hData.status || "ok",
-              model: hData.model || "Gemma 2 9B (vLLM ROCm)",
-              device: hData.device || "AMD Instinct / ROCm",
-            });
-          } else {
-            setHealthStatus(null);
-          }
-        } catch {
-          setHealthStatus(null);
-        }
+        const hData = await getAiHealth();
+        setHealthStatus({
+          status: hData.status,
+          model: hData.model,
+          device: hData.gpu || "AMD Instinct / ROCm",
+        });
 
-        // Fetch benchmark
-        const res = await fetch(`${apiBaseUrl}/v1/metrics/benchmark`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.status !== "no_benchmark_yet" && data.benchmarks) {
-            setBenchmarkData(data);
-          } else {
-            setBenchmarkData(null);
-          }
-        } else {
-          setBenchmarkData(null);
-        }
+        const bData = await getAiBenchmark();
+        setBenchmarkData(bData);
       } catch {
+        setHealthStatus(null);
         setBenchmarkData(null);
       } finally {
         setLoading(false);
