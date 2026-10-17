@@ -14,7 +14,7 @@ class PermissionsPayload(BaseModel):
 
 class ConsentRequestCreate(BaseModel):
     patient_email: str
-    permissions: PermissionsPayload
+    permissions: PermissionsPayload = PermissionsPayload()
 
 
 class ConsentUpdatePayload(BaseModel):

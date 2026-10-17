@@ -10,7 +10,7 @@ from app.models.appointment import Appointment
 from app.models.audit import AuditLog
 from app.models.consent import CaregiverConsent, ConsentStatus
 from app.models.health_record import HealthRecord, HealthRecordType
-from app.models.reminder import DoseLog, DoseStatus, MedicineReminder
+from app.models.reminder import DoseLog, MedicineReminder
 from app.models.user import User, UserRole
 from app.routers.auth import get_current_user
 from app.schemas.timeline import (
@@ -299,26 +299,27 @@ async def get_timeline(
                 select(DoseLog).where(DoseLog.reminder_id == r.id)
             )
             for d in res_doses.scalars().all():
+                d_status_str = d.status.value if hasattr(d.status, "value") else str(d.status)
                 dose_flags = []
-                if d.status == DoseStatus.MISSED:
+                if d_status_str == "missed":
                     dose_flags.append("Missed scheduled medication dose")
 
                 events.append(
                     TimelineEventItem(
                         id=f"dose-{d.id}",
                         type="dose_log",
-                        title=f"Dose Adherence: {r.medicine_name} — {d.status.value.upper()}",
-                        description=f"Status: {d.status.value.capitalize()}. Scheduled: {d.scheduled_time.strftime('%b %d, %H:%M')}. Notes: {d.notes or 'None'}",
+                        title=f"Dose Adherence: {r.medicine_name} — {d_status_str.upper()}",
+                        description=f"Status: {d_status_str.capitalize()}. Scheduled: {d.scheduled_time.strftime('%b %d, %H:%M')}. Notes: {d.notes or 'None'}",
                         timestamp=d.taken_at or d.scheduled_time,
                         source="CareBridge Adherence Tracker",
                         is_verified=True,
-                        status=d.status.value,
+                        status=d_status_str,
                         flags=dose_flags,
                         metadata={
                             "reminder_id": r.id,
                             "medicine_name": r.medicine_name,
                             "dosage": r.dosage,
-                            "dose_status": d.status.value,
+                            "dose_status": d_status_str,
                         },
                     )
                 )

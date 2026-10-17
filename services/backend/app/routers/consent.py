@@ -133,6 +133,12 @@ async def list_patient_consents(
     db: AsyncSession = Depends(get_db),
 ):
     """Lists caregiver consent records for the authenticated patient."""
+    if current_user.role != UserRole.PATIENT:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access restricted to patient accounts.",
+        )
+
     res = await db.execute(
         select(CaregiverConsent).where(CaregiverConsent.patient_id == current_user.id)
     )
@@ -167,6 +173,12 @@ async def update_consent(
     db: AsyncSession = Depends(get_db),
 ):
     """Allows patient to approve, modify permissions, or revoke caregiver access."""
+    if current_user.role != UserRole.PATIENT:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only patients can manage consent permissions.",
+        )
+
     res = await db.execute(
         select(CaregiverConsent).where(
             CaregiverConsent.id == consent_id,
