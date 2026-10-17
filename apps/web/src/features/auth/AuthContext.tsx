@@ -117,9 +117,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         const email =
           targetRole === "patient"
-            ? "kaviya.sundaram@example.com"
-            : "anitha.nathan@example.com";
-        const password = "DemoPassword123!";
+            ? "patient@carebridge.health"
+            : "caregiver@carebridge.health";
+        const password = "CareBridge@123";
 
         return await login(email, password);
       } catch (err) {
@@ -128,7 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           targetRole === "patient"
             ? {
                 id: "patient-1",
-                email: "kaviya.sundaram@example.com",
+                email: "patient@carebridge.health",
                 full_name: "Kaviya Sundaram",
                 role: "patient",
                 phone_number: "+91 98401 23456",
@@ -136,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               }
             : {
                 id: "caregiver-1",
-                email: "anitha.nathan@example.com",
+                email: "caregiver@carebridge.health",
                 full_name: "Dr. Anitha Nathan",
                 role: "caregiver",
                 phone_number: "+91 94440 98765",
