@@ -33,6 +33,7 @@ class Settings(BaseSettings):
 
     # External AI Microservice (Member 1)
     AI_SERVICE_URL: str = "http://localhost:8100"
+    AI_TIMEOUT_SECONDS: float = 30.0
 
     model_config = SettingsConfigDict(
         env_file=".env",
