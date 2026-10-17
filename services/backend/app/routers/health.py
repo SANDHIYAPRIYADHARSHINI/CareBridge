@@ -1,5 +1,7 @@
 from datetime import datetime
+
 from fastapi import APIRouter
+
 from app.config import settings
 from app.services.ai_client import ai_client
 

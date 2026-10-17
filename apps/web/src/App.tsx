@@ -15,6 +15,8 @@ import {
   Flask,
   DotsThreeOutline,
   X,
+  SignIn,
+  SignOut,
 } from "@phosphor-icons/react";
 import {
   UploadScreen,
@@ -30,6 +32,7 @@ import { HospitalsScreen } from "./features/hospitals";
 import { AppointmentsScreen } from "./features/appointments";
 import { CaregiverDashboard } from "./features/caregiver";
 import { ProfileScreen } from "./features/profile";
+import { AuthProvider, useAuth, AuthModal } from "./features/auth";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import type { ExtractionResult } from "./types/ai";
@@ -51,7 +54,9 @@ export type TabKey =
   | "profile"
   | "caregiver";
 
-export function App() {
+function AppContent() {
+  const { user, isAuthenticated, logout } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   // Navigation & Routing state
   const [currentRoute, setCurrentRoute] = useState<"app" | "privacy" | "404">("app");
   const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
@@ -305,6 +310,51 @@ export function App() {
           >
             <Sliders size={18} weight="bold" />
           </button>
+
+          {/* User Auth Status / Sign In Button */}
+          {isAuthenticated && user ? (
+            <div
+              className="auth-user-pill"
+              onClick={() => setActiveTab("profile")}
+              title="Signed In • View Profile & Settings"
+              role="button"
+              tabIndex={0}
+            >
+              <span>{user.full_name.split(" ")[0]}</span>
+              <span className={`auth-user-role-tag ${user.role}`}>
+                {user.role}
+              </span>
+              <button
+                type="button"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "2px",
+                  color: "#64748b",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  logout();
+                }}
+                title="Sign Out"
+              >
+                <SignOut size={14} />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="auth-signin-btn"
+              onClick={() => setIsAuthModalOpen(true)}
+              title="Sign In or Register"
+            >
+              <SignIn size={14} weight="bold" />
+              <span>{language === "ta" ? "உள்நுழை" : "Sign In"}</span>
+            </button>
+          )}
 
           {/* Profile Avatar */}
           <div
@@ -777,7 +827,32 @@ export function App() {
           </a>
         </div>
       </footer>
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        language={language}
+        defaultRole={userRole}
+        onSuccess={(authedUser) => {
+          if (authedUser.role === "caregiver") {
+            setUserRole("caregiver");
+            setActiveTab("caregiver");
+          } else {
+            setUserRole("patient");
+            setActiveTab("dashboard");
+          }
+        }}
+      />
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

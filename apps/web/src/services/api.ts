@@ -3,6 +3,18 @@
  * Handles communications with the FastAPI backend for Auth, Consent, Reminders, Timeline, Hospitals, and Appointments.
  */
 
+import type {
+  User,
+  LoginRequest,
+  RegisterRequest,
+  TokenResponse,
+  ConsentRequestCreate,
+  ConsentUpdate,
+  CaregiverConsent,
+  AuditLogResponse,
+  PatientSummaryForCaregiverResponse,
+} from "../types/backend";
+
 export class ApiError extends Error {
   status: number;
   data: unknown;
@@ -75,4 +87,83 @@ export async function apiFetch<T>(
   }
 
   return response.json() as Promise<T>;
+}
+
+// ==========================================
+// Authentication APIs
+// ==========================================
+
+export async function registerUser(payload: RegisterRequest): Promise<TokenResponse> {
+  const data = await apiFetch<TokenResponse>("/auth/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  if (data.access_token) {
+    setAuthToken(data.access_token);
+  }
+  return data;
+}
+
+export async function loginUser(payload: LoginRequest): Promise<TokenResponse> {
+  const data = await apiFetch<TokenResponse>("/auth/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  if (data.access_token) {
+    setAuthToken(data.access_token);
+  }
+  return data;
+}
+
+export async function getCurrentUser(): Promise<User> {
+  return apiFetch<User>("/auth/me");
+}
+
+export async function seedDemoAccounts(): Promise<{ message: string; accounts: unknown }> {
+  return apiFetch<{ message: string; accounts: unknown }>("/auth/seed-demo", {
+    method: "POST",
+  });
+}
+
+// ==========================================
+// Consent & Access Control APIs
+// ==========================================
+
+export async function requestCaregiverAccess(
+  payload: ConsentRequestCreate
+): Promise<CaregiverConsent> {
+  return apiFetch<CaregiverConsent>("/consent/request", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getPatientConsents(): Promise<CaregiverConsent[]> {
+  return apiFetch<CaregiverConsent[]>("/consent/patient");
+}
+
+export async function getCaregiverRequests(): Promise<CaregiverConsent[]> {
+  return apiFetch<CaregiverConsent[]>("/consent/caregiver");
+}
+
+export async function updateConsentStatus(
+  consentId: string,
+  payload: ConsentUpdate
+): Promise<CaregiverConsent> {
+  return apiFetch<CaregiverConsent>(`/consent/${consentId}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getAuditLogs(limit = 50): Promise<AuditLogResponse[]> {
+  return apiFetch<AuditLogResponse[]>(`/consent/audit-logs?limit=${limit}`);
+}
+
+export async function getPatientSummaryForCaregiver(
+  patientId: string
+): Promise<PatientSummaryForCaregiverResponse> {
+  return apiFetch<PatientSummaryForCaregiverResponse>(
+    `/consent/patient-summary/${patientId}`
+  );
 }

@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.models.user import User, UserRole
-from app.models.reminder import MedicineReminder
 from app.models.appointment import Appointment
-from app.models.consent import CaregiverConsent, ConsentStatus
 from app.models.audit import AuditLog
+from app.models.consent import CaregiverConsent, ConsentStatus
+from app.models.reminder import MedicineReminder
+from app.models.user import User, UserRole
 from app.routers.auth import get_current_user
 
 router = APIRouter(prefix="/timeline", tags=["Health Timeline"])

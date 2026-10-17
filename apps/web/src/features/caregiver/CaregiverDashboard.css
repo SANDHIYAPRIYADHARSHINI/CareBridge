@@ -423,6 +423,118 @@
   cursor: pointer;
 }
 
+/* Patient Records Preview Modal */
+.records-modal-card {
+  width: 100%;
+  max-width: 620px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.records-patient-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  margin-bottom: 0.25rem;
+}
+
+.records-section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.records-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.records-scope-status {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+.records-scope-status.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.records-scope-status.locked {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.records-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.record-item-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.8125rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.record-item-main {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.record-item-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+}
+
+.view-records-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-top: 0.5rem;
+}
+
+.view-records-btn:hover {
+  background: #0369a1;
+}
+
 @media (max-width: 768px) {
   .caregiver-banner {
     flex-direction: column;

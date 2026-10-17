@@ -1,6 +1,7 @@
 import logging
 import uuid
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -8,13 +9,13 @@ from fastapi.responses import JSONResponse
 from app.config import settings
 from app.database import init_db
 from app.routers import (
-    health_router,
+    appointments_router,
     auth_router,
     consent_router,
+    health_router,
+    hospitals_router,
     reminders_router,
     timeline_router,
-    hospitals_router,
-    appointments_router,
 )
 
 # Setup logging

@@ -362,6 +362,81 @@
   margin-top: 0.5rem;
 }
 
+/* Audit Log Trail */
+.audit-log-section {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+  padding-top: 1rem;
+}
+
+.audit-log-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.75rem;
+}
+
+.audit-log-badge {
+  font-size: 0.7rem;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+.audit-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.audit-log-empty {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.audit-log-entry {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  gap: 0.75rem;
+}
+
+.audit-entry-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.audit-entry-actor {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.audit-entry-action {
+  color: #0284c7;
+  font-weight: 500;
+}
+
+.audit-entry-time {
+  color: #94a3b8;
+  white-space: nowrap;
+  font-size: 0.7rem;
+}
+
 @media (max-width: 860px) {
   .profile-grid {
     grid-template-columns: 1fr;

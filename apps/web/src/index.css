@@ -297,9 +297,63 @@ button:disabled {
   font-size: 0.82rem;
   font-weight: 600;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   user-select: none;
+}
+
+/* Header Auth Buttons & User Status */
+.auth-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.auth-user-pill:hover {
+  background-color: var(--card);
+  border-color: var(--primary);
+}
+
+.auth-user-role-tag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 9999px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.auth-user-role-tag.caregiver {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.auth-signin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.auth-signin-btn:hover {
+  background-color: var(--primary-hover, #0f766e);
 }
 
 /* ==========================================================================

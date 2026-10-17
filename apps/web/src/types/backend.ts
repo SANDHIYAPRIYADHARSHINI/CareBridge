@@ -120,9 +120,54 @@ export interface Appointment {
 export interface AuditLog {
   id: string;
   actor_id: string;
+  actor_name?: string;
+  actor_role?: string;
   patient_id: string;
   action: string;
   resource: string;
   timestamp: string;
   details?: Record<string, unknown>;
+}
+
+export type AuditLogResponse = AuditLog;
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  full_name: string;
+  role: UserRole;
+  phone_number?: string;
+}
+
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+  user: User;
+}
+
+export interface ConsentRequestCreate {
+  patient_id?: string;
+  patient_email?: string;
+  permissions?: Partial<CaregiverPermissions>;
+}
+
+export interface ConsentUpdate {
+  status: ConsentStatus;
+  permissions?: Partial<CaregiverPermissions>;
+}
+
+export interface PatientSummaryForCaregiverResponse {
+  patient_id: string;
+  patient_name: string;
+  patient_email: string;
+  permissions: CaregiverPermissions;
+  prescriptions: unknown[];
+  reminders: unknown[];
+  appointments: unknown[];
+  records: unknown[];
 }
