@@ -18,6 +18,7 @@ import {
   SignIn,
   SignOut,
   WarningCircle,
+  CircleNotch,
 } from "@phosphor-icons/react";
 import {
   UploadScreen,
@@ -33,9 +34,8 @@ import { HospitalsScreen } from "./features/hospitals";
 import { AppointmentsScreen } from "./features/appointments";
 import { CaregiverDashboard } from "./features/caregiver";
 import { ProfileScreen } from "./features/profile";
-import { AuthProvider, useAuth, AuthModal } from "./features/auth";
-import { PrivacyPage } from "./pages/PrivacyPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
+import { AuthProvider, useAuth } from "./features/auth";
+import { LoginPage, PrivacyPage, NotFoundPage } from "./pages";
 import type { ExtractionResult } from "./types/ai";
 import type { Hospital } from "./types/backend";
 import { rxDemo001Fixture } from "./fixtures";
@@ -59,10 +59,9 @@ export type TabKey =
   | "caregiver";
 
 function AppContent() {
-  const { user, isAuthenticated, logout } = useAuth();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   // Navigation & Routing state
-  const [currentRoute, setCurrentRoute] = useState<"app" | "privacy" | "404">("app");
+  const [currentRoute, setCurrentRoute] = useState<"login" | "app" | "privacy" | "404">("login");
   const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
   const [language, setLanguage] = useState<string>(() => {
     try {
@@ -85,7 +84,9 @@ function AppContent() {
       // ignore storage errors
     }
   };
-  const [userRole, setUserRole] = useState<"patient" | "caregiver">("patient");
+
+  const userRole: "patient" | "caregiver" = user?.role === "caregiver" ? "caregiver" : "patient";
+  const [accessDeniedNotice, setAccessDeniedNotice] = useState<string | null>(null);
   const [isAmdDrawerOpen, setIsAmdDrawerOpen] = useState(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
   const [, setHighlightedLineIds] = useState<string[]>([]);
@@ -97,8 +98,10 @@ function AppContent() {
   const [currentImageUrl, setCurrentImageUrl] = useState<string>("/rx_demo_001.png");
   const [confirmedExtraction, setConfirmedExtraction] = useState<ExtractionResult | null>(null);
 
-  // Sync route and ?dev=1 on initial load and popstate
+  // Sync route and ?dev=1 on initial load and popstate with route guards
   useEffect(() => {
+    if (isLoading) return; // Wait until initial token check completes
+
     const handleLocationChange = () => {
       const path = window.location.pathname.toLowerCase();
       const hash = window.location.hash.toLowerCase();
@@ -111,7 +114,32 @@ function AppContent() {
 
       if (path === "/privacy" || hash === "#privacy") {
         setCurrentRoute("privacy");
-      } else if (
+        return;
+      }
+
+      if (path === "/login" || hash === "#login") {
+        if (isAuthenticated && user) {
+          const defaultTab = user.role === "caregiver" ? "caregiver" : "dashboard";
+          window.history.replaceState({}, "", `/${defaultTab}`);
+          setCurrentRoute("app");
+          setActiveTab(defaultTab);
+        } else {
+          setCurrentRoute("login");
+        }
+        return;
+      }
+
+      // Guard: Unauthenticated user accessing protected routes
+      if (!isAuthenticated) {
+        window.history.replaceState({}, "", "/login");
+        setCurrentRoute("login");
+        return;
+      }
+
+      const effectiveRole: "patient" | "caregiver" =
+        user?.role === "caregiver" ? "caregiver" : "patient";
+
+      if (
         path === "/" ||
         path === "" ||
         path === "/dashboard" ||
@@ -144,21 +172,45 @@ function AppContent() {
         hash === "#caregiver"
       ) {
         setCurrentRoute("app");
+
+        // Protected Guard: Patient trying to access caregiver-only portal
+        if (path === "/caregiver" || hash === "#caregiver") {
+          if (effectiveRole !== "caregiver") {
+            setAccessDeniedNotice(
+              "Access Denied: The Caregiver Portal is restricted to authorized family caregivers."
+            );
+            setActiveTab("dashboard");
+            window.history.replaceState({}, "", "/dashboard");
+            return;
+          }
+          setActiveTab("caregiver");
+          return;
+        }
+
+        // Protected Guard: Caregiver trying to access patient self-care upload
+        if (
+          effectiveRole === "caregiver" &&
+          (path === "/add" || path === "/check" || path === "/upload" || path === "/review")
+        ) {
+          setActiveTab("caregiver");
+          window.history.replaceState({}, "", "/caregiver");
+          return;
+        }
+
         if (path === "/" || path === "" || path === "/dashboard" || hash === "#dashboard") {
-          setActiveTab(userRole === "caregiver" ? "caregiver" : "dashboard");
+          setActiveTab(effectiveRole === "caregiver" ? "caregiver" : "dashboard");
         } else if (path === "/today" || hash === "#today") setActiveTab("today");
-        else if (path === "/add" || path === "/upload" || hash === "#add" || hash === "#upload") setActiveTab("add");
-        else if (path === "/check" || path === "/review" || hash === "#check" || hash === "#review") setActiveTab("check");
-        else if (path === "/ask" || path === "/chat" || hash === "#ask" || hash === "#chat") setActiveTab("ask");
+        else if (path === "/add" || path === "/upload" || hash === "#add" || hash === "#upload")
+          setActiveTab("add");
+        else if (path === "/check" || path === "/review" || hash === "#check" || hash === "#review")
+          setActiveTab("check");
+        else if (path === "/ask" || path === "/chat" || hash === "#ask" || hash === "#chat")
+          setActiveTab("ask");
         else if (path === "/reminders" || hash === "#reminders") setActiveTab("reminders");
         else if (path === "/timeline" || hash === "#timeline") setActiveTab("timeline");
         else if (path === "/hospitals" || hash === "#hospitals") setActiveTab("hospitals");
         else if (path === "/appointments" || hash === "#appointments") setActiveTab("appointments");
         else if (path === "/profile" || hash === "#profile") setActiveTab("profile");
-        else if (path === "/caregiver" || hash === "#caregiver") {
-          setUserRole("caregiver");
-          setActiveTab("caregiver");
-        }
       } else {
         setCurrentRoute("404");
       }
@@ -171,7 +223,7 @@ function AppContent() {
       window.removeEventListener("popstate", handleLocationChange);
       window.removeEventListener("hashchange", handleLocationChange);
     };
-  }, [userRole]);
+  }, [isAuthenticated, isLoading, user]);
 
   // Keyboard shortcut: '.' toggles Under the hood drawer
   useEffect(() => {
@@ -193,14 +245,46 @@ function AppContent() {
 
   const navigateTo = (path: string, newTab?: TabKey) => {
     window.history.pushState({}, "", path);
-    if (path === "/privacy") {
+    const cleanPath = path.toLowerCase();
+    if (cleanPath === "/privacy") {
       setCurrentRoute("privacy");
-    } else if (path === "/" || path === "") {
-      setCurrentRoute("app");
-      if (newTab) setActiveTab(newTab);
+    } else if (cleanPath === "/login") {
+      setCurrentRoute("login");
+    } else if (
+      cleanPath === "/" ||
+      cleanPath === "" ||
+      cleanPath === "/dashboard" ||
+      cleanPath === "/today" ||
+      cleanPath === "/add" ||
+      cleanPath === "/upload" ||
+      cleanPath === "/check" ||
+      cleanPath === "/review" ||
+      cleanPath === "/ask" ||
+      cleanPath === "/chat" ||
+      cleanPath === "/reminders" ||
+      cleanPath === "/timeline" ||
+      cleanPath === "/hospitals" ||
+      cleanPath === "/appointments" ||
+      cleanPath === "/profile" ||
+      cleanPath === "/caregiver"
+    ) {
+      if (!isAuthenticated) {
+        window.history.replaceState({}, "", "/login");
+        setCurrentRoute("login");
+      } else {
+        setCurrentRoute("app");
+        if (newTab) setActiveTab(newTab);
+      }
     } else {
       setCurrentRoute("404");
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setAccessDeniedNotice(null);
+    window.history.pushState({}, "", "/login");
+    setCurrentRoute("login");
   };
 
   // Called when upload / extraction finishes successfully
@@ -285,11 +369,69 @@ function AppContent() {
     setActiveTab("appointments");
   };
 
+  // Loading Session Restoration View
+  if (isLoading) {
+    return (
+      <div
+        className="app-container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          backgroundColor: "var(--canvas)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "var(--primary)" }}>
+          <CircleNotch size={38} className="skeleton-spinner" weight="bold" />
+          <p
+            style={{
+              marginTop: "1rem",
+              fontSize: "0.95rem",
+              color: "var(--ink-soft)",
+              fontWeight: 600,
+            }}
+          >
+            Verifying CareBridge Session...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Render dedicated Login / Registration Page (Requirement 1 & 2)
+  if (currentRoute === "login") {
+    return (
+      <LoginPage
+        language={language}
+        onLanguageChange={handleLanguageChange}
+        onLoginSuccess={(authedUser) => {
+          const targetTab = authedUser.role === "caregiver" ? "caregiver" : "dashboard";
+          window.history.pushState({}, "", `/${targetTab}`);
+          setCurrentRoute("app");
+          setActiveTab(targetTab);
+        }}
+        onNavigateToPrivacy={() => navigateTo("/privacy")}
+        defaultRole="patient"
+        accessDeniedMessage={accessDeniedNotice}
+      />
+    );
+  }
+
   // Render standalone Privacy Page
   if (currentRoute === "privacy") {
     return (
       <div className="app-container" lang={language}>
-        <PrivacyPage onBack={() => navigateTo("/", "dashboard")} language={language} />
+        <PrivacyPage
+          onBack={() => {
+            if (isAuthenticated) {
+              navigateTo(userRole === "caregiver" ? "/caregiver" : "/dashboard");
+            } else {
+              navigateTo("/login");
+            }
+          }}
+          language={language}
+        />
         <footer className="app-footer">
           <p className="footer-notice">
             Synthetic demo data. Not medical advice. Clinicians decide.
@@ -303,7 +445,16 @@ function AppContent() {
   if (currentRoute === "404") {
     return (
       <div className="app-container" lang={language}>
-        <NotFoundPage onBack={() => navigateTo("/", "dashboard")} language={language} />
+        <NotFoundPage
+          onBack={() => {
+            if (isAuthenticated) {
+              navigateTo(userRole === "caregiver" ? "/caregiver" : "/dashboard");
+            } else {
+              navigateTo("/login");
+            }
+          }}
+          language={language}
+        />
         <footer className="app-footer">
           <p className="footer-notice">
             Synthetic demo data. Not medical advice. Clinicians decide.
@@ -338,34 +489,6 @@ function AppContent() {
         </div>
 
         <div className="top-bar-right">
-          {/* Frontend Role Switcher Foundation */}
-          <div className="role-segmented-switch" role="radiogroup" aria-label="Portal Role">
-            <button
-              type="button"
-              className={`role-segment-btn ${userRole === "patient" ? "active" : ""}`}
-              onClick={() => {
-                setUserRole("patient");
-                if (activeTab === "caregiver") setActiveTab("dashboard");
-              }}
-              title="Patient Self-Care View"
-            >
-              <User size={14} weight={userRole === "patient" ? "fill" : "regular"} />
-              <span>{language === "ta" ? "நோயாளி" : "Patient"}</span>
-            </button>
-            <button
-              type="button"
-              className={`role-segment-btn ${userRole === "caregiver" ? "active" : ""}`}
-              onClick={() => {
-                setUserRole("caregiver");
-                setActiveTab("caregiver");
-              }}
-              title="Caregiver Family Oversight View"
-            >
-              <UsersThree size={14} weight={userRole === "caregiver" ? "fill" : "regular"} />
-              <span>{language === "ta" ? "பராமரிப்பாளர்" : "Caregiver"}</span>
-            </button>
-          </div>
-
           {/* Accessible Language Selector Button & Dropdown */}
           <LanguageSelector
             language={language}
@@ -383,7 +506,7 @@ function AppContent() {
             <Sliders size={18} weight="bold" />
           </button>
 
-          {/* User Auth Status / Sign In Button */}
+          {/* User Auth Status / Sign Out Button */}
           {isAuthenticated && user ? (
             <div
               className="auth-user-pill"
@@ -409,9 +532,10 @@ function AppContent() {
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  logout();
+                  handleLogout();
                 }}
                 title="Sign Out"
+                aria-label="Sign Out"
               >
                 <SignOut size={14} />
               </button>
@@ -420,7 +544,7 @@ function AppContent() {
             <button
               type="button"
               className="auth-signin-btn"
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={() => navigateTo("/login")}
               title="Sign In or Register"
             >
               <SignIn size={14} weight="bold" />
@@ -441,6 +565,45 @@ function AppContent() {
           </div>
         </div>
       </header>
+
+      {/* Access Denied Route Guard Notification */}
+      {accessDeniedNotice && (
+        <div
+          className="access-denied-banner"
+          role="alert"
+          style={{
+            backgroundColor: "var(--danger-bg)",
+            borderBottom: "1px solid rgba(179, 38, 30, 0.3)",
+            color: "var(--danger)",
+            padding: "0.6rem 1.25rem",
+            fontSize: "0.86rem",
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <WarningCircle size={18} weight="fill" />
+            <span>{accessDeniedNotice}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setAccessDeniedNotice(null)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "inherit",
+              display: "flex",
+              alignItems: "center",
+            }}
+            aria-label="Dismiss notice"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
 
       {/* Unsupported AI language notification banner */}
       {!isLanguageAiSupported(language) && (
@@ -682,7 +845,6 @@ function AppContent() {
               language={language}
               onLanguageChange={(lang) => handleLanguageChange(lang)}
               userRole={userRole}
-              onRoleChange={(role) => setUserRole(role)}
             />
           )}
         </main>
@@ -917,23 +1079,6 @@ function AppContent() {
           </a>
         </div>
       </footer>
-
-      {/* Authentication Modal */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        language={language}
-        defaultRole={userRole}
-        onSuccess={(authedUser) => {
-          if (authedUser.role === "caregiver") {
-            setUserRole("caregiver");
-            setActiveTab("caregiver");
-          } else {
-            setUserRole("patient");
-            setActiveTab("dashboard");
-          }
-        }}
-      />
     </div>
   );
 }
