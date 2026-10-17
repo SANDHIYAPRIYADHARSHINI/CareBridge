@@ -27,10 +27,16 @@ export interface CaregiverConsent {
   id: string;
   patient_id: string;
   caregiver_id: string;
+  patient_name?: string;
+  patient_email?: string;
   caregiver_name?: string;
   caregiver_email?: string;
   status: ConsentStatus;
   permissions: CaregiverPermissions;
+  can_view_prescriptions?: boolean;
+  can_view_reminders?: boolean;
+  can_view_appointments?: boolean;
+  can_view_records?: boolean;
   requested_at: string;
   responded_at?: string;
   revoked_at?: string;
@@ -124,17 +130,58 @@ export interface Hospital {
 
 export type AppointmentStatus = "pending" | "confirmed" | "cancelled" | "completed";
 
+export interface Doctor {
+  id: string;
+  hospital_id: string;
+  name: string;
+  department: string;
+  qualification?: string | null;
+  consultation_fee?: number | null;
+  is_available: boolean;
+  created_at: string;
+}
+
+export interface AppointmentSlot {
+  id: string;
+  doctor_id: string;
+  hospital_id: string;
+  start_time: string;
+  end_time: string;
+  is_booked: boolean;
+}
+
 export interface Appointment {
   id: string;
   patient_id: string;
   hospital_id: string;
+  doctor_id?: string | null;
+  slot_id?: string | null;
   hospital_name: string;
   doctor_name: string;
   department: string;
   scheduled_time: string;
   status: AppointmentStatus;
-  notes?: string;
+  notes?: string | null;
+  booked_by_id?: string | null;
+  booked_by_role?: string | null;
+  cancellation_reason?: string | null;
   created_at: string;
+}
+
+export interface AppointmentCreatePayload {
+  hospital_id: string;
+  doctor_id?: string | null;
+  slot_id?: string | null;
+  doctor_name: string;
+  department: string;
+  scheduled_time: string;
+  status?: AppointmentStatus;
+  notes?: string | null;
+  patient_id?: string | null;
+}
+
+export interface AppointmentCancelPayload {
+  reason?: string;
 }
 
 export interface AuditLog {

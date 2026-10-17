@@ -21,6 +21,11 @@ import type {
   DoseAdherenceLog,
   TimelineResponse,
   Hospital,
+  Doctor,
+  AppointmentSlot,
+  Appointment,
+  AppointmentCreatePayload,
+  AppointmentCancelPayload,
 } from "../types/backend";
 
 export class ApiError extends Error {
@@ -312,6 +317,78 @@ export async function simulateBatchCapacityUpdate(): Promise<{
     { method: "POST" }
   );
 }
+
+// ==========================================
+// Doctor & Appointment Booking APIs
+// ==========================================
+
+export interface DoctorFilterParams {
+  hospital_id?: string;
+  department?: string;
+  query?: string;
+}
+
+export async function getDoctors(params?: DoctorFilterParams): Promise<Doctor[]> {
+  const queryParams = new URLSearchParams();
+  if (params?.hospital_id) queryParams.append("hospital_id", params.hospital_id);
+  if (params?.department && params.department !== "all") queryParams.append("department", params.department);
+  if (params?.query) queryParams.append("query", params.query);
+
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  return apiFetch<Doctor[]>(`/appointments/doctors${queryString}`);
+}
+
+export interface SlotFilterParams {
+  doctor_id?: string;
+  hospital_id?: string;
+  date?: string;
+  available_only?: boolean;
+}
+
+export async function getAppointmentSlots(params?: SlotFilterParams): Promise<AppointmentSlot[]> {
+  const queryParams = new URLSearchParams();
+  if (params?.doctor_id) queryParams.append("doctor_id", params.doctor_id);
+  if (params?.hospital_id) queryParams.append("hospital_id", params.hospital_id);
+  if (params?.date) queryParams.append("date", params.date);
+  if (params?.available_only !== undefined) queryParams.append("available_only", params.available_only ? "true" : "false");
+
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  return apiFetch<AppointmentSlot[]>(`/appointments/slots${queryString}`);
+}
+
+export interface AppointmentListParams {
+  patient_id?: string;
+  hospital_id?: string;
+  status?: string;
+}
+
+export async function getAppointments(params?: AppointmentListParams): Promise<Appointment[]> {
+  const queryParams = new URLSearchParams();
+  if (params?.patient_id) queryParams.append("patient_id", params.patient_id);
+  if (params?.hospital_id) queryParams.append("hospital_id", params.hospital_id);
+  if (params?.status && params.status !== "all") queryParams.append("status", params.status);
+
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  return apiFetch<Appointment[]>(`/appointments/${queryString}`);
+}
+
+export async function bookAppointment(payload: AppointmentCreatePayload): Promise<Appointment> {
+  return apiFetch<Appointment>("/appointments/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function cancelAppointment(
+  appointmentId: string,
+  payload?: AppointmentCancelPayload
+): Promise<Appointment> {
+  return apiFetch<Appointment>(`/appointments/${appointmentId}/cancel`, {
+    method: "PUT",
+    body: JSON.stringify(payload || {}),
+  });
+}
+
 
 
 
