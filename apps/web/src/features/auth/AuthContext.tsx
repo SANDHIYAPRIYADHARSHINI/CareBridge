@@ -37,7 +37,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     async function restoreSession() {
       try {
-        const savedToken = sessionStorage.getItem(TOKEN_STORAGE_KEY);
+        const savedToken =
+          sessionStorage.getItem(TOKEN_STORAGE_KEY) ||
+          localStorage.getItem(TOKEN_STORAGE_KEY);
         if (savedToken) {
           setAuthToken(savedToken);
           setTokenState(savedToken);
@@ -47,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch {
         // Token invalid or expired
         sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
         setAuthToken(null);
         setTokenState(null);
         setUser(null);
@@ -65,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setTokenState(response.access_token);
       setAuthToken(response.access_token);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
+      localStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
       setUser(response.user);
       return response.user;
     } catch (err) {
@@ -84,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setTokenState(response.access_token);
       setAuthToken(response.access_token);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
+      localStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
       setUser(response.user);
       return response.user;
     } catch (err) {
@@ -99,6 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTokenState(null);
     setAuthToken(null);
     sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
     setUser(null);
     setError(null);
   }, []);

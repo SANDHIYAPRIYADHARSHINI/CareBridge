@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   User as UserIcon,
+  UsersThree,
   ShieldCheck,
   CheckCircle,
   XCircle,
@@ -27,7 +28,7 @@ interface ProfileScreenProps {
   language: string;
   onLanguageChange: (lang: string) => void;
   userRole: "patient" | "caregiver";
-  onRoleChange: (role: "patient" | "caregiver") => void;
+  onRoleChange?: (role: "patient" | "caregiver") => void;
 }
 
 const INITIAL_CONSENTS: CaregiverConsent[] = [
@@ -67,7 +68,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   language,
   onLanguageChange,
   userRole,
-  onRoleChange,
+  onRoleChange: _onRoleChange,
 }) => {
   const { user } = useAuth();
   const [consents, setConsents] = useState<CaregiverConsent[]>(INITIAL_CONSENTS);
@@ -309,25 +310,53 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             <div className="preference-row">
               <div className="pref-label-group">
                 <ShieldCheck size={18} />
-                <span>{isTa ? "தளப் பயன்முறை (Active Role)" : "Active Portal Role"}</span>
+                <span>{isTa ? "அங்கீகரிக்கப்பட்ட பயன்முறை" : "Authenticated Role"}</span>
               </div>
-              <div className="lang-toggle-chips">
-                <button
-                  type="button"
-                  className={`chip-btn ${userRole === "patient" ? "active" : ""}`}
-                  onClick={() => onRoleChange("patient")}
-                >
-                  Patient
-                </button>
-                <button
-                  type="button"
-                  className={`chip-btn ${userRole === "caregiver" ? "active" : ""}`}
-                  onClick={() => onRoleChange("caregiver")}
-                >
-                  Caregiver
-                </button>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  padding: "0.35rem 0.75rem",
+                  borderRadius: "999px",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.04em",
+                  backgroundColor: userRole === "caregiver" ? "var(--ok-bg)" : "var(--primary-subtle)",
+                  color: userRole === "caregiver" ? "var(--ok)" : "var(--primary)",
+                  border: "1px solid currentColor",
+                }}
+              >
+                {userRole === "caregiver" ? (
+                  <UsersThree size={14} weight="bold" />
+                ) : (
+                  <UserIcon size={14} weight="bold" />
+                )}
+                <span>
+                  {userRole === "caregiver"
+                    ? isTa
+                      ? "பராமரிப்பாளர் (Caregiver)"
+                      : "Caregiver"
+                    : isTa
+                    ? "நோயாளி (Patient)"
+                    : "Patient"}
+                </span>
               </div>
             </div>
+            <p
+              style={{
+                fontSize: "0.76rem",
+                color: "var(--ink-muted)",
+                marginTop: "-0.5rem",
+                marginBottom: "0.85rem",
+                lineHeight: 1.4,
+              }}
+            >
+              {isTa
+                ? "உங்கள் கணக்கு வகை சேவையகத்தால் அங்கீகரிக்கப்பட்டுள்ளது. வேறு கணக்கில் நுழைய வெளியேறி மீண்டும் உள்நுழையவும்."
+                : "Role is enforced cryptographically by backend authentication. To switch roles, sign out and sign in with the target account."}
+            </p>
 
             <button type="submit" className="save-profile-btn">
               <FloppyDisk size={18} weight="bold" />
