@@ -40,8 +40,31 @@ class ReminderCreate(BaseModel):
 
 
 class ReminderUpdate(BaseModel):
+    medicine_name: str | None = None
+    dosage: str | None = None
+    instructions: str | None = None
+    times_per_day: int | None = None
+    slots: list[str] | None = None
+    total_supply: int | None = None
     remaining_supply: int | None = None
+    refill_threshold: int | None = None
     is_active: bool | None = None
+
+
+class PrescriptionMedicineItem(BaseModel):
+    medicine_name: str
+    dosage: str
+    instructions: str | None = None
+    times_per_day: int = 1
+    slots: list[str] = ["morning"]
+    total_supply: int | None = 30
+    remaining_supply: int | None = 30
+    refill_threshold: int | None = 5
+
+
+class PrescriptionImportRequest(BaseModel):
+    medicines: list[PrescriptionMedicineItem]
+    is_verified: bool = True
 
 
 class ReminderResponse(BaseModel):

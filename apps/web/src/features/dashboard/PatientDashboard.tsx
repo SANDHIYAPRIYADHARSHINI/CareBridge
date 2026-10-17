@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Sun,
   PlusCircle,
@@ -13,8 +13,10 @@ import {
   CaretRight,
   ShieldCheck,
   Flask,
+  NotePencil,
 } from "@phosphor-icons/react";
 import type { MedicineReminder, Hospital, Appointment } from "../../types/backend";
+import { getReminders } from "../../services/api";
 import { StateFeedback, type FeedbackState } from "../../components/ui/StateFeedback";
 import "./PatientDashboard.css";
 
@@ -113,11 +115,24 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
   onScanPrescription,
 }) => {
   const [viewState] = useState<FeedbackState>("success");
+  const [reminders, setReminders] = useState<MedicineReminder[]>(DEMO_REMINDERS);
   const isTa = language === "ta";
 
+  useEffect(() => {
+    getReminders()
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setReminders(data);
+        }
+      })
+      .catch(() => {
+        // Fallback to DEMO_REMINDERS
+      });
+  }, []);
+
   // Dose adherence metrics
-  const totalDosesToday = 4;
-  const dosesTakenToday = 2;
+  const totalDosesToday = reminders.reduce((acc, r) => acc + (r.slots?.length || 1), 0) || 4;
+  const dosesTakenToday = Math.min(2, totalDosesToday);
   const adherenceRate = Math.round((dosesTakenToday / totalDosesToday) * 100);
 
   if (viewState === "loading") {
@@ -296,18 +311,26 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
           </div>
 
           <div className="reminders-list">
-            {DEMO_REMINDERS.map((med) => {
-              const isLowSupply = med.remaining_supply && med.refill_threshold && med.remaining_supply <= med.refill_threshold;
+            {reminders.slice(0, 4).map((med) => {
+              const isLowSupply =
+                med.remaining_supply !== undefined &&
+                med.refill_threshold !== undefined &&
+                med.remaining_supply <= med.refill_threshold;
               return (
                 <div key={med.id} className="reminder-item-row">
                   <div className="reminder-info">
                     <div className="reminder-name-row">
                       <span className="med-name">{med.medicine_name}</span>
                       <span className="med-dosage">{med.dosage}</span>
-                      {med.is_verified_rx && (
+                      {med.is_verified_rx ? (
                         <span className="verified-pill" title="Verified from prescription">
                           <CheckCircle size={12} weight="fill" />
                           <span>{isTa ? "சரிபார்க்கப்பட்டது" : "Rx Verified"}</span>
+                        </span>
+                      ) : (
+                        <span className="manual-pill" title="Manually entered by patient">
+                          <NotePencil size={12} weight="bold" />
+                          <span>{isTa ? "கைமுறை" : "Manual"}</span>
                         </span>
                       )}
                     </div>
@@ -321,11 +344,11 @@ export const PatientDashboard: React.FC<PatientDashboardProps> = ({
                     {isLowSupply ? (
                       <span className="supply-tag low-tag">
                         <WarningCircle size={14} weight="fill" />
-                        <span>{med.remaining_supply} {isTa ? "மீதம் (மறு நிரப்பல் தேவை)" : "left (Refill)"}</span>
+                        <span>{med.remaining_supply} {isTa ? "மீதம் (மறு நிரப்பல்)" : "left (Refill)"}</span>
                       </span>
                     ) : (
                       <span className="supply-tag normal-tag">
-                        <span>{med.remaining_supply} {isTa ? "நாட்கள் மீதம்" : "days supply"}</span>
+                        <span>{med.remaining_supply} {isTa ? "அளவுகள் மீதம்" : "doses left"}</span>
                       </span>
                     )}
                   </div>

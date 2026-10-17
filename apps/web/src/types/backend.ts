@@ -171,3 +171,50 @@ export interface PatientSummaryForCaregiverResponse {
   appointments: unknown[];
   records: unknown[];
 }
+
+export interface ReminderCreatePayload {
+  medicine_name: string;
+  dosage: string;
+  instructions?: string;
+  times_per_day?: number;
+  slots?: ("morning" | "noon" | "evening" | "night")[];
+  total_supply?: number;
+  remaining_supply?: number;
+  refill_threshold?: number;
+  is_verified_rx?: boolean;
+}
+
+export interface ReminderUpdatePayload {
+  medicine_name?: string;
+  dosage?: string;
+  instructions?: string;
+  times_per_day?: number;
+  slots?: ("morning" | "noon" | "evening" | "night")[];
+  total_supply?: number;
+  remaining_supply?: number;
+  refill_threshold?: number;
+  is_active?: boolean;
+}
+
+export interface DoseLogCreatePayload {
+  scheduled_time: string;
+  status: DoseStatus;
+  notes?: string;
+}
+
+export interface PrescriptionMedicineItemPayload {
+  medicine_name: string;
+  dosage: string;
+  instructions?: string;
+  times_per_day?: number;
+  slots?: ("morning" | "noon" | "evening" | "night")[];
+  total_supply?: number;
+  remaining_supply?: number;
+  refill_threshold?: number;
+}
+
+export interface PrescriptionImportPayload {
+  prescription_id?: string;
+  medicines: PrescriptionMedicineItemPayload[];
+}
+

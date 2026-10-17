@@ -13,6 +13,12 @@ import type {
   CaregiverConsent,
   AuditLogResponse,
   PatientSummaryForCaregiverResponse,
+  MedicineReminder,
+  ReminderCreatePayload,
+  ReminderUpdatePayload,
+  DoseLogCreatePayload,
+  PrescriptionImportPayload,
+  DoseAdherenceLog,
 } from "../types/backend";
 
 export class ApiError extends Error {
@@ -167,3 +173,65 @@ export async function getPatientSummaryForCaregiver(
     `/consent/patient-summary/${patientId}`
   );
 }
+
+// ==========================================
+// Medicine Reminders & Dose Tracking APIs
+// ==========================================
+
+export async function getReminders(patientId?: string): Promise<MedicineReminder[]> {
+  const query = patientId ? `?patient_id=${encodeURIComponent(patientId)}` : "";
+  return apiFetch<MedicineReminder[]>(`/reminders/${query}`);
+}
+
+export async function createReminder(
+  payload: ReminderCreatePayload
+): Promise<MedicineReminder> {
+  return apiFetch<MedicineReminder>("/reminders/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function importRemindersFromPrescription(
+  payload: PrescriptionImportPayload
+): Promise<MedicineReminder[]> {
+  return apiFetch<MedicineReminder[]>("/reminders/from-prescription", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getRefillAlerts(): Promise<MedicineReminder[]> {
+  return apiFetch<MedicineReminder[]>("/reminders/refills");
+}
+
+export async function getReminder(reminderId: string): Promise<MedicineReminder> {
+  return apiFetch<MedicineReminder>(`/reminders/${reminderId}`);
+}
+
+export async function updateReminder(
+  reminderId: string,
+  payload: ReminderUpdatePayload
+): Promise<MedicineReminder> {
+  return apiFetch<MedicineReminder>(`/reminders/${reminderId}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteReminder(reminderId: string): Promise<void> {
+  await apiFetch<void>(`/reminders/${reminderId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function logDose(
+  reminderId: string,
+  payload: DoseLogCreatePayload
+): Promise<DoseAdherenceLog> {
+  return apiFetch<DoseAdherenceLog>(`/reminders/${reminderId}/doses`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
