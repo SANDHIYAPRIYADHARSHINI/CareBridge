@@ -20,6 +20,7 @@ import type {
   PrescriptionImportPayload,
   DoseAdherenceLog,
   TimelineResponse,
+  Hospital,
 } from "../types/backend";
 
 export class ApiError extends Error {
@@ -250,5 +251,36 @@ export async function getTimeline(
   const query = params.toString() ? `?${params.toString()}` : "";
   return apiFetch<TimelineResponse>(`/timeline/${query}`);
 }
+
+// ==========================================
+// Hospital Finder & Map APIs
+// ==========================================
+
+export interface HospitalFilterParams {
+  query?: string;
+  emergency_only?: boolean;
+  facility?: string;
+  lat?: number;
+  lon?: number;
+}
+
+export async function getHospitals(
+  params?: HospitalFilterParams
+): Promise<Hospital[]> {
+  const queryParams = new URLSearchParams();
+  if (params?.query) queryParams.append("query", params.query);
+  if (params?.emergency_only) queryParams.append("emergency_only", "true");
+  if (params?.facility && params.facility !== "all") queryParams.append("facility", params.facility);
+  if (params?.lat !== undefined) queryParams.append("lat", params.lat.toString());
+  if (params?.lon !== undefined) queryParams.append("lon", params.lon.toString());
+
+  const queryString = queryParams.toString() ? `?${queryParams.toString()}` : "";
+  return apiFetch<Hospital[]>(`/hospitals/${queryString}`);
+}
+
+export async function getHospitalById(hospitalId: string): Promise<Hospital> {
+  return apiFetch<Hospital>(`/hospitals/${hospitalId}`);
+}
+
 
 

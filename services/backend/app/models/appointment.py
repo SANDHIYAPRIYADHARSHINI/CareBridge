@@ -2,7 +2,7 @@ import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -35,6 +35,7 @@ class Hospital(Base):
 
     status: Mapped[str] = mapped_column(String(50), default="normal", nullable=False)  # normal, busy, critical
     wait_time_minutes: Mapped[int | None] = mapped_column(Integer, default=15, nullable=True)
+    facilities: Mapped[list] = mapped_column(JSON, default=list, nullable=False)
 
     is_simulated: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     last_updated: Mapped[datetime] = mapped_column(

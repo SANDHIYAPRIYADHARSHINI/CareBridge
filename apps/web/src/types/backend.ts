@@ -110,6 +110,8 @@ export interface Hospital {
   icu_capacity: number;
   icu_available: number;
   wait_time_minutes?: number;
+  facilities?: string[];
+  distance_km?: number;
   status: "normal" | "busy" | "critical";
   last_updated: string;
   is_simulated: boolean;
