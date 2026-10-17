@@ -13,7 +13,7 @@ import type { ExtractionResult, Medicine } from "../../types/ai";
 import "./TodayScreen.css";
 
 interface TodayScreenProps {
-  language: "en" | "ta";
+  language: string;
   confirmedExtraction: ExtractionResult | null;
   onNavigateToAdd: () => void;
   onNavigateToCheck: () => void;

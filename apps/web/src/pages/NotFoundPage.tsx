@@ -3,7 +3,7 @@ import "./pages.css";
 
 interface NotFoundPageProps {
   onBack: () => void;
-  language?: "en" | "ta";
+  language?: string;
 }
 
 export const NotFoundPage: React.FC<NotFoundPageProps> = ({ onBack, language = "en" }) => {

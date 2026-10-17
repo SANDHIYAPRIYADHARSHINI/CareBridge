@@ -28,7 +28,7 @@ import {
 import "./HospitalsScreen.css";
 
 interface HospitalsScreenProps {
-  language: "en" | "ta";
+  language: string;
   onSelectHospitalForBooking?: (hospital: Hospital) => void;
 }
 

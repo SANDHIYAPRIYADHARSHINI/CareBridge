@@ -4,7 +4,7 @@ import { transcribeVoice } from "../../services/aiApi";
 import "./VoiceButton.css";
 
 interface VoiceButtonProps {
-  language?: "en" | "ta";
+  language?: string;
   onTranscriptSubmitted: (text: string) => void;
   disabled?: boolean;
   useFixtures?: boolean;

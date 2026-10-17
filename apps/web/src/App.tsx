@@ -17,6 +17,7 @@ import {
   X,
   SignIn,
   SignOut,
+  WarningCircle,
 } from "@phosphor-icons/react";
 import {
   UploadScreen,
@@ -40,6 +41,8 @@ import type { Hospital } from "./types/backend";
 import { rxDemo001Fixture } from "./fixtures";
 import { isEnvUseFixtures } from "./services/aiApi";
 import { importRemindersFromPrescription } from "./services/api";
+import { LanguageSelector } from "./components/LanguageSelector";
+import { isLanguageAiSupported } from "./types/language";
 import "./index.css";
 
 export type TabKey =
@@ -61,7 +64,27 @@ function AppContent() {
   // Navigation & Routing state
   const [currentRoute, setCurrentRoute] = useState<"app" | "privacy" | "404">("app");
   const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
-  const [language, setLanguage] = useState<"en" | "ta">("en");
+  const [language, setLanguage] = useState<string>(() => {
+    try {
+      return (
+        sessionStorage.getItem("carebridge_language") ||
+        localStorage.getItem("carebridge_language") ||
+        "en"
+      );
+    } catch {
+      return "en";
+    }
+  });
+
+  const handleLanguageChange = (newLang: string) => {
+    setLanguage(newLang);
+    try {
+      sessionStorage.setItem("carebridge_language", newLang);
+      localStorage.setItem("carebridge_language", newLang);
+    } catch {
+      // ignore storage errors
+    }
+  };
   const [userRole, setUserRole] = useState<"patient" | "caregiver">("patient");
   const [isAmdDrawerOpen, setIsAmdDrawerOpen] = useState(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
@@ -343,25 +366,11 @@ function AppContent() {
             </button>
           </div>
 
-          {/* Segmented language switch: EN | தமிழ் */}
-          <div className="lang-segmented-switch" role="radiogroup" aria-label="Language selection">
-            <button
-              type="button"
-              className={`lang-segment-btn ${language === "en" ? "active" : ""}`}
-              onClick={() => setLanguage("en")}
-              aria-label="Switch to English"
-            >
-              EN
-            </button>
-            <button
-              type="button"
-              className={`lang-segment-btn ${language === "ta" ? "active" : ""}`}
-              onClick={() => setLanguage("ta")}
-              aria-label="தமிழுக்கு மாறவும்"
-            >
-              தமிழ்
-            </button>
-          </div>
+          {/* Accessible Language Selector Button & Dropdown */}
+          <LanguageSelector
+            language={language}
+            onSelectLanguage={handleLanguageChange}
+          />
 
           {/* Under the hood icon button (hotkey: .) */}
           <button
@@ -432,6 +441,24 @@ function AppContent() {
           </div>
         </div>
       </header>
+
+      {/* Unsupported AI language notification banner */}
+      {!isLanguageAiSupported(language) && (
+        <div className="lang-unsupported-banner" role="alert">
+          <div className="banner-content">
+            <WarningCircle size={16} weight="bold" />
+            <span>This language is not currently supported by the AI service.</span>
+          </div>
+          <button
+            type="button"
+            className="banner-switch-btn"
+            onClick={() => handleLanguageChange("en")}
+            title="Switch back to English"
+          >
+            Switch to English
+          </button>
+        </div>
+      )}
 
       {/* Shell Body: Left Rail on Desktop + Mobile Bottom Tabs */}
       <div className="app-shell-body">
@@ -615,7 +642,7 @@ function AppContent() {
             <div style={{ maxWidth: "860px", margin: "0 auto", width: "100%" }}>
               <ChatPanel
                 language={language}
-                onLanguageChange={(lang) => setLanguage(lang)}
+                onLanguageChange={(lang) => handleLanguageChange(lang)}
                 confirmedExtraction={confirmedExtraction || currentExtraction}
                 useFixtures={useFixtures}
                 onCitationClick={(lineIds) => {
@@ -653,7 +680,7 @@ function AppContent() {
           {activeTab === "profile" && (
             <ProfileScreen
               language={language}
-              onLanguageChange={(lang) => setLanguage(lang)}
+              onLanguageChange={(lang) => handleLanguageChange(lang)}
               userRole={userRole}
               onRoleChange={(role) => setUserRole(role)}
             />

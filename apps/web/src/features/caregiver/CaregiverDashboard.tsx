@@ -28,7 +28,7 @@ import { useAuth } from "../auth";
 import "./CaregiverDashboard.css";
 
 interface CaregiverDashboardProps {
-  language: "en" | "ta";
+  language: string;
   onViewPatientTimeline?: (patientId: string) => void;
 }
 

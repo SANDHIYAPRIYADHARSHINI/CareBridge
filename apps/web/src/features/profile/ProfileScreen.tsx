@@ -19,11 +19,13 @@ import {
   getAuditLogs,
 } from "../../services/api";
 import { useAuth } from "../auth";
+import { LanguageSelector } from "../../components/LanguageSelector";
+import { isLanguageAiSupported } from "../../types/language";
 import "./ProfileScreen.css";
 
 interface ProfileScreenProps {
-  language: "en" | "ta";
-  onLanguageChange: (lang: "en" | "ta") => void;
+  language: string;
+  onLanguageChange: (lang: string) => void;
   userRole: "patient" | "caregiver";
   onRoleChange: (role: "patient" | "caregiver") => void;
 }
@@ -274,23 +276,35 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
                 <Translate size={18} />
                 <span>{isTa ? "மொழி (Language)" : "Language"}</span>
               </div>
-              <div className="lang-toggle-chips">
-                <button
-                  type="button"
-                  className={`chip-btn ${language === "en" ? "active" : ""}`}
-                  onClick={() => onLanguageChange("en")}
-                >
-                  English
-                </button>
-                <button
-                  type="button"
-                  className={`chip-btn ${language === "ta" ? "active" : ""}`}
-                  onClick={() => onLanguageChange("ta")}
-                >
-                  தமிழ்
-                </button>
-              </div>
+              <LanguageSelector
+                language={language}
+                onSelectLanguage={onLanguageChange}
+              />
             </div>
+
+            {!isLanguageAiSupported(language) && (
+              <div
+                className="pref-unsupported-lang-note"
+                role="note"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  marginTop: "-0.25rem",
+                  marginBottom: "0.75rem",
+                  padding: "0.5rem 0.75rem",
+                  backgroundColor: "var(--warn-bg)",
+                  border: "1px solid var(--warn-border)",
+                  borderRadius: "var(--radius-sm)",
+                  color: "var(--warn)",
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                }}
+              >
+                <WarningCircle size={16} weight="bold" />
+                <span>This language is not currently supported by the AI service.</span>
+              </div>
+            )}
 
             <div className="preference-row">
               <div className="pref-label-group">

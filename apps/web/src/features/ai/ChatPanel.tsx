@@ -14,6 +14,8 @@ import {
 } from "@phosphor-icons/react";
 import type { ChatResponse, Citation, ExtractionResult, ChatDocument, ChatRequest } from "../../types/ai";
 import { VoiceButton } from "./VoiceButton";
+import { LanguageSelector } from "../../components/LanguageSelector";
+import { isLanguageAiSupported } from "../../types/language";
 import { EMERGENCY_CONFIG } from "../../config/emergency";
 import { sendChatMessage, AiApiError } from "../../services/aiApi";
 import "./ChatPanel.css";
@@ -26,9 +28,9 @@ interface ChatMessage {
 }
 
 interface ChatPanelProps {
-  language?: "en" | "ta";
+  language?: string;
   onCitationClick?: (lineIds: string[]) => void;
-  onLanguageChange?: (lang: "en" | "ta") => void;
+  onLanguageChange?: (lang: string) => void;
   confirmedExtraction?: ExtractionResult | null;
   useFixtures?: boolean;
 }
@@ -212,14 +214,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
         <div style={{ display: "flex", gap: "0.5rem" }}>
           {onLanguageChange && (
-            <button
-              type="button"
-              className="lang-toggle-btn"
-              onClick={() => onLanguageChange(language === "en" ? "ta" : "en")}
-              title="Toggle language"
-            >
-              {language === "en" ? "தமிழ்" : "English"}
-            </button>
+            <LanguageSelector
+              language={language}
+              onSelectLanguage={onLanguageChange}
+            />
           )}
         </div>
       </div>
@@ -328,6 +326,30 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           Chest pain emergency! (L3 test)
         </button>
       </div>
+
+      {/* Unsupported AI language alert banner */}
+      {!isLanguageAiSupported(language) && (
+        <div
+          className="chat-unsupported-lang-warning"
+          role="alert"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.55rem 0.85rem",
+            backgroundColor: "var(--warn-bg)",
+            border: "1px solid var(--warn-border)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--warn)",
+            fontSize: "0.82rem",
+            fontWeight: 500,
+            marginBottom: "0.5rem",
+          }}
+        >
+          <Warning size={16} weight="bold" />
+          <span>This language is not currently supported by the AI service.</span>
+        </div>
+      )}
 
       {/* Chat Input Bar */}
       <form

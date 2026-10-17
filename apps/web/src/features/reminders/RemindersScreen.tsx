@@ -30,7 +30,7 @@ import {
 import "./RemindersScreen.css";
 
 interface RemindersScreenProps {
-  language: "en" | "ta";
+  language: string;
   onAddFromPrescription?: () => void;
   patientId?: string; // For caregiver view
   isCaregiverView?: boolean;

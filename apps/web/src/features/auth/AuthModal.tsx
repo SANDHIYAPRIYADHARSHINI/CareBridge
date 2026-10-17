@@ -18,7 +18,7 @@ import "./AuthModal.css";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  language: "en" | "ta";
+  language: string;
   defaultRole?: UserRole;
   onSuccess?: (user: User) => void;
 }

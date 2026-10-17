@@ -38,7 +38,7 @@ import { StateFeedback } from "../../components/ui/StateFeedback";
 import "./AppointmentsScreen.css";
 
 interface AppointmentsScreenProps {
-  language: "en" | "ta";
+  language: string;
   preselectedHospitalName?: string;
 }
 

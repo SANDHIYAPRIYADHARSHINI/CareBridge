@@ -21,7 +21,7 @@ import { StateFeedback, type FeedbackState } from "../../components/ui/StateFeed
 import "./PatientDashboard.css";
 
 interface PatientDashboardProps {
-  language: "en" | "ta";
+  language: string;
   onNavigateToTab: (tab: string) => void;
   onScanPrescription: () => void;
 }
