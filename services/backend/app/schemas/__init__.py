@@ -19,6 +19,12 @@ from app.schemas.reminder import (
     ReminderResponse,
     ReminderUpdate,
 )
+from app.schemas.timeline import (
+    HealthRecordCreate,
+    HealthRecordResponse,
+    TimelineEventItem,
+    TimelineResponse,
+)
 
 __all__ = [
     "UserCreate",
@@ -43,4 +49,8 @@ __all__ = [
     "HospitalResponse",
     "AppointmentCreate",
     "AppointmentResponse",
+    "HealthRecordCreate",
+    "HealthRecordResponse",
+    "TimelineEventItem",
+    "TimelineResponse",
 ]
