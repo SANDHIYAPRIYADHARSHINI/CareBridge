@@ -39,6 +39,7 @@ import type { ExtractionResult } from "./types/ai";
 import type { Hospital } from "./types/backend";
 import { rxDemo001Fixture } from "./fixtures";
 import { isEnvUseFixtures } from "./services/aiApi";
+import { importRemindersFromPrescription } from "./services/api";
 import "./index.css";
 
 export type TabKey =
@@ -187,11 +188,73 @@ function AppContent() {
   };
 
   // Called when patient confirms in PrescriptionReview
-  const handleConfirmReminders = () => {
+  const handleConfirmReminders = async () => {
     if (currentExtraction) {
       setConfirmedExtraction(currentExtraction);
+      if (currentExtraction.medicines && currentExtraction.medicines.length > 0) {
+        try {
+          const payload = {
+            prescription_id: currentExtraction.document_id || `rx-${Date.now()}`,
+            medicines: currentExtraction.medicines.map((m) => {
+              const name = m.name?.value || "Prescribed Medicine";
+              const strength = m.strength?.value || "";
+              const timing = m.timing?.value || "";
+              const frequency = m.frequency?.value || "";
+              const instructions = [timing, m.instructions?.value].filter(Boolean).join(" - ");
+
+              // Determine slots
+              const slots: ("morning" | "noon" | "evening" | "night")[] = [];
+              const lowerFreq = `${frequency} ${timing}`.toLowerCase();
+              if (
+                lowerFreq.includes("morning") ||
+                frequency.startsWith("1-") ||
+                frequency === "1-0-1" ||
+                frequency === "1-1-1" ||
+                frequency === "1-0-0"
+              ) {
+                slots.push("morning");
+              }
+              if (
+                lowerFreq.includes("afternoon") ||
+                lowerFreq.includes("noon") ||
+                frequency.includes("-1-") ||
+                frequency === "1-1-1"
+              ) {
+                slots.push("noon");
+              }
+              if (
+                lowerFreq.includes("evening") ||
+                lowerFreq.includes("night") ||
+                frequency.endsWith("-1") ||
+                frequency === "1-0-1" ||
+                frequency === "1-1-1" ||
+                frequency === "0-0-1"
+              ) {
+                slots.push("night");
+              }
+              if (slots.length === 0) {
+                slots.push("morning");
+              }
+
+              return {
+                medicine_name: name,
+                dosage: strength || "As prescribed",
+                instructions: instructions || "Take as directed by clinician",
+                times_per_day: slots.length,
+                slots,
+                total_supply: 30,
+                remaining_supply: 30,
+                refill_threshold: 7,
+              };
+            }),
+          };
+          await importRemindersFromPrescription(payload);
+        } catch (err) {
+          console.warn("Could not sync verified prescription reminders to backend:", err);
+        }
+      }
     }
-    setActiveTab("today");
+    setActiveTab("reminders");
   };
 
   const handleSelectHospitalForBooking = (hospital: Hospital) => {

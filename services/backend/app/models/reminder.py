@@ -47,7 +47,9 @@ class MedicineReminder(Base):
 
     # Relationships
     patient = relationship("User", back_populates="reminders")
-    dose_logs = relationship("DoseLog", back_populates="reminder", cascade="all, delete-orphan")
+    dose_logs = relationship(
+        "DoseLog", back_populates="reminder", cascade="all, delete-orphan", lazy="selectin"
+    )
 
 
 class DoseLog(Base):

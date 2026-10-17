@@ -430,6 +430,18 @@
   border-radius: 4px;
 }
 
+.manual-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
 .med-timing {
   display: flex;
   align-items: center;
