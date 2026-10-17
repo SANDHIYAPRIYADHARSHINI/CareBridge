@@ -36,5 +36,11 @@ class User(Base):
 
     # Relationships
     reminders = relationship("MedicineReminder", back_populates="patient", cascade="all, delete-orphan")
-    appointments = relationship("Appointment", back_populates="patient", cascade="all, delete-orphan")
+    appointments = relationship(
+        "Appointment",
+        back_populates="patient",
+        foreign_keys="[Appointment.patient_id]",
+        cascade="all, delete-orphan",
+    )
     health_records = relationship("HealthRecord", back_populates="patient", cascade="all, delete-orphan")
+
