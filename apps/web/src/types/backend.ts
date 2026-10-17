@@ -68,20 +68,33 @@ export interface MedicineReminder {
 export type TimelineEventType =
   | "prescription"
   | "reminder"
+  | "dose_log"
   | "appointment"
   | "report"
   | "discharge";
 
 export interface TimelineEvent {
   id: string;
-  patient_id: string;
+  patient_id?: string;
   type: TimelineEventType;
   title: string;
   description?: string;
   timestamp: string;
+  source?: string;
+  doctor_name?: string;
+  hospital_name?: string;
   document_url?: string;
   is_verified: boolean;
+  confidence?: number;
+  status?: string;
+  flags?: string[];
   metadata?: Record<string, unknown>;
+}
+
+export interface TimelineResponse {
+  patient_id: string;
+  total_events: number;
+  events: TimelineEvent[];
 }
 
 export interface Hospital {

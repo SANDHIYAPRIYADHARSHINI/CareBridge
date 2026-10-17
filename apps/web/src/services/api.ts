@@ -19,6 +19,7 @@ import type {
   DoseLogCreatePayload,
   PrescriptionImportPayload,
   DoseAdherenceLog,
+  TimelineResponse,
 } from "../types/backend";
 
 export class ApiError extends Error {
@@ -234,4 +235,20 @@ export async function logDose(
     body: JSON.stringify(payload),
   });
 }
+
+// ==========================================
+// Health Timeline APIs
+// ==========================================
+
+export async function getTimeline(
+  patientId?: string,
+  recordType?: string
+): Promise<TimelineResponse> {
+  const params = new URLSearchParams();
+  if (patientId) params.append("patient_id", patientId);
+  if (recordType && recordType !== "all") params.append("record_type", recordType);
+  const query = params.toString() ? `?${params.toString()}` : "";
+  return apiFetch<TimelineResponse>(`/timeline/${query}`);
+}
+
 
