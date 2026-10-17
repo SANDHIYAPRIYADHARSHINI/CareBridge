@@ -111,7 +111,7 @@ export interface SuggestedAction {
 
 export interface ChatResponse {
   request_id: string;
-  language: "en" | "ta";
+  language: string;
   answer: string;
   citations: Citation[];
   support_status: "supported" | "partial" | "unsupported";
@@ -166,7 +166,7 @@ export interface ChatDocument {
 
 export interface ChatRequest {
   messages: ChatMessage[];
-  language?: "en" | "ta" | "auto";
+  language?: string;
   documents?: ChatDocument[];
   use_reference?: boolean;
 }

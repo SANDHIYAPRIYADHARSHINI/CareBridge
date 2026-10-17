@@ -23,7 +23,7 @@ import { StateFeedback } from "../../components/ui/StateFeedback";
 import "./TimelineScreen.css";
 
 interface TimelineScreenProps {
-  language: "en" | "ta";
+  language: string;
   onOpenDocument?: (docUrl: string) => void;
   patientId?: string; // For caregiver inspection
   isCaregiverView?: boolean;

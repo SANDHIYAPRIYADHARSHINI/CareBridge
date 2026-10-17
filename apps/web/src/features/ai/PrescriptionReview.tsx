@@ -23,7 +23,7 @@ interface PrescriptionReviewProps {
   onHoverLine?: (lineIds: string[]) => void;
   onConfirmReminders?: () => void;
   onReUpload?: () => void;
-  language?: "en" | "ta";
+  language?: string;
 }
 
 type ZoomStep = 1.0 | 1.25 | 1.5 | 2.0;
