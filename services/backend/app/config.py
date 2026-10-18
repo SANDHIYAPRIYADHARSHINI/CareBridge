@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
 
     # CORS
-    ALLOWED_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
 
     @property
     def cors_origins(self) -> list[str]:
@@ -32,8 +32,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
     # External AI Microservice (Member 1)
-    AI_SERVICE_URL: str = "http://localhost:8100"
-    AI_TIMEOUT_SECONDS: float = 30.0
+    AI_SERVICE_URL: str = "http://127.0.0.1:8100"
+    AI_TIMEOUT_SECONDS: float = 60.0
+    AI_CHAT_TIMEOUT_SECONDS: float = 60.0
+    AI_EXTRACT_TIMEOUT_SECONDS: float = 90.0
 
     model_config = SettingsConfigDict(
         env_file=".env",

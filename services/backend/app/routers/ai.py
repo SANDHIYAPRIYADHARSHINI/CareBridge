@@ -23,37 +23,62 @@ logger = logging.getLogger("carebridge.backend.ai")
 
 router = APIRouter(prefix="/ai", tags=["AI Integration (Server-to-Server)"])
 
+_last_ai_error: dict[str, Any] | None = None
+
+
+def _record_ai_error(endpoint: str, error_type: str, status_code: int, message: str) -> None:
+    global _last_ai_error
+    _last_ai_error = {
+        "endpoint": endpoint,
+        "type": error_type,
+        "status": status_code,
+        "message": message,
+    }
+
 
 @router.get("/health", response_model=AiHealthResponse)
 async def check_ai_health() -> AiHealthResponse:
     """Verifies connectivity with Member 1's AI service on AMD ROCm / CPU."""
     try:
-        async with httpx.AsyncClient(timeout=4.0) as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(10.0, connect=5.0)) as client:
             resp = await client.get(f"{settings.AI_SERVICE_URL}/v1/health")
             if resp.status_code == 200:
                 data = resp.json()
                 return AiHealthResponse(
                     status=data.get("status", "ok"),
                     mock=data.get("mock", False),
-                    model=data.get("model", "Gemma 2 9B (vLLM ROCm)"),
-                    gpu=data.get("gpu", "AMD Instinct MI300X / ROCm"),
+                    model=data.get("model", "Gemma-4-31B-IT"),
+                    gpu=data.get("gpu", "AMD Token Factory"),
                     stt_model=data.get("stt_model"),
                     embed_model=data.get("embed_model"),
+                    embedder=data.get("embedder"),
+                    warning=data.get("warning"),
+                    last_error=_last_ai_error,
                     is_connected=True,
                     message="CareBridge AI service is operational.",
                 )
+            _record_ai_error("health", "HTTPStatusError", resp.status_code, f"HTTP {resp.status_code}")
+            logger.error("[AI Backend Proxy] Health check failed with HTTP %d", resp.status_code)
             return AiHealthResponse(
                 status="degraded",
                 is_connected=False,
+                last_error=_last_ai_error,
                 message=f"AI service responded with HTTP {resp.status_code}",
             )
     except Exception as exc:
-        logger.warning("Could not reach AI service at %s: %s", settings.AI_SERVICE_URL, exc)
+        _record_ai_error("health", type(exc).__name__, 503, str(exc))
+        logger.error(
+            "[AI Backend Proxy] Could not reach AI service at %s: type=%s, error=%s",
+            settings.AI_SERVICE_URL,
+            type(exc).__name__,
+            exc,
+        )
         return AiHealthResponse(
             status="offline",
             mock=True,
-            model="Gemma 2 9B (vLLM ROCm - Offline Fallback)",
-            gpu="AMD Instinct MI300X",
+            model="Gemma-4-31B-IT (Offline Fallback)",
+            gpu="AMD Token Factory",
+            last_error=_last_ai_error,
             is_connected=False,
             message="AI microservice is currently unreachable. Operating in synthetic fallback mode.",
         )
@@ -116,7 +141,7 @@ async def extract_prescription_proxy(
     # Forward to Member 1 AI service server-to-server
     try:
         content = await file.read()
-        async with httpx.AsyncClient(timeout=settings.AI_TIMEOUT_SECONDS) as client:
+        async with httpx.AsyncClient(timeout=settings.AI_EXTRACT_TIMEOUT_SECONDS) as client:
             files = {
                 "file": (
                     file.filename or "prescription.png",
@@ -134,6 +159,8 @@ async def extract_prescription_proxy(
             if resp.status_code != 200:
                 error_body = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
                 detail = error_body.get("detail", error_body.get("error", f"AI extraction failed with HTTP {resp.status_code}"))
+                _record_ai_error("extract", "HTTPStatusError", resp.status_code, str(detail))
+                logger.error("[AI Backend Proxy] AI extraction error: status=%d, detail=%s", resp.status_code, detail)
                 raise HTTPException(status_code=resp.status_code, detail=detail)
 
             result = resp.json()
@@ -143,14 +170,28 @@ async def extract_prescription_proxy(
 
     except HTTPException:
         raise
-    except (httpx.ConnectError, httpx.TimeoutException) as exc:
-        logger.error("AI service connection failed: %s", exc)
+    except httpx.ConnectError as exc:
+        _record_ai_error("extract", type(exc).__name__, 503, str(exc))
+        logger.error("[AI Backend Proxy] Extraction connection failed (type=%s, status=503): %s", type(exc).__name__, exc)
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={
                 "error": {
-                    "code": "model_unavailable",
-                    "message": "The CareBridge AI extraction service is temporarily unreachable. Please retry or enter medicines manually.",
+                    "code": "service_not_reachable",
+                    "message": "CareBridge AI extraction service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100.",
+                    "retryable": True,
+                }
+            },
+        ) from exc
+    except httpx.TimeoutException as exc:
+        _record_ai_error("extract", type(exc).__name__, 504, str(exc))
+        logger.error("[AI Backend Proxy] Extraction timed out after %ss (type=%s): %s", settings.AI_EXTRACT_TIMEOUT_SECONDS, type(exc).__name__, exc)
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail={
+                "error": {
+                    "code": "service_timeout",
+                    "message": "CareBridge AI extraction timed out. Please retry with a clearer photo or enter details manually.",
                     "retryable": True,
                 }
             },
@@ -234,26 +275,42 @@ async def chat_proxy(
             "documents": authorized_documents,
             "use_reference": payload.use_reference,
         }
-        async with httpx.AsyncClient(timeout=settings.AI_TIMEOUT_SECONDS) as client:
+        async with httpx.AsyncClient(timeout=settings.AI_CHAT_TIMEOUT_SECONDS) as client:
             resp = await client.post(f"{settings.AI_SERVICE_URL}/v1/chat", json=chat_body)
 
             if resp.status_code != 200:
                 error_body = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
                 detail = error_body.get("detail", error_body.get("error", f"Chat failed with HTTP {resp.status_code}"))
+                _record_ai_error("chat", "HTTPStatusError", resp.status_code, str(detail))
+                logger.error("[AI Backend Proxy] AI chat error: status=%d, detail=%s", resp.status_code, detail)
                 raise HTTPException(status_code=resp.status_code, detail=detail)
 
             return resp.json()
 
     except HTTPException:
         raise
-    except (httpx.ConnectError, httpx.TimeoutException) as exc:
-        logger.error("AI chat connection failed: %s", exc)
+    except httpx.ConnectError as exc:
+        _record_ai_error("chat", type(exc).__name__, 503, str(exc))
+        logger.error("[AI Backend Proxy] Chat connection failed (type=%s, status=503): %s", type(exc).__name__, exc)
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={
                 "error": {
-                    "code": "model_unavailable",
-                    "message": "The CareBridge AI chat companion is temporarily unreachable. Please retry shortly.",
+                    "code": "service_not_reachable",
+                    "message": "CareBridge AI service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100.",
+                    "retryable": True,
+                }
+            },
+        ) from exc
+    except httpx.TimeoutException as exc:
+        _record_ai_error("chat", type(exc).__name__, 504, str(exc))
+        logger.error("[AI Backend Proxy] Chat timed out after %ss (type=%s): %s", settings.AI_CHAT_TIMEOUT_SECONDS, type(exc).__name__, exc)
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail={
+                "error": {
+                    "code": "service_timeout",
+                    "message": "CareBridge AI chat companion timed out waiting for model response.",
                     "retryable": True,
                 }
             },
@@ -405,7 +462,9 @@ async def benchmark_metrics_proxy() -> dict[str, Any]:
         async with httpx.AsyncClient(timeout=4.0) as client:
             resp = await client.get(f"{settings.AI_SERVICE_URL}/v1/metrics/benchmark")
             if resp.status_code == 200:
-                return resp.json()
+                data = resp.json()
+                if "concurrency_table" in data or "benchmarks" in data:
+                    return data
     except Exception as exc:
         logger.warning("Benchmark metrics retrieval failed: %s", exc)
 

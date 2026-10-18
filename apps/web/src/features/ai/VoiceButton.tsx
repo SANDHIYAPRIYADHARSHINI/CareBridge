@@ -8,6 +8,7 @@ interface VoiceButtonProps {
   onTranscriptSubmitted: (text: string) => void;
   disabled?: boolean;
   useFixtures?: boolean;
+  available?: boolean;
 }
 
 export const VoiceButton: React.FC<VoiceButtonProps> = ({
@@ -15,17 +16,24 @@ export const VoiceButton: React.FC<VoiceButtonProps> = ({
   onTranscriptSubmitted,
   disabled = false,
   useFixtures = false,
+  available = false,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [pendingTranscript, setPendingTranscript] = useState<string | null>(null);
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
   // Start recording
   const startRecording = async () => {
+    if (!available) {
+      setShowNotice(true);
+      setTimeout(() => setShowNotice(false), 3000);
+      return;
+    }
     if (disabled || isTranscribing) return;
 
     audioChunksRef.current = [];
@@ -107,6 +115,11 @@ export const VoiceButton: React.FC<VoiceButtonProps> = ({
   };
 
   const toggleRecording = () => {
+    if (!available) {
+      setShowNotice(true);
+      setTimeout(() => setShowNotice(false), 3000);
+      return;
+    }
     if (isRecording) {
       stopRecording();
     } else {
@@ -140,21 +153,47 @@ export const VoiceButton: React.FC<VoiceButtonProps> = ({
   };
 
   return (
-    <div className="voice-button-wrapper">
+    <div className="voice-button-wrapper" style={{ position: "relative" }}>
+      {showNotice && (
+        <div
+          role="status"
+          style={{
+            position: "absolute",
+            bottom: "125%",
+            right: 0,
+            whiteSpace: "nowrap",
+            backgroundColor: "var(--card, #FBF8F2)",
+            color: "var(--ink-soft, #4A5753)",
+            padding: "0.35rem 0.65rem",
+            borderRadius: "var(--radius-sm, 8px)",
+            border: "1px solid var(--line, #DDD5C6)",
+            boxShadow: "var(--shadow-floating, 0 8px 24px rgba(23, 35, 31, 0.08))",
+            fontSize: "0.78rem",
+            fontWeight: 500,
+            zIndex: 10,
+          }}
+        >
+          Voice input is not available in this demo
+        </div>
+      )}
       <button
         type="button"
         className={`voice-record-btn ${isRecording ? "recording" : ""} ${isTranscribing ? "transcribing" : ""}`}
         onClick={toggleRecording}
         disabled={disabled || isTranscribing}
         title={
-          isTranscribing
-            ? "Transcribing with Whisper on AMD ROCm..."
+          !available
+            ? "Voice input is not available in this demo"
+            : isTranscribing
+            ? "Transcribing audio..."
             : isRecording
             ? "Stop recording voice question"
             : "Tap to speak question in English or Tamil"
         }
         aria-label={
-          isTranscribing
+          !available
+            ? "Voice input is not available in this demo"
+            : isTranscribing
             ? "Transcribing audio"
             : isRecording
             ? "Stop recording voice question"

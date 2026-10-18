@@ -27,7 +27,7 @@ flowchart TD
     subgraph AIService["AI Service (services/ai) - Stateless [Host CPU]"]
         Gateway["FastAPI Gateway (:8100)"]
         OCR["OCR Engine: Tesseract\n(English + Tamil BBoxes) [Host CPU]"]
-        Embeddings["Multilingual Embeddings\n(BAAI/bge-m3) [Host CPU]"]
+        Embeddings["In-Memory Retrieval\n(Keyword / N-Gram Matching) [Host CPU]"]
         
         subgraph SafetyGuards["Deterministic Safety Guards [Host CPU]"]
             EvidenceGate["Evidence Gate & Conflict Verifier\n(verification.py)"]
@@ -60,7 +60,7 @@ flowchart TD
 | Component | Technology | Target Hardware | Purpose |
 |---|---|---|---|
 | **Vision & LLM** | Gemma 4 (`Gemma-4-31B-IT`) | **AMD Token Factory (Hosted)** | Prescription structured extraction & grounded conversational reasoning |
-| **Embeddings** | BAAI / `bge-m3` (Multilingual) | **Host CPU** | In-memory semantic search over prescription lines & patient leaflets |
+| **Retrieval Engine** | In-Memory Keyword / N-Gram Matching | **Host CPU** | In-memory search over prescription lines & patient leaflets (bge-m3 not loaded) |
 | **OCR Pipeline** | Tesseract OCR (`eng` + `tam`) | **Host CPU** | Text line tokenization, confidence scoring, and bounding box geometry |
 | **Safety Engine** | Pure Python / Pydantic v2 | **Host CPU** | Deterministic evidence verification, red-flag routing, citation filtering |
 | **Web Frontend** | React 19, TypeScript, Vite, Motion | Browser | Visual audit viewer, side-by-side image verification, chat companion |
@@ -221,7 +221,7 @@ AI models never have the final word on medical safety. Our architecture maps dir
 ### 3. Handling Uncertain Results
 - **Evidence Gate:** Extracted prescription fields (drug name, strength, frequency, duration, quantity) must link to numbered OCR bounding boxes. If the OCR confidence is below threshold or evidence is missing, the field status is marked as `unclear` or `missing`—**the model is strictly forbidden from guessing.**
 - **Dual-Pass Conflict Detection:** Critical dosage fields (strength, frequency, duration) undergo independent multi-pass verification. Any discrepancy triggers a `status: "conflict"` flag.
-- **Voice Transcription Confirmation:** Speech-to-text inputs via Whisper compute an acoustic confidence proxy (average log probability and no-speech probability). Low-confidence utterances trigger a read-back confirmation screen (*"Did you say Metformin 500mg?"*) before executing any action.
+- **Voice Transcription Confirmation (Architecture Design):** In full production environments with Whisper loaded, acoustic confidence proxies (average log probability and no-speech probability) trigger a read-back confirmation screen (*"Did you say Metformin 500mg?"*) on low-confidence utterances. *(Note: In this demo deployment, voice input is disabled; STT is not configured).*
 - **Visual Amber Highlighting:** Uncertain fields are highlighted in prominent amber warnings in the UI, requiring explicit visual acknowledgement.
 
 ### 4. Handling High-Risk Decisions
@@ -301,7 +301,7 @@ As documented in `docs/amd-deployment.md` and `infra/vllm/serve.sh`, the followi
 - **vLLM Docker Image Tag:** Confirm current container image matching target GPU architecture (e.g., `rocm/vllm:rocm6.2_mi300_ubuntu22.04` or `rocm/vllm:latest`).
 - **Context Length (`--max-model-len 8192`):** Validate memory headroom for target batch sizes.
 - **Multimodal Argument (`--limit-mm-per-prompt image=2`):** Verify multi-image prompt argument syntax on the deployed vLLM release.
-- **GPU Memory Allocation (`--gpu-memory-utilization 0.60`):** Fine-tune memory ceiling to ensure sufficient VRAM headroom for concurrent Whisper and BGE-M3 execution on the same GPU.
+- **GPU Memory Allocation (`--gpu-memory-utilization 0.60`):** Fine-tune memory ceiling to ensure sufficient VRAM headroom on the ROCm GPU for target context length and batch concurrency.
 - **Regional Emergency Helplines:** Verify active telephone numbers for Tamil Nadu / Indian crisis support hotlines (e.g. Tele-MANAS `14416`) prior to clinical deployment.
 
 ---

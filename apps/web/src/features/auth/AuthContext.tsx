@@ -15,6 +15,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  isOfflineSession: boolean;
   login: (email: string, password: string) => Promise<User>;
   register: (payload: RegisterRequest) => Promise<User>;
   logout: () => void;
@@ -24,14 +25,19 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Session storage key for access token
+// Storage keys
 const TOKEN_STORAGE_KEY = "carebridge_session_token";
+const OFFLINE_SESSION_KEY = "carebridge_offline_session";
+const MOCK_USER_KEY = "carebridge_mock_user";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setTokenState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isOfflineSession, setIsOfflineSession] = useState<boolean>(() => {
+    return sessionStorage.getItem(OFFLINE_SESSION_KEY) === "true";
+  });
 
   // Restore session on mount
   useEffect(() => {
@@ -45,6 +51,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setTokenState(savedToken);
           const currentUser = await getCurrentUser();
           setUser(currentUser);
+          setIsOfflineSession(false);
+          sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+        } else if (sessionStorage.getItem(OFFLINE_SESSION_KEY) === "true") {
+          const savedMock = sessionStorage.getItem(MOCK_USER_KEY);
+          if (savedMock) {
+            try {
+              setUser(JSON.parse(savedMock));
+              setIsOfflineSession(true);
+            } catch {
+              sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+              sessionStorage.removeItem(MOCK_USER_KEY);
+              setIsOfflineSession(false);
+            }
+          }
         }
       } catch {
         // Token invalid or expired
@@ -69,6 +89,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuthToken(response.access_token);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
       localStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
+      sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+      sessionStorage.removeItem(MOCK_USER_KEY);
+      setIsOfflineSession(false);
       setUser(response.user);
       return response.user;
     } catch (err) {
@@ -89,6 +112,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuthToken(response.access_token);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
       localStorage.setItem(TOKEN_STORAGE_KEY, response.access_token);
+      sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+      sessionStorage.removeItem(MOCK_USER_KEY);
+      setIsOfflineSession(false);
       setUser(response.user);
       return response.user;
     } catch (err) {
@@ -105,6 +131,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setAuthToken(null);
     sessionStorage.removeItem(TOKEN_STORAGE_KEY);
     localStorage.removeItem(TOKEN_STORAGE_KEY);
+    sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+    sessionStorage.removeItem(MOCK_USER_KEY);
+    setIsOfflineSession(false);
     setUser(null);
     setError(null);
   }, []);
@@ -127,8 +156,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             : "caregiver@carebridge.health";
         const password = "CareBridge@123";
 
-        return await login(email, password);
-      } catch (err) {
+        const loggedInUser = await login(email, password);
+        setIsOfflineSession(false);
+        sessionStorage.removeItem(OFFLINE_SESSION_KEY);
+        sessionStorage.removeItem(MOCK_USER_KEY);
+        return loggedInUser;
+      } catch {
         // Fallback synthetic offline user if backend is not running
         const mockUser: User =
           targetRole === "patient"
@@ -149,6 +182,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 created_at: new Date().toISOString(),
               };
         setUser(mockUser);
+        setIsOfflineSession(true);
+        sessionStorage.setItem(OFFLINE_SESSION_KEY, "true");
+        sessionStorage.setItem(MOCK_USER_KEY, JSON.stringify(mockUser));
         return mockUser;
       } finally {
         setIsLoading(false);
@@ -171,6 +207,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         isLoading,
         error,
+        isOfflineSession,
         login,
         register,
         logout,

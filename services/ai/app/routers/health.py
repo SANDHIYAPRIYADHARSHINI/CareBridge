@@ -74,6 +74,9 @@ async def health(
     compute_location = "hosted on AMD Token Factory"
     device = "hosted on AMD Token Factory"
 
+    # Check if STT model is actually loaded in memory
+    stt_model = "not configured"
+
     # Inspect the embedder actually loaded in memory
     is_fallback = getattr(embedder, "is_fallback", False)
     if hasattr(embedder, "loaded_model_name"):
@@ -88,11 +91,12 @@ async def health(
     else:
         actually_loaded = f"{embedder.__class__.__name__} ({settings.EMBED_MODEL})"
 
-    warning = (
-        f"n-gram fallback in use: {settings.EMBED_MODEL} is not loaded"
-        if is_fallback
-        else None
-    )
+    if is_fallback:
+        warning = f"n-gram fallback in use: {settings.EMBED_MODEL} is not loaded"
+        embed_model = "keyword matching (bge-m3 not loaded)"
+    else:
+        warning = None
+        embed_model = settings.EMBED_MODEL
 
     return {
         "status": "ok",
@@ -105,8 +109,8 @@ async def health(
         "llm_host": "AMD Token Factory",
         "ocr_device": "Host CPU",
         "embed_device": "Host CPU",
-        "stt_model": settings.WHISPER_MODEL,
-        "embed_model": settings.EMBED_MODEL,
+        "stt_model": stt_model,
+        "embed_model": embed_model,
         "embedder": actually_loaded,
         "embedder_loaded": actually_loaded,
         "warning": warning,

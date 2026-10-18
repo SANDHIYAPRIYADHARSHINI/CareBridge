@@ -178,43 +178,55 @@ def chunk_document(doc: ChatDocument, starting_idx: int = 1) -> list[DocumentChu
                 idx += 1
 
     # 2. Structured data chunking (e.g. medicines, prescriber, hospital)
+    def _extract_val_and_lines(field: Any) -> tuple[str, list[str]]:
+        if isinstance(field, dict):
+            val = str(field.get("value") or field.get("raw") or "").strip()
+            lines = field.get("evidence_line_ids", [])
+            return val, lines if isinstance(lines, list) else []
+        if isinstance(field, str):
+            return field.strip(), []
+        if field is None:
+            return "", []
+        return str(field).strip(), []
+
     if doc.structured and isinstance(doc.structured, dict):
         # Medicines
         meds = doc.structured.get("medicines", [])
         if isinstance(meds, list):
             for med in meds:
                 if isinstance(med, dict):
-                    name = med.get("name", "")
-                    dose = med.get("dose", "")
-                    freq = med.get("frequency", "")
-                    timing = med.get("timing", "")
-                    duration = med.get("duration", "")
-                    instructions = med.get("instructions", "")
+                    name_str, name_lines = _extract_val_and_lines(med.get("name"))
+                    strength_str, strength_lines = _extract_val_and_lines(med.get("strength") or med.get("dose"))
+                    freq_str, freq_lines = _extract_val_and_lines(med.get("frequency"))
+                    timing_str, timing_lines = _extract_val_and_lines(med.get("timing"))
+                    dur_str, dur_lines = _extract_val_and_lines(med.get("duration"))
+                    inst_str, inst_lines = _extract_val_and_lines(med.get("instructions"))
 
-                    parts = [p for p in [name, dose, freq, timing, duration, instructions] if p]
+                    parts = [p for p in [name_str, strength_str, freq_str, timing_str, dur_str, inst_str] if p]
                     med_text = " - ".join(parts) if parts else str(med)
+                    all_lines = list(dict.fromkeys(name_lines + strength_lines + freq_lines + timing_lines + dur_lines + inst_lines))
 
                     chunks.append(
                         DocumentChunk(
                             chunk_id=f"c{idx}",
                             doc_id=doc.doc_id,
                             ref_id=None,
-                            line_ids=[],
+                            line_ids=all_lines,
                             text=f"Medicine: {med_text}",
-                            metadata={"source": "structured_medicine", "drug_name": name},
+                            metadata={"source": "structured_medicine", "drug_name": name_str},
                         )
                     )
                     idx += 1
 
         # Hospital / Prescriber metadata
-        hospital = doc.structured.get("hospital")
-        prescriber = doc.structured.get("prescriber")
-        date = doc.structured.get("date")
-        if hospital or prescriber or date:
+        h_str, _ = _extract_val_and_lines(doc.structured.get("hospital"))
+        p_str, _ = _extract_val_and_lines(doc.structured.get("prescriber"))
+        d_str, _ = _extract_val_and_lines(doc.structured.get("date"))
+        if h_str or p_str or d_str:
             meta_parts = [
-                f"Hospital: {hospital}" if hospital else "",
-                f"Prescriber: {prescriber}" if prescriber else "",
-                f"Date: {date}" if date else "",
+                f"Hospital: {h_str}" if h_str else "",
+                f"Prescriber: {p_str}" if p_str else "",
+                f"Date: {d_str}" if d_str else "",
             ]
             meta_text = ", ".join([p for p in meta_parts if p])
             chunks.append(

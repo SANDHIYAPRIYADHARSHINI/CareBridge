@@ -21,6 +21,7 @@
   /* Primary & Signature Accent */
   --primary: #0B5F5A;        /* deep teal */
   --primary-hover: #084945;
+  --primary-ink: #FFFFFF;    /* crisp white text on primary teal */
   --primary-subtle: #E6F2F0;
   --highlighter: #FFD54A;    /* signature highlighter yellow (backgrounds only) */
   --highlighter-subtle: #FFF3C4;
@@ -172,6 +173,12 @@ button:disabled {
   gap: 0.45rem;
   letter-spacing: 0.01em;
   z-index: 50;
+}
+
+.offline-top-strip.offline-strip-warning {
+  background-color: #FEF2F2;
+  border-bottom: 1px solid #FCA5A5;
+  color: #991B1B;
 }
 
 /* Top bar: wordmark left; language switch, Under the hood, avatar right.

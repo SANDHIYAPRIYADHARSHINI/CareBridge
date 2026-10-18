@@ -72,12 +72,14 @@ export async function extractPrescription(
   }
 
   let res: Response;
+  const extractSignal = typeof AbortSignal !== "undefined" && "timeout" in AbortSignal ? AbortSignal.timeout(90000) : undefined;
   try {
     // Primary path: Member 2 authenticated backend proxy
     res = await fetch(`${backendBase}/ai/extract`, {
       method: "POST",
       headers,
       body: formData,
+      signal: extractSignal,
     });
   } catch {
     // Fallback: Direct call to Member 1 AI service if backend proxy is offline
@@ -86,11 +88,12 @@ export async function extractPrescription(
       res = await fetch(`${aiBase}/v1/prescriptions/extract`, {
         method: "POST",
         body: formData,
+        signal: extractSignal,
       });
     } catch {
       throw new AiApiError(
-        "Could not connect to the CareBridge clinical extraction service. Please verify your connection or switch to synthetic demo mode.",
-        "network_error",
+        "CareBridge AI service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100.",
+        "service_not_reachable",
         0,
         true
       );
@@ -114,13 +117,28 @@ export async function extractPrescription(
       );
     }
 
-    const code = errorDetail?.error?.code || (res.status === 503 ? "model_unavailable" : "api_error");
+    if (res.status === 429) {
+      throw new AiApiError(
+        "Service is currently rate limited. Please try again in a few seconds.",
+        "rate_limited",
+        429,
+        true
+      );
+    }
+
+    const code =
+      errorDetail?.error?.code ||
+      (res.status === 503 ? "model_unavailable" : res.status === 504 ? "service_timeout" : "api_error");
     const message =
       errorDetail?.error?.message ||
-      (res.status === 503
-        ? "The live AI extraction model is temporarily unavailable on AMD ROCm. Please retry or enter details manually."
+      (code === "service_not_reachable"
+        ? "CareBridge AI extraction service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100."
+        : code === "model_unavailable"
+        ? "AI model is currently not available. Please verify the model configuration on AMD Token Factory."
+        : code === "service_timeout"
+        ? "CareBridge AI extraction timed out. Please retry with a clearer photo or enter details manually."
         : `Extraction failed with status ${res.status}`);
-    const retryable = errorDetail?.error?.retryable ?? (res.status === 503 || res.status === 504);
+    const retryable = errorDetail?.error?.retryable ?? (res.status === 503 || res.status === 504 || res.status === 429);
 
     throw new AiApiError(message, code, res.status, retryable);
   }
@@ -173,11 +191,13 @@ export async function sendChatMessage(
   };
 
   let res: Response;
+  const chatSignal = typeof AbortSignal !== "undefined" && "timeout" in AbortSignal ? AbortSignal.timeout(60000) : undefined;
   try {
     res = await fetch(`${backendBase}/ai/chat`, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
+      signal: chatSignal,
     });
   } catch {
     // Fallback: direct AI call
@@ -187,11 +207,12 @@ export async function sendChatMessage(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
+        signal: chatSignal,
       });
     } catch {
       throw new AiApiError(
-        "Could not connect to the CareBridge chat service. Please check your network or try again.",
-        "network_error",
+        "CareBridge AI service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100.",
+        "service_not_reachable",
         0,
         true
       );
@@ -215,13 +236,28 @@ export async function sendChatMessage(
       );
     }
 
-    const code = errorDetail?.error?.code || (res.status === 503 ? "model_unavailable" : "chat_failed");
+    if (res.status === 429) {
+      throw new AiApiError(
+        "Service is currently rate limited. Please try again in a few seconds.",
+        "rate_limited",
+        429,
+        true
+      );
+    }
+
+    const code =
+      errorDetail?.error?.code ||
+      (res.status === 503 ? "model_unavailable" : res.status === 504 ? "service_timeout" : "chat_failed");
     const message =
       errorDetail?.error?.message ||
-      (res.status === 503
-        ? "The CareBridge AI chat companion is temporarily unavailable. Please retry shortly."
+      (code === "service_not_reachable"
+        ? "CareBridge AI service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100."
+        : code === "model_unavailable"
+        ? "AI model is currently not available. Please verify the model configuration on AMD Token Factory."
+        : code === "service_timeout"
+        ? "CareBridge AI chat companion timed out waiting for model response."
         : `Chat request failed with status ${res.status}`);
-    const retryable = errorDetail?.error?.retryable ?? (res.status === 503 || res.status === 504);
+    const retryable = errorDetail?.error?.retryable ?? (res.status === 503 || res.status === 504 || res.status === 429);
 
     throw new AiApiError(message, code, res.status, retryable);
   }
@@ -315,6 +351,16 @@ export async function getAiHealth(): Promise<{
   status: string;
   model: string;
   gpu?: string;
+  stt_model?: string;
+  embed_model?: string;
+  embedder?: string;
+  warning?: string;
+  last_error?: {
+    endpoint?: string;
+    type?: string;
+    status?: number;
+    message?: string;
+  } | null;
   is_connected: boolean;
 }> {
   const backendBase = getApiBaseUrl();
@@ -324,8 +370,13 @@ export async function getAiHealth(): Promise<{
       const data = await res.json();
       return {
         status: data.status || "ok",
-        model: data.model || "Gemma 2 9B (vLLM ROCm)",
-        gpu: data.gpu || "AMD Instinct / ROCm",
+        model: data.model || "Gemma-4-31B-IT",
+        gpu: data.gpu || "AMD Token Factory",
+        stt_model: data.stt_model,
+        embed_model: data.embed_model,
+        embedder: data.embedder,
+        warning: data.warning,
+        last_error: data.last_error,
         is_connected: data.is_connected !== false,
       };
     }
@@ -341,8 +392,13 @@ export async function getAiHealth(): Promise<{
       const data = await res.json();
       return {
         status: data.status || "ok",
-        model: data.model || "Gemma 2 9B (vLLM ROCm)",
-        gpu: data.gpu || "AMD Instinct / ROCm",
+        model: data.model || "Gemma-4-31B-IT",
+        gpu: data.compute_location || data.gpu || "AMD Token Factory",
+        stt_model: data.stt_model,
+        embed_model: data.embed_model,
+        embedder: data.embedder,
+        warning: data.warning,
+        last_error: null,
         is_connected: true,
       };
     }
@@ -352,8 +408,10 @@ export async function getAiHealth(): Promise<{
 
   return {
     status: "offline",
-    model: "Gemma 2 9B (vLLM ROCm - Offline Fallback)",
-    gpu: "AMD Instinct MI300X",
+    model: "Gemma-4-31B-IT (Offline Fallback)",
+    gpu: "AMD Token Factory",
+    stt_model: "not configured",
+    embed_model: "keyword matching (bge-m3 not loaded)",
     is_connected: false,
   };
 }

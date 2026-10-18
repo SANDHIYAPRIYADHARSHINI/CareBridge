@@ -56,5 +56,8 @@ class AiHealthResponse(BaseModel):
     gpu: str | None = None
     stt_model: str | None = None
     embed_model: str | None = None
+    embedder: str | None = None
+    warning: str | None = None
+    last_error: dict[str, Any] | None = None
     is_connected: bool = True
     message: str | None = None

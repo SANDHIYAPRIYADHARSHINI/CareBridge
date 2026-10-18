@@ -37,6 +37,14 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
     status: string;
     model: string;
     device: string;
+    retrieval: string;
+    stt: string;
+    lastError?: {
+      endpoint?: string;
+      type?: string;
+      status?: number;
+      message?: string;
+    } | null;
   } | null>(null);
 
   useEffect(() => {
@@ -45,36 +53,26 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
     const fetchTelemetry = async () => {
       setLoading(true);
       try {
-        // Fetch health
-        try {
-          const healthRes = await fetch(`${apiBaseUrl}/v1/health`);
-          if (healthRes.ok) {
-            const hData = await healthRes.json();
-            setHealthStatus({
-              status: hData.status || "ok",
-              model: hData.model || "Gemma-4-31B-IT",
-              device: hData.compute_location || hData.device || "hosted on AMD Token Factory",
-            });
-          } else {
-            const fallbackHealth = await getAiHealth();
-            setHealthStatus({
-              status: fallbackHealth.status,
-              model: fallbackHealth.model,
-              device: fallbackHealth.gpu || "AMD Token Factory",
-            });
-          }
-        } catch {
-          try {
-            const fallbackHealth = await getAiHealth();
-            setHealthStatus({
-              status: fallbackHealth.status,
-              model: fallbackHealth.model,
-              device: fallbackHealth.gpu || "AMD Token Factory",
-            });
-          } catch {
-            setHealthStatus(null);
-          }
-        }
+        const hData = await getAiHealth();
+        const isKeyword =
+          !hData.embed_model ||
+          hData.embed_model.includes("keyword") ||
+          (hData.warning && hData.warning.includes("fallback")) ||
+          (hData.embedder && hData.embedder.includes("Fallback"));
+
+        setHealthStatus({
+          status: hData.status,
+          model: hData.model || "Gemma-4-31B-IT",
+          device: hData.gpu || "hosted on AMD Token Factory",
+          retrieval: isKeyword
+            ? "Retrieval: keyword matching (bge-m3 not loaded)"
+            : `Retrieval: ${hData.embed_model}`,
+          stt:
+            hData.stt_model === "not configured" || !hData.stt_model
+              ? "Voice STT: not configured"
+              : `Voice STT: ${hData.stt_model}`,
+          lastError: hData.last_error,
+        });
 
         const bData = await getAiBenchmark();
         setBenchmarkData(bData);
@@ -172,7 +170,19 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
           <div className="amd-meta-row">
             <span className="amd-meta-label">Compute Device</span>
             <span className="amd-meta-val font-mono">
-              {healthStatus ? healthStatus.device : "LLM on AMD Token Factory (hosted), OCR and embeddings on this server's CPU"}
+              {healthStatus ? healthStatus.device : "hosted on AMD Token Factory"}
+            </span>
+          </div>
+          <div className="amd-meta-row">
+            <span className="amd-meta-label">Retrieval Pipeline</span>
+            <span className="amd-meta-val font-mono" style={{ color: "var(--eng-accent)" }}>
+              {healthStatus ? healthStatus.retrieval : "Retrieval: keyword matching (bge-m3 not loaded)"}
+            </span>
+          </div>
+          <div className="amd-meta-row">
+            <span className="amd-meta-label">Speech-to-Text</span>
+            <span className="amd-meta-val font-mono">
+              {healthStatus ? healthStatus.stt : "Voice STT: not configured"}
             </span>
           </div>
           <div className="amd-meta-row">
@@ -180,6 +190,39 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             <span className="amd-meta-val font-mono">{apiBaseUrl}</span>
           </div>
         </div>
+
+        {/* Diagnostic Error Card (if any recent backend proxy error) */}
+        {healthStatus?.lastError && (
+          <div
+            className="amd-section-card"
+            style={{
+              borderLeft: "3px solid var(--danger, #B3261E)",
+              backgroundColor: "rgba(179, 38, 30, 0.08)",
+              padding: "0.85rem 1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            <div className="amd-section-header-row" style={{ marginBottom: "0.4rem" }}>
+              <h3 className="amd-section-title" style={{ color: "var(--danger, #B3261E)" }}>
+                <WarningCircle size={16} weight="bold" />
+                <span>Backend AI Proxy Diagnostics</span>
+              </h3>
+            </div>
+            <div style={{ fontSize: "0.82rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <div>
+                <strong style={{ color: "var(--eng-text)" }}>Endpoint:</strong>{" "}
+                <code className="font-mono">{healthStatus.lastError.endpoint}</code>
+              </div>
+              <div>
+                <strong style={{ color: "var(--eng-text)" }}>Error Type:</strong>{" "}
+                <code className="font-mono">{healthStatus.lastError.type}</code> (Status: {healthStatus.lastError.status})
+              </div>
+              <div style={{ color: "var(--eng-muted)", marginTop: "0.2rem" }}>
+                {healthStatus.lastError.message}
+              </div>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <div style={{ textAlign: "center", padding: "3rem", color: "var(--eng-muted)" }}>

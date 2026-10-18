@@ -59,7 +59,7 @@ export type TabKey =
   | "caregiver";
 
 function AppContent() {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout, isOfflineSession } = useAuth();
   // Navigation & Routing state
   const [currentRoute, setCurrentRoute] = useState<"login" | "app" | "privacy" | "404">("login");
   const [activeTab, setActiveTab] = useState<TabKey>("today");
@@ -468,7 +468,13 @@ function AppContent() {
   return (
     <div className="app-container" lang={language}>
       {/* Slim Top Strip */}
-      {useFixtures && (
+      {isOfflineSession && (
+        <div className="offline-top-strip offline-strip-warning" role="status">
+          <WarningCircle size={14} weight="bold" />
+          <span>Offline demo session: backend not connected, nothing is saved</span>
+        </div>
+      )}
+      {!isOfflineSession && useFixtures && (
         <div className="offline-top-strip" role="status">
           <Flask size={14} weight="bold" />
           <span>Offline sample data &bull; Synthetic Demo Mode</span>

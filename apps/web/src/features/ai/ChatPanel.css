@@ -83,7 +83,7 @@
 
 .chat-message.user .message-bubble {
   background-color: var(--primary);
-  color: var(--primary-ink);
+  color: #FFFFFF;
   border-bottom-right-radius: 2px;
 }
 

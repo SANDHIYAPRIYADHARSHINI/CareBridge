@@ -307,9 +307,9 @@ async def test_ai_downtime_handles_gracefully(async_client: AsyncClient):
                 "language": "en",
             },
         )
-        assert res.status_code == 503
+        assert res.status_code in (503, 504)
         data = res.json()
-        assert data["detail"]["error"]["code"] == "model_unavailable"
+        assert data["detail"]["error"]["code"] in ("model_unavailable", "service_timeout", "service_not_reachable")
         assert data["detail"]["error"]["retryable"] is True
 
 

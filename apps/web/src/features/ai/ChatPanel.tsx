@@ -71,12 +71,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
     setMessages((prev) => [...prev, userMsg]);
     setInputText("");
+
+    // Guard: Must have confirmed prescription before asking clinical questions
+    if (!confirmedExtraction) {
+      const promptToAddMsg: ChatMessage = {
+        id: `asst-${Date.now()}`,
+        sender: "assistant",
+        text:
+          language === "ta"
+            ? "நான் பதிலளிக்க முதலில் ஒரு மருந்துச்சீட்டைச் சேர்க்கவும்."
+            : "Add a prescription first so I can answer from it.",
+      };
+      setMessages((prev) => [...prev, promptToAddMsg]);
+      return;
+    }
+
     setIsLoading(true);
 
-    // Prepare ChatDocument from confirmed extraction if available
-    const documents: ChatDocument[] = [];
-    if (confirmedExtraction) {
-      documents.push({
+    // Prepare ChatDocument from confirmed extraction
+    const documents: ChatDocument[] = [
+      {
         doc_id: confirmedExtraction.document_id,
         type: "prescription",
         title: `Prescription (${confirmedExtraction.prescriber?.hospital?.value || "Clinic"})`,
@@ -87,8 +101,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           flags: confirmedExtraction.flags,
         },
         ocr_lines: confirmedExtraction.ocr.lines,
-      });
-    }
+      },
+    ];
 
     const chatRequest: ChatRequest = {
       messages: [
@@ -129,16 +143,33 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           : "I am unable to answer right now due to a network or service issue. Please try again in a moment.";
 
       if (err instanceof AiApiError) {
-        if (err.status === 403) {
+        if (err.status === 403 || err.code === "forbidden") {
           text =
             language === "ta"
               ? "அனுமதி மறுக்கப்பட்டது: இந்த நோயாளியின் ஆவணங்களை அணுக பராமரிப்பாளர் அனுமதி இல்லை."
               : "Permission Denied: Patient has not authorized caregiver access to query these clinical documents.";
+        } else if (err.code === "service_not_reachable" || err.code === "network_error" || err.status === 0) {
+          text =
+            language === "ta"
+              ? "செயற்கை நுண்ணறிவு சேவையைத் தொடர்பு கொள்ள முடியவில்லை. http://127.0.0.1:8100 இல் சேவை இயங்குகிறதா என்பதைச் சரிபார்க்கவும்."
+              : "CareBridge AI service is not reachable. Please verify the AI service is running at http://127.0.0.1:8100.";
+        } else if (err.code === "rate_limited" || err.status === 429) {
+          text =
+            language === "ta"
+              ? "சேவை தற்போது அதிக பயன்பாட்டில் உள்ளது (rate limited). சில வினாடிகளில் மீண்டும் முயற்சிக்கவும்."
+              : "Service is currently rate limited. Please try again in a few seconds.";
         } else if (err.code === "model_unavailable" || err.status === 503) {
           text =
             language === "ta"
-              ? "செயற்கை நுண்ணறிவு சேவை தற்போது தயாராக இல்லை. சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்."
-              : "The CareBridge clinical AI companion is temporarily busy or unavailable. Please retry in a few moments.";
+              ? "செயற்கை நுண்ணறிவு மாதிரி தற்போது கிடைக்கவில்லை. AMD Token Factory அமைப்பைச் சரிபார்க்கவும்."
+              : "AI model is currently not available. Please verify the model configuration on AMD Token Factory.";
+        } else if (err.code === "service_timeout" || err.status === 504) {
+          text =
+            language === "ta"
+              ? "கேள்விக்கான பதிலைப் பெற காலதாமதம் ஆனது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்."
+              : "CareBridge AI chat companion timed out waiting for model response. Please try again.";
+        } else if (err.message) {
+          text = err.message;
         }
       }
 
@@ -296,7 +327,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             <span className="message-sender">CareBridge Companion</span>
             <div className="message-bubble loading-bubble">
               <CircleNotch size={18} className="skeleton-spinner" weight="bold" />
-              <span>Verifying medical knowledge & citations on AMD ROCm...</span>
+              <span>{language === "ta" ? "உங்கள் மருந்துச்சீட்டைப் படிக்கிறது..." : "Reading your prescription..."}</span>
             </div>
           </div>
         )}

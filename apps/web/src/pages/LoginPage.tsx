@@ -34,7 +34,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   defaultRole = "patient",
   accessDeniedMessage,
 }) => {
-  const { login, register, loginAsDemo, error, clearError, isLoading } = useAuth();
+  const { login, register, loginAsDemo, error, clearError, isLoading, isOfflineSession } = useAuth();
   const isTa = language === "ta";
 
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -141,6 +141,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
   return (
     <div className="login-page-container" lang={language}>
+      {/* Visible Offline Demo Strip */}
+      {isOfflineSession && (
+        <div className="offline-top-strip offline-strip-warning" role="status">
+          <WarningCircle size={14} weight="bold" />
+          <span>Offline demo session: backend not connected, nothing is saved</span>
+        </div>
+      )}
       {/* Top Bar with Brand & Language Selector */}
       <header className="login-top-bar">
         <div className="login-brand-group">

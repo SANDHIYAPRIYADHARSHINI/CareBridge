@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     EMBED_MODEL: str = "BAAI/bge-m3"
     OCR_LANGS: str = "eng+tam"
     MAX_UPLOAD_MB: int = 10
-    ALLOWED_ORIGINS: str | list[str] = "http://localhost:5173,http://localhost:3000"
+    ALLOWED_ORIGINS: str | list[str] = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
     TESSERACT_CMD: str | None = None
 
     # Emergency and crisis hotline configurations (TO_VERIFY)

@@ -128,7 +128,7 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
       setLoading(true);
       setErrorMsg(null);
       const data = await getReminders(patientId);
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         setReminders(data);
       }
     } catch {
