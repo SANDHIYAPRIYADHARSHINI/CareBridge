@@ -94,6 +94,9 @@ Mock Mode returns realistic, synthetically validated fixtures identical in shape
    cp services/ai/.env.example services/ai/.env
    # Ensure MOCK_MODE=true is set in services/ai/.env
 
+   # Main Backend (Member 2)
+   cp services/backend/.env.example services/backend/.env
+
    # Web Frontend
    cp apps/web/.env.example apps/web/.env
    # Ensure VITE_AI_BASE_URL=http://localhost:8100 is set in apps/web/.env
@@ -105,7 +108,22 @@ Mock Mode returns realistic, synthetically validated fixtures identical in shape
    ```
    *The AI service is now live and healthy at `http://localhost:8100/v1/health`.*
 
-4. **Start the web application:**
+4. **Start the Main Backend (Member 2):**
+   ```bash
+   cd services/backend
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+
+   # Run all automated tests (44 tests including full E2E demo journey)
+   pytest -v
+
+   # Start the backend server
+   uvicorn app.main:app --reload --port 8080
+   ```
+   *The main backend is live at `http://localhost:8080` (managing authentication, caregiver consent, reminders, and hospital capacity).*
+
+5. **Start the web application:**
    ```bash
    cd apps/web
    npm install

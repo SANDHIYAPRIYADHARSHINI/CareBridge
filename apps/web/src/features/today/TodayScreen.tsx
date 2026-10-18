@@ -16,7 +16,7 @@ import type { ExtractionResult, Medicine } from "../../types/ai";
 import "./TodayScreen.css";
 
 interface TodayScreenProps {
-  language: "en" | "ta";
+  language: string;
   confirmedExtraction: ExtractionResult | null;
   imageUrl?: string;
   onNavigateToAdd: () => void;

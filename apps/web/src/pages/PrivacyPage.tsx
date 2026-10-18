@@ -3,7 +3,7 @@ import "./pages.css";
 
 interface PrivacyPageProps {
   onBack: () => void;
-  language?: "en" | "ta";
+  language?: string;
 }
 
 export const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack, language = "en" }) => {

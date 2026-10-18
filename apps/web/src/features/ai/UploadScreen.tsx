@@ -17,7 +17,7 @@ interface UploadScreenProps {
   onExtractionSuccess: (result: ExtractionResult, imageUrl: string) => void;
   useFixtures: boolean;
   onToggleFixtures?: (val: boolean) => void;
-  language?: "en" | "ta";
+  language?: string;
 }
 
 interface ManualMedicineEntry {

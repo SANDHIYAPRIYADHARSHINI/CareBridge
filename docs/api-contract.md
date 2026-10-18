@@ -99,3 +99,57 @@ Latest `eval/results/summary.json`: model, gpu, concurrency table, p50/p95, toke
 curl -F file=@eval/data/rx_001.png http://localhost:8100/v1/prescriptions/extract
 curl -X POST http://localhost:8100/v1/chat -H 'content-type: application/json' -d @fixtures/chat_request.json
 ```
+
+---
+
+## Member 2 Server-to-Server Proxy Layer & Permission Gating
+
+The Member 2 backend (`services/backend`, Port 8080) exposes authenticated, permission-gated proxy endpoints. Web clients call Member 2 with JWT tokens; Member 2 validates patient consent and forwards authorized payloads to Member 1 (`http://ai:8100`).
+
+### 1. `POST /ai/extract` (multipart/form-data)
+- **Headers**: `Authorization: Bearer <jwt_token>`
+- **Fields**: `file` (image/pdf), `language_hint` (en|ta|auto), `patient_id` (optional for caregiver proxy)
+- **Permission Check**:
+  - `role == "patient"`: allowed directly for self.
+  - `role == "caregiver"`: requires `patient_id` with approved `CaregiverConsent` where `can_view_prescriptions == true`. Lacking consent returns `403 Forbidden`.
+  - Creates `AuditLog` entry (`action="ai_prescription_extract"`) for caregiver access.
+
+### 2. `POST /ai/chat` (application/json)
+- **Headers**: `Authorization: Bearer <jwt_token>`
+- **Body**: `{ messages, language, documents, use_reference, patient_id? }`
+- **Permission Check**:
+  - `role == "patient"`: allowed directly.
+  - `role == "caregiver"`: requires approved consent for `patient_id`. Gating rules per document:
+    - `type == "prescription"`: requires `can_view_prescriptions == true`.
+    - `type in ("report", "discharge")`: requires `can_view_records == true`.
+    - Unauthorized documents are rejected with `403 Forbidden`.
+  - Creates `AuditLog` entry (`action="ai_chat_query"`) for caregiver access.
+
+### 3. `POST /ai/summaries` (application/json)
+- **Headers**: `Authorization: Bearer <jwt_token>`
+- **Body**: `{ document: { doc_id, type, ... }, language, patient_id? }`
+- **Permission Check**: Enforces `can_view_prescriptions` or `can_view_records` matching document type.
+
+### 4. `POST /ai/voice/transcribe` (multipart/form-data)
+- **Headers**: `Authorization: Bearer <jwt_token>`
+- **Fields**: `audio` (webm/wav/m4a), `language_hint` (ta/en)
+- Calls `POST /v1/voice/transcribe` server-to-server.
+
+### 5. `GET /ai/health`
+- Queries `GET /v1/health`. Returns `{ status, mock, model, gpu, is_connected }`. If AI microservice is unreachable, returns `{ status: "offline", is_connected: false, mock: true }` without crashing client.
+
+### 6. `GET /ai/metrics/benchmark`
+- Proxies AMD ROCm benchmark telemetry to power AmdPanel.
+
+### Failure Handling & Error Shapes
+All server-to-server failure paths return structured, non-technical error payloads:
+```json
+{
+  "error": {
+    "code": "model_unavailable | invalid_input | forbidden",
+    "message": "User-friendly localized description",
+    "retryable": true
+  }
+}
+```
+

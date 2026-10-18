@@ -14,8 +14,10 @@ import {
 } from "@phosphor-icons/react";
 import type { ChatResponse, Citation, ExtractionResult, ChatDocument, ChatRequest } from "../../types/ai";
 import { VoiceButton } from "./VoiceButton";
+import { LanguageSelector } from "../../components/LanguageSelector";
+import { isLanguageAiSupported } from "../../types/language";
 import { EMERGENCY_CONFIG } from "../../config/emergency";
-import { sendChatMessage } from "../../services/aiApi";
+import { sendChatMessage, AiApiError } from "../../services/aiApi";
 import "./ChatPanel.css";
 
 interface ChatMessage {
@@ -26,9 +28,9 @@ interface ChatMessage {
 }
 
 interface ChatPanelProps {
-  language?: "en" | "ta";
+  language?: string;
   onCitationClick?: (lineIds: string[]) => void;
-  onLanguageChange?: (lang: "en" | "ta") => void;
+  onLanguageChange?: (lang: string) => void;
   confirmedExtraction?: ExtractionResult | null;
   useFixtures?: boolean;
 }
@@ -119,16 +121,31 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
-    } catch {
-
+    } catch (err: unknown) {
       setIsLoading(false);
+      let text =
+        language === "ta"
+          ? "மன்னிக்கவும், தகவல் தொடர்பு பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்."
+          : "I am unable to answer right now due to a network or service issue. Please try again in a moment.";
+
+      if (err instanceof AiApiError) {
+        if (err.status === 403) {
+          text =
+            language === "ta"
+              ? "அனுமதி மறுக்கப்பட்டது: இந்த நோயாளியின் ஆவணங்களை அணுக பராமரிப்பாளர் அனுமதி இல்லை."
+              : "Permission Denied: Patient has not authorized caregiver access to query these clinical documents.";
+        } else if (err.code === "model_unavailable" || err.status === 503) {
+          text =
+            language === "ta"
+              ? "செயற்கை நுண்ணறிவு சேவை தற்போது தயாராக இல்லை. சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்."
+              : "The CareBridge clinical AI companion is temporarily busy or unavailable. Please retry in a few moments.";
+        }
+      }
+
       const errorMsg: ChatMessage = {
         id: `asst-err-${Date.now()}`,
         sender: "assistant",
-        text:
-          language === "ta"
-            ? "மன்னிக்கவும், தகவல் தொடர்பு பிழை ஏற்பட்டது. தயவுசெய்து மீண்டும் முயற்சிக்கவும்."
-            : "I am unable to answer right now due to a network or service issue. Please try again in a moment.",
+        text,
       };
       setMessages((prev) => [...prev, errorMsg]);
     }
@@ -197,14 +214,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
         <div style={{ display: "flex", gap: "0.5rem" }}>
           {onLanguageChange && (
-            <button
-              type="button"
-              className="lang-toggle-btn"
-              onClick={() => onLanguageChange(language === "en" ? "ta" : "en")}
-              title="Toggle language"
-            >
-              {language === "en" ? "தமிழ்" : "English"}
-            </button>
+            <LanguageSelector
+              language={language}
+              onSelectLanguage={onLanguageChange}
+            />
           )}
         </div>
       </div>
@@ -313,6 +326,30 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           Chest pain emergency! (L3 test)
         </button>
       </div>
+
+      {/* Unsupported AI language alert banner */}
+      {!isLanguageAiSupported(language) && (
+        <div
+          className="chat-unsupported-lang-warning"
+          role="alert"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.55rem 0.85rem",
+            backgroundColor: "var(--warn-bg)",
+            border: "1px solid var(--warn-border)",
+            borderRadius: "var(--radius-sm)",
+            color: "var(--warn)",
+            fontSize: "0.82rem",
+            fontWeight: 500,
+            marginBottom: "0.5rem",
+          }}
+        >
+          <Warning size={16} weight="bold" />
+          <span>This language is not currently supported by the AI service.</span>
+        </div>
+      )}
 
       {/* Chat Input Bar */}
       <form

@@ -11,6 +11,7 @@ import {
 } from "@phosphor-icons/react";
 import type { BenchmarkSummary } from "../../types/ai";
 import { benchmarkSummaryFixture } from "../../fixtures";
+import { getAiHealth, getAiBenchmark } from "../../services/aiApi";
 import "./AmdPanel.css";
 
 interface AmdPanelProps {
@@ -55,25 +56,30 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
               device: hData.compute_location || hData.device || "hosted on AMD Token Factory",
             });
           } else {
-            setHealthStatus(null);
+            const fallbackHealth = await getAiHealth();
+            setHealthStatus({
+              status: fallbackHealth.status,
+              model: fallbackHealth.model,
+              device: fallbackHealth.gpu || "AMD Token Factory",
+            });
           }
         } catch {
-          setHealthStatus(null);
+          try {
+            const fallbackHealth = await getAiHealth();
+            setHealthStatus({
+              status: fallbackHealth.status,
+              model: fallbackHealth.model,
+              device: fallbackHealth.gpu || "AMD Token Factory",
+            });
+          } catch {
+            setHealthStatus(null);
+          }
         }
 
-        // Fetch benchmark
-        const res = await fetch(`${apiBaseUrl}/v1/metrics/benchmark`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.status !== "no_benchmark_yet" && data.benchmarks) {
-            setBenchmarkData(data);
-          } else {
-            setBenchmarkData(null);
-          }
-        } else {
-          setBenchmarkData(null);
-        }
+        const bData = await getAiBenchmark();
+        setBenchmarkData(bData);
       } catch {
+        setHealthStatus(null);
         setBenchmarkData(null);
       } finally {
         setLoading(false);
