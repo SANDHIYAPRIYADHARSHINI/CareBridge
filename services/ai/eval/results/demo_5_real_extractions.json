@@ -1,0 +1,2576 @@
+{
+  "rx_demo_001.png": {
+    "request_id": "req-0f828f635a25",
+    "document_id": "doc-eb7c96c46b53",
+    "source": {
+      "type": "image",
+      "page_count": 1
+    },
+    "ocr": {
+      "engine": "tesseract",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+          "bbox": [
+            118,
+            82,
+            708,
+            27
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L2",
+          "text": "42 Gandhi Road, Salem - 636007 | Ph: 0427-2410293",
+          "bbox": [
+            118,
+            122,
+            508,
+            23
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L3",
+          "text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med) Reg: TN-MC-10293",
+          "bbox": [
+            120,
+            173,
+            713,
+            24
+          ],
+          "page": 1,
+          "conf": 0.89
+        },
+        {
+          "id": "L4",
+          "text": "Patient: R. Murugan Age:54M_ Date: 14-Oct-2026",
+          "bbox": [
+            120,
+            238,
+            514,
+            22
+          ],
+          "page": 1,
+          "conf": 0.84
+        },
+        {
+          "id": "L5",
+          "text": "O",
+          "bbox": [
+            121,
+            307,
+            21,
+            31
+          ],
+          "page": 1,
+          "conf": 0.41
+        },
+        {
+          "id": "L6",
+          "text": "1. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "bbox": [
+            121,
+            377,
+            513,
+            23
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L7",
+          "text": "Directions: Take 1 tablet after meals twice daily with water.",
+          "bbox": [
+            140,
+            412,
+            456,
+            18
+          ],
+          "page": 1,
+          "conf": 0.96
+        },
+        {
+          "id": "L8",
+          "text": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days",
+          "bbox": [
+            120,
+            467,
+            569,
+            23
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L9",
+          "text": "Directions: Take 1 tablet at bedtime after dinner.",
+          "bbox": [
+            140,
+            502,
+            378,
+            16
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L10",
+          "text": "3. Tab Amlodipine 5mg - 1-0-0 morning before food x 30 days",
+          "bbox": [
+            120,
+            556,
+            607,
+            24
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L11",
+          "text": "Directions: Take 1 tablet once daily in the morning with water.",
+          "bbox": [
+            141,
+            592,
+            483,
+            19
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L12",
+          "text": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+          "bbox": [
+            121,
+            686,
+            685,
+            24
+          ],
+          "page": 1,
+          "conf": 0.96
+        },
+        {
+          "id": "L13",
+          "text": "Signature & Seal / \u0b95\u0baf\u0bc8\u0bae\u0bca\u0baa\u0bcd\u0baa\u0bae\u0bcd\u200c",
+          "bbox": [
+            821,
+            763,
+            288,
+            20
+          ],
+          "page": 1,
+          "conf": 0.74
+        },
+        {
+          "id": "L14",
+          "text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "bbox": [
+            124,
+            1536,
+            619,
+            20
+          ],
+          "page": 1,
+          "conf": 0.93
+        }
+      ]
+    },
+    "prescriber": {
+      "name": {
+        "value": "Dr. R. Senthamilselvan",
+        "raw": "Dr. R. Senthamilselvan",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "registration_no": {
+        "value": "TN-MC-10293",
+        "raw": "TN-MC-10293",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "hospital": {
+        "value": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+        "raw": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L1"
+        ]
+      },
+      "date": {
+        "value": "14-Oct-2026",
+        "raw": "14-Oct-2026",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "patient": {
+      "name": {
+        "value": "R. Murugan",
+        "raw": "R. Murugan",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      },
+      "age": {
+        "value": "54M",
+        "raw": "54M",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "medicines": [
+      {
+        "id": "med-1",
+        "name": {
+          "value": "Metformin",
+          "raw": "Metformin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "strength": {
+          "value": "500mg",
+          "raw": "500mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "dose": {
+          "value": "1-0-1",
+          "raw": "1-0-1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "frequency": {
+          "value": "twice daily",
+          "raw": "twice daily",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "timing": {
+          "value": "after food",
+          "raw": "after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet after meals twice daily with water.",
+          "raw": "Take 1 tablet after meals twice daily with water.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": 2,
+          "slots": [
+            "morning",
+            "night"
+          ],
+          "as_needed": false
+        },
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-2",
+        "name": {
+          "value": "Atorvastatin",
+          "raw": "Atorvastatin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "strength": {
+          "value": "10mg",
+          "raw": "10mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "dose": {
+          "value": "0-0-1",
+          "raw": "0-0-1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "frequency": {
+          "value": "night",
+          "raw": "night",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "timing": {
+          "value": "after food",
+          "raw": "after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet at bedtime after dinner.",
+          "raw": "Take 1 tablet at bedtime after dinner.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "verified_by_rules"
+      },
+      {
+        "id": "med-3",
+        "name": {
+          "value": "Amlodipine",
+          "raw": "Amlodipine",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "strength": {
+          "value": "5mg",
+          "raw": "5mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "dose": {
+          "value": "1-0-0",
+          "raw": "1-0-0",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "frequency": {
+          "value": "morning",
+          "raw": "morning",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "timing": {
+          "value": "before food",
+          "raw": "before food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet once daily in the morning with water.",
+          "raw": "Take 1 tablet once daily in the morning with water.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "verified_by_rules"
+      }
+    ],
+    "follow_up": {
+      "value": "Review in 1 month with fasting blood sugar and lipid profile.",
+      "raw": "Review in 1 month with fasting blood sugar and lipid profile.",
+      "status": "found",
+      "confidence": 1.0,
+      "evidence_line_ids": [
+        "L12"
+      ]
+    },
+    "flags": [
+      {
+        "id": "flag-qty-1",
+        "severity": "warn",
+        "code": "QUANTITY_DURATION_MISMATCH",
+        "message": "Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60.",
+        "field_path": "medicines[0].duration",
+        "evidence_line_ids": [
+          "L6",
+          "L7"
+        ]
+      }
+    ],
+    "overall_status": "needs_review",
+    "review_reasons": [
+      "QUANTITY_DURATION_MISMATCH: Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60."
+    ],
+    "metrics": {
+      "latency_ms": 125390.38,
+      "model": "Gemma-4-31B-IT",
+      "tokens_in": 1505,
+      "tokens_out": 2235,
+      "gpu": "AMD Token Factory"
+    },
+    "image": {
+      "width": 1200,
+      "height": 1600
+    },
+    "corruption_details": null
+  },
+  "rx_demo_002.png": {
+    "request_id": "req-d57f13461a88",
+    "document_id": "doc-d60084e72b7e",
+    "source": {
+      "type": "image",
+      "page_count": 1
+    },
+    "ocr": {
+      "engine": "tesseract",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "VASANTHAM FAMILY MEDICAL CENTRE",
+          "bbox": [
+            123,
+            81,
+            601,
+            27
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L2",
+          "text": "15 Anna Salai, Madurai - 625001 | Ph: 0452-2531092",
+          "bbox": [
+            125,
+            120,
+            503,
+            23
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L3",
+          "text": "Dr. K. Anbazhagan, MBBS, DNB (Family Med) Reg: TN-MC-28401",
+          "bbox": [
+            125,
+            171,
+            705,
+            26
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L4",
+          "text": "Patient: 5. Revathi Age: 38F Date: 15-Oct-2026",
+          "bbox": [
+            124,
+            236,
+            488,
+            22
+          ],
+          "page": 1,
+          "conf": 0.7
+        },
+        {
+          "id": "L5",
+          "text": "[|",
+          "bbox": [
+            125,
+            304,
+            21,
+            30
+          ],
+          "page": 1,
+          "conf": 0.5
+        },
+        {
+          "id": "L6",
+          "text": "1. Tab Pantoprazole 40mg - 1-0-0 empty stomach morning x 15 days",
+          "bbox": [
+            124,
+            375,
+            665,
+            25
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L7",
+          "text": "Directions: Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+          "bbox": [
+            143,
+            411,
+            641,
+            19
+          ],
+          "page": 1,
+          "conf": 0.96
+        },
+        {
+          "id": "L8",
+          "text": "2. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "bbox": [
+            122,
+            465,
+            515,
+            24
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L9",
+          "text": "Directions: Take 1 tablet twice daily after meals with water.",
+          "bbox": [
+            143,
+            500,
+            455,
+            19
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L10",
+          "text": "3. Tab Paracetamol 650mg - SOS after food as needed x 5 days",
+          "bbox": [
+            122,
+            555,
+            612,
+            25
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L11",
+          "text": "Directions: Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+          "bbox": [
+            142,
+            583,
+            613,
+            33
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L12",
+          "text": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+          "bbox": [
+            122,
+            685,
+            581,
+            24
+          ],
+          "page": 1,
+          "conf": 0.96
+        },
+        {
+          "id": "L13",
+          "text": "Signature & Seal / \u0b95\u0baf\u0bc8\u0bb3\u0bc6\u0baa\u0bcd\u0baa\u0bae\u0bcd\u200c",
+          "bbox": [
+            821,
+            767,
+            288,
+            18
+          ],
+          "page": 1,
+          "conf": 0.88
+        },
+        {
+          "id": "L14",
+          "text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "bbox": [
+            118,
+            1534,
+            619,
+            20
+          ],
+          "page": 1,
+          "conf": 0.94
+        }
+      ]
+    },
+    "prescriber": {
+      "name": {
+        "value": "Dr. K. Anbazhagan",
+        "raw": "Dr. K. Anbazhagan",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "registration_no": {
+        "value": "TN-MC-28401",
+        "raw": "TN-MC-28401",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "hospital": {
+        "value": "VASANTHAM FAMILY MEDICAL CENTRE",
+        "raw": "VASANTHAM FAMILY MEDICAL CENTRE",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L1"
+        ]
+      },
+      "date": {
+        "value": "15-Oct-2026",
+        "raw": "15-Oct-2026",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "patient": {
+      "name": {
+        "value": "S. Revathi",
+        "raw": "S. Revathi",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      },
+      "age": {
+        "value": "38F",
+        "raw": "38F",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "medicines": [
+      {
+        "id": "med-1",
+        "name": {
+          "value": "Pantoprazole",
+          "raw": "Pantoprazole",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "strength": {
+          "value": "40mg",
+          "raw": "40mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "dose": {
+          "value": "1",
+          "raw": "1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "frequency": {
+          "value": "1-0-0",
+          "raw": "1-0-0",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "timing": {
+          "value": "empty stomach morning",
+          "raw": "empty stomach morning",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "duration": {
+          "value": "15 days",
+          "raw": "15 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+          "raw": "Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": 1,
+          "slots": [
+            "morning"
+          ],
+          "as_needed": false
+        },
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-2",
+        "name": {
+          "value": "Metformin",
+          "raw": "Metformin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "strength": {
+          "value": "500mg",
+          "raw": "500mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "dose": {
+          "value": "1",
+          "raw": "1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "frequency": {
+          "value": "1-0-1",
+          "raw": "1-0-1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "timing": {
+          "value": "after food",
+          "raw": "after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet twice daily after meals with water.",
+          "raw": "Take 1 tablet twice daily after meals with water.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": 2,
+          "slots": [
+            "morning",
+            "night"
+          ],
+          "as_needed": false
+        },
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-3",
+        "name": {
+          "value": "Paracetamol",
+          "raw": "Paracetamol",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "strength": {
+          "value": "650mg",
+          "raw": "650mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "dose": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "frequency": {
+          "value": "SOS",
+          "raw": "SOS",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "timing": {
+          "value": "after food as needed",
+          "raw": "after food as needed",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "duration": {
+          "value": "5 days",
+          "raw": "5 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+          "raw": "Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": null,
+          "slots": [],
+          "as_needed": true
+        },
+        "suggestions": [],
+        "status": "verified_by_rules"
+      }
+    ],
+    "follow_up": {
+      "value": "Review after 2 weeks or SOS if symptoms persist.",
+      "raw": "Review after 2 weeks or SOS if symptoms persist.",
+      "status": "found",
+      "confidence": 1.0,
+      "evidence_line_ids": [
+        "L12"
+      ]
+    },
+    "flags": [
+      {
+        "id": "flag-qty-1",
+        "severity": "warn",
+        "code": "QUANTITY_DURATION_MISMATCH",
+        "message": "Prescribed quantity (1) conflicts with frequency (1/day) \u00d7 duration (15 days) = 15.",
+        "field_path": "medicines[0].duration",
+        "evidence_line_ids": [
+          "L6"
+        ]
+      },
+      {
+        "id": "flag-qty-2",
+        "severity": "warn",
+        "code": "QUANTITY_DURATION_MISMATCH",
+        "message": "Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60.",
+        "field_path": "medicines[1].duration",
+        "evidence_line_ids": [
+          "L8"
+        ]
+      }
+    ],
+    "overall_status": "needs_review",
+    "review_reasons": [
+      "QUANTITY_DURATION_MISMATCH: Prescribed quantity (1) conflicts with frequency (1/day) \u00d7 duration (15 days) = 15.",
+      "QUANTITY_DURATION_MISMATCH: Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60."
+    ],
+    "metrics": {
+      "latency_ms": 157165.3,
+      "model": "Gemma-4-31B-IT",
+      "tokens_in": 1512,
+      "tokens_out": 2231,
+      "gpu": "AMD Token Factory"
+    },
+    "image": {
+      "width": 1200,
+      "height": 1600
+    },
+    "corruption_details": null
+  },
+  "rx_demo_003.png": {
+    "request_id": "req-695f3910fdf5",
+    "document_id": "doc-45b970c082fc",
+    "source": {
+      "type": "image",
+      "page_count": 1
+    },
+    "ocr": {
+      "engine": "tesseract",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "SENTHAMIZH WELFARE CLINIC / \u0b9a\u0ba8\u0bc6\u0ba4\u0bae\u0bbf\u0bb4\u0bcd\u200c \u0ba8\u0bb2\u0bb5\u0bbe\u0bb4\u0bcd\u0bb5\u0bc1 \u0bae\u0baf\u0bc8\u0bae\u0bcd\u200c",
+          "bbox": [
+            120,
+            76,
+            1030,
+            39
+          ],
+          "page": 1,
+          "conf": 0.89
+        },
+        {
+          "id": "L2",
+          "text": "204 Velachery Main Road, Chennai - 600042 | Ph: 044-22441920",
+          "bbox": [
+            119,
+            122,
+            620,
+            23
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L3",
+          "text": "Dr. V. Malathi, MBBS, MD (Internal Med) Reg: TN-MC-39182",
+          "bbox": [
+            120,
+            173,
+            659,
+            24
+          ],
+          "page": 1,
+          "conf": 0.92
+        },
+        {
+          "id": "L4",
+          "text": "\u0ba8\u0bcb\u0baf\u0bbe\u0bb3\u0bbf / Patient: K. Lakshmi \u0bb5\u0baf\u0ba4 / Age: 62 F \u0ba4\u0ba4\u0bc7/ Date: 15-Oct-2026",
+          "bbox": [
+            120,
+            234,
+            815,
+            25
+          ],
+          "page": 1,
+          "conf": 0.76
+        },
+        {
+          "id": "L5",
+          "text": "Oo",
+          "bbox": [
+            122,
+            307,
+            21,
+            30
+          ],
+          "page": 1,
+          "conf": 0.47
+        },
+        {
+          "id": "L6",
+          "text": "1. Tab Metformin 500mg - 1-0-1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / after food x 30 days",
+          "bbox": [
+            121,
+            375,
+            736,
+            25
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L7",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8/ 1 tab after food twice daily.",
+          "bbox": [
+            140,
+            410,
+            620,
+            21
+          ],
+          "page": 1,
+          "conf": 0.9
+        },
+        {
+          "id": "L8",
+          "text": "2. Tab Amlodipine 5mg - 1-0-0 \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c / morning before food x 30 days",
+          "bbox": [
+            120,
+            466,
+            896,
+            24
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L9",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0ba4\u0bbf\u0ba9\u0bae\u0bae\u0bcd\u200c \u0b95\u0bbe\u0bb2\u0baf\u0bbf\u0bb2\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0 / Take 1 tab morning before food.",
+          "bbox": [
+            140,
+            496,
+            692,
+            29
+          ],
+          "page": 1,
+          "conf": 0.88
+        },
+        {
+          "id": "L10",
+          "text": "3. Tab Atorvastatin 10mg - 0-0-1 \u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / night after food x 30 days",
+          "bbox": [
+            121,
+            555,
+            859,
+            25
+          ],
+          "page": 1,
+          "conf": 0.92
+        },
+        {
+          "id": "L11",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0ba4\u0b99\u0bcd\u0b95\u0bc1\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c / Take 1 tab at bedtime after dinner.",
+          "bbox": [
+            140,
+            590,
+            708,
+            21
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L12",
+          "text": "\u0b85\u0b9f\u0ba4\u0bcd\u0ba4 \u0baa\u0bb0\u0bbf\u0b9a\u0bcb\u0ba4\u0ba9\u0bc8 / Follow-up: 1 \u0bae\u0bbe\u0ba4\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0ba4\u0bcd\u0ba4 \u0b85\u0b9f\u0bcd\u0b9f\u0bb5\u0ba3\u0baf\u0bc8\u0baa\u0b9f\u0ba9\u0bcd\u200c \u0bb5\u0bb0;",
+          "bbox": [
+            121,
+            684,
+            1079,
+            26
+          ],
+          "page": 1,
+          "conf": 0.77
+        },
+        {
+          "id": "L13",
+          "text": "Signature & Seal / \u0b95\u0baf\u0bc8\u0bb3\u0bc6\u0bca\u0baa\u0bcd\u0baa\u0bae\u0bcd\u200c",
+          "bbox": [
+            821,
+            764,
+            288,
+            19
+          ],
+          "page": 1,
+          "conf": 0.78
+        },
+        {
+          "id": "L14",
+          "text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data",
+          "bbox": [
+            123,
+            1536,
+            619,
+            19
+          ],
+          "page": 1,
+          "conf": 0.94
+        }
+      ]
+    },
+    "prescriber": {
+      "name": {
+        "value": "Dr. V. Malathi",
+        "raw": "Dr. V. Malathi",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "registration_no": {
+        "value": "TN-MC-39182",
+        "raw": "TN-MC-39182",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "hospital": {
+        "value": "SENTHAMIZH WELFARE CLINIC",
+        "raw": "SENTHAMIZH WELFARE CLINIC / \u0b9a\u0ba8\u0bc6\u0ba4\u0bae\u0bbf\u0bb4\u0bcd\u200c \u0ba8\u0bb2\u0bb5\u0bbe\u0bb4\u0bcd\u0bb5\u0bc1 \u0bae\u0baf\u0bc8\u0bae\u0bcd\u200c",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L1"
+        ]
+      },
+      "date": {
+        "value": "15-Oct-2026",
+        "raw": "15-Oct-2026",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "patient": {
+      "name": {
+        "value": "K. Lakshmi",
+        "raw": "K. Lakshmi",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      },
+      "age": {
+        "value": "62 F",
+        "raw": "62 F",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "medicines": [
+      {
+        "id": "med-1",
+        "name": {
+          "value": "Metformin",
+          "raw": "Metformin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "strength": {
+          "value": "500mg",
+          "raw": "500mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "dose": {
+          "value": "1 tab",
+          "raw": "1 tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency": {
+          "value": "twice daily",
+          "raw": "twice daily",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "timing": {
+          "value": "after food",
+          "raw": "\u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6",
+            "L7"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "instructions": {
+          "value": "\u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8/ 1 tab after food twice daily.",
+          "raw": "\u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8/ 1 tab after food twice daily.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": 2,
+          "slots": [
+            "morning",
+            "night"
+          ],
+          "as_needed": false
+        },
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-2",
+        "name": {
+          "value": "Amlodipine",
+          "raw": "Amlodipine",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "strength": {
+          "value": "5mg",
+          "raw": "5mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "dose": {
+          "value": "1 tab",
+          "raw": "1 tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency": {
+          "value": "morning",
+          "raw": "morning",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "timing": {
+          "value": "before food",
+          "raw": "\u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c / morning before food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8",
+            "L9"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "instructions": {
+          "value": "\u0ba4\u0bbf\u0ba9\u0bae\u0bae\u0bcd\u200c \u0b95\u0bbe\u0bb2\u0baf\u0bbf\u0bb2\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0 / Take 1 tab morning before food.",
+          "raw": "\u0ba4\u0bbf\u0ba9\u0bae\u0bae\u0bcd\u200c \u0b95\u0bbe\u0bb2\u0baf\u0bbf\u0bb2\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0 / Take 1 tab morning before food.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "verified_by_rules"
+      },
+      {
+        "id": "med-3",
+        "name": {
+          "value": "Atorvastatin",
+          "raw": "Atorvastatin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "strength": {
+          "value": "10mg",
+          "raw": "10mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "dose": {
+          "value": "1 tab",
+          "raw": "1 tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency": {
+          "value": "night",
+          "raw": "night",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10",
+            "L11"
+          ]
+        },
+        "timing": {
+          "value": "after food",
+          "raw": "\u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / night after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10",
+            "L11"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "instructions": {
+          "value": "\u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0ba4\u0b99\u0bcd\u0b95\u0bc1\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c / Take 1 tab at bedtime after dinner.",
+          "raw": "\u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0ba4\u0b99\u0bcd\u0b95\u0bc1\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c / Take 1 tab at bedtime after dinner.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "verified_by_rules"
+      }
+    ],
+    "follow_up": {
+      "value": "1 \u0bae\u0bbe\u0ba4\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0ba4\u0bcd\u0ba4 \u0b85\u0b9f\u0bcd\u0b9f\u0bb5\u0ba3\u0baf\u0bc8\u0baa\u0b9f\u0ba9\u0bcd\u200c \u0bb5\u0bb0",
+      "raw": "1 \u0bae\u0bbe\u0ba4\u0ba4\u0bcd\u0ba4\u0bbf\u0bb1\u0bcd\u0b95\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0ba4\u0bcd\u0ba4 \u0b85\u0b9f\u0bcd\u0b9f\u0bb5\u0ba3\u0baf\u0bc8\u0baa\u0b9f\u0ba9\u0bcd\u200c \u0bb5\u0bb0",
+      "status": "found",
+      "confidence": 1.0,
+      "evidence_line_ids": [
+        "L12"
+      ]
+    },
+    "flags": [
+      {
+        "id": "flag-qty-1",
+        "severity": "warn",
+        "code": "QUANTITY_DURATION_MISMATCH",
+        "message": "Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60.",
+        "field_path": "medicines[0].duration",
+        "evidence_line_ids": [
+          "L6",
+          "L7"
+        ]
+      }
+    ],
+    "overall_status": "needs_review",
+    "review_reasons": [
+      "QUANTITY_DURATION_MISMATCH: Prescribed quantity (1) conflicts with frequency (2/day) \u00d7 duration (30 days) = 60."
+    ],
+    "metrics": {
+      "latency_ms": 122964.38,
+      "model": "Gemma-4-31B-IT",
+      "tokens_in": 1595,
+      "tokens_out": 2344,
+      "gpu": "AMD Token Factory"
+    },
+    "image": {
+      "width": 1200,
+      "height": 1600
+    },
+    "corruption_details": null
+  },
+  "rx_demo_004.png": {
+    "request_id": "req-9b263e9fb0ce",
+    "document_id": "doc-3326422aa47b",
+    "source": {
+      "type": "image",
+      "page_count": 1
+    },
+    "ocr": {
+      "engine": "tesseract",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "KURUNJI RURAL HEALTH DISPENSARY / \u0b9a\u0bc1\u0bb1\u0bbf\u0b9e\u0bcd\u0b9a\u0bbf \u0bae\u0bb0\u0ba8\u0bcd\u0ba4\u0b95\u0bae\u0bcd\u200c",
+          "bbox": [
+            125,
+            77,
+            929,
+            38
+          ],
+          "page": 1,
+          "conf": 0.91
+        },
+        {
+          "id": "L2",
+          "text": "88 Thanjavur Main Road, Trichy - 620001 | Ph: 0431-2701824",
+          "bbox": [
+            123,
+            121,
+            587,
+            23
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L3",
+          "text": "Dr. 5. Meenakshi, 11885 Reg: TN-MC-51042",
+          "bbox": [
+            124,
+            172,
+            484,
+            25
+          ],
+          "page": 1,
+          "conf": 0.81
+        },
+        {
+          "id": "L4",
+          "text": "\u0ba8\u0bcb\u0baf\u0bbe\u0bb3\u0bbf / Patient: 7. Alagappan \u0bb5\u0baf\u0ba4 / Age: 68M \u0ba4\u0ba4\u0bc7 / Date: 16-Oct-2026",
+          "bbox": [
+            123,
+            230,
+            849,
+            34
+          ],
+          "page": 1,
+          "conf": 0.67
+        },
+        {
+          "id": "L5",
+          "text": "\u0baa",
+          "bbox": [
+            124,
+            304,
+            22,
+            31
+          ],
+          "page": 1,
+          "conf": 0.69
+        },
+        {
+          "id": "L6",
+          "text": "1. Tab Pantoprazole 40mg - 1-0-0 \u0b95\u0bbe\u0bb2\u0bc8 \u0bb5\u0bae\u0bb4\u0bc6\u0bae\u0bcd\u200c \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd\u200c / empty stomach morning x 15 days",
+          "bbox": [
+            123,
+            375,
+            987,
+            26
+          ],
+          "page": 1,
+          "conf": 0.88
+        },
+        {
+          "id": "L7",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 30 \u0bb1\u0bbf\u0bae\u0bbf\u0b9f\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c / Take 30 mins before breakfast.",
+          "bbox": [
+            142,
+            408,
+            663,
+            22
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L8",
+          "text": "2. Tab Atorvastatin 10mg - 0-0-1 \u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / night after food x 30 days",
+          "bbox": [
+            122,
+            461,
+            860,
+            33
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L9",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0baa\u0b9f\u0b95\u0bcd\u0b95\u0b95\u0bc8\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c / Take 1 tab at bedtime.",
+          "bbox": [
+            142,
+            494,
+            660,
+            30
+          ],
+          "page": 1,
+          "conf": 0.84
+        },
+        {
+          "id": "L10",
+          "text": "3. Tab Paracetamol 650mg - SOS \u0ba4\u0bb5\u0bc7\u0baa\u0bc8\u0bcd\u0baa\u0b9f\u0bae\u0bcd\u200c \u0baa\u0bcb\u0ba4\u0bc1 / as needed x 5 days",
+          "bbox": [
+            122,
+            551,
+            781,
+            33
+          ],
+          "page": 1,
+          "conf": 0.9
+        },
+        {
+          "id": "L11",
+          "text": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b95\u0bbe\u0baf\u0bcd\u0b9a\u0bcd\u0b9a\u0bb2\u0bcd\u200c \u0b85\u0bb2\u0bcd\u0bb2\u0ba4 \u0b89\u0b9f\u0bb2\u0bcd\u200c \u0bb5\u0bb2\u0bbf\u0b95\u0bcd\u0b95 / For fever or body pain.",
+          "bbox": [
+            142,
+            588,
+            589,
+            22
+          ],
+          "page": 1,
+          "conf": 0.94
+        },
+        {
+          "id": "L12",
+          "text": "AL SS \u0baa\u0bb0\u0bbf\u0b9a\u0bae\u0bcb\u0ba4\u0ba9\u0bc8/ Next review: 15 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c \u0b95\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4 \u0bae\u0bc0\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd\u200c \u0bb5\u0bb0\u0bb5\u0bc1\u0bae\u0bcd\u200c (Review in 15 days).",
+          "bbox": [
+            121,
+            684,
+            1017,
+            27
+          ],
+          "page": 1,
+          "conf": 0.74
+        },
+        {
+          "id": "L13",
+          "text": "Signature & Seal / BEMWGomIUL",
+          "bbox": [
+            821,
+            767,
+            288,
+            18
+          ],
+          "page": 1,
+          "conf": 0.74
+        },
+        {
+          "id": "L14",
+          "text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "bbox": [
+            119,
+            1535,
+            619,
+            19
+          ],
+          "page": 1,
+          "conf": 0.95
+        }
+      ]
+    },
+    "prescriber": {
+      "name": {
+        "value": "Dr. S. Meenakshi",
+        "raw": "Dr. 5. Meenakshi",
+        "status": "found",
+        "confidence": 0.9,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "registration_no": {
+        "value": "TN-MC-51042",
+        "raw": "TN-MC-51042",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "hospital": {
+        "value": "KURUNJI RURAL HEALTH DISPENSARY",
+        "raw": "KURUNJI RURAL HEALTH DISPENSARY / \u0b9a\u0bc1\u0bb1\u0bbf\u0b9e\u0bcd\u0b9a\u0bbf \u0bae\u0bb0\u0ba8\u0bcd\u0ba4\u0b95\u0bae\u0bcd\u200c",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L1"
+        ]
+      },
+      "date": {
+        "value": "16-Oct-2026",
+        "raw": "16-Oct-2026",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "patient": {
+      "name": {
+        "value": "P. Alagappan",
+        "raw": "7. Alagappan",
+        "status": "found",
+        "confidence": 0.9,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      },
+      "age": {
+        "value": "68M",
+        "raw": "68M",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "medicines": [
+      {
+        "id": "med-1",
+        "name": {
+          "value": "Pantoprazole",
+          "raw": "Pantoprazole",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "strength": {
+          "value": "40mg",
+          "raw": "40mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "dose": {
+          "value": "1",
+          "raw": "1-0-0",
+          "status": "found",
+          "confidence": 0.8,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "frequency": {
+          "value": null,
+          "raw": "1-0-0",
+          "status": "unclear",
+          "confidence": 0.35,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "timing": {
+          "value": "empty stomach morning",
+          "raw": "\u0b95\u0bbe\u0bb2\u0bc8 \u0bb5\u0bae\u0bb4\u0bc6\u0bae\u0bcd\u200c \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd\u200c / empty stomach morning",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "duration": {
+          "value": "15 days",
+          "raw": "15 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "instructions": {
+          "value": "Take 30 mins before breakfast",
+          "raw": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 30 \u0bb1\u0bbf\u0bae\u0bbf\u0b9f\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c / Take 30 mins before breakfast.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-2",
+        "name": {
+          "value": "Atorvastatin",
+          "raw": "Atorvastatin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "strength": {
+          "value": "10mg",
+          "raw": "10mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "dose": {
+          "value": "1",
+          "raw": "0-0-1",
+          "status": "found",
+          "confidence": 0.8,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "frequency": {
+          "value": null,
+          "raw": "0-0-1",
+          "status": "unclear",
+          "confidence": 0.35,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "timing": {
+          "value": "night after food",
+          "raw": "\u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c / night after food",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "duration": {
+          "value": "30 days",
+          "raw": "30 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "instructions": {
+          "value": "Take 1 tab at bedtime",
+          "raw": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b87\u0bb0\u0bb5\u0bc1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0baa\u0b9f\u0b95\u0bcd\u0b95\u0b95\u0bc8\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c / Take 1 tab at bedtime.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-3",
+        "name": {
+          "value": "Paracetamol",
+          "raw": "Paracetamol",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "strength": {
+          "value": "650mg",
+          "raw": "650mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "dose": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "frequency": {
+          "value": "as needed",
+          "raw": "SOS \u0ba4\u0bb5\u0bc7\u0baa\u0bc8\u0bcd\u0baa\u0b9f\u0bae\u0bcd\u200c \u0baa\u0bcb\u0ba4\u0bc1 / as needed",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "timing": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "duration": {
+          "value": "5 days",
+          "raw": "5 days",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "instructions": {
+          "value": "For fever or body pain",
+          "raw": "\u0bb5\u0bbf\u0bb5\u0bb0\u0bae\u0bcd\u200c: \u0b95\u0bbe\u0baf\u0bcd\u0b9a\u0bcd\u0b9a\u0bb2\u0bcd\u200c \u0b85\u0bb2\u0bcd\u0bb2\u0ba4 \u0b89\u0b9f\u0bb2\u0bcd\u200c \u0bb5\u0bb2\u0bbf\u0b95\u0bcd\u0b95 / For fever or body pain.",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency_normalized": {
+          "times_per_day": null,
+          "slots": [],
+          "as_needed": true
+        },
+        "suggestions": [],
+        "status": "verified_by_rules"
+      }
+    ],
+    "follow_up": {
+      "value": "Review in 15 days",
+      "raw": "\u0b85\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4 \u0baa\u0bb0\u0bbf\u0b9a\u0bcb\u0ba4\u0ba9\u0bc8/ Next review: 15 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c \u0b95\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4 \u0bae\u0bc0\u0ba3\u0bcd\u0b9f\u0bc1\u0bae\u0bcd\u200c \u0bb5\u0bb0\u0bb5\u0bc1\u0bae\u0bcd\u200c (Review in 15 days).",
+      "status": "found",
+      "confidence": 1.0,
+      "evidence_line_ids": [
+        "L12"
+      ]
+    },
+    "flags": [],
+    "overall_status": "ready",
+    "review_reasons": [],
+    "metrics": {
+      "latency_ms": 114845.68,
+      "model": "Gemma-4-31B-IT",
+      "tokens_in": 1597,
+      "tokens_out": 2287,
+      "gpu": "AMD Token Factory"
+    },
+    "image": {
+      "width": 1200,
+      "height": 1600
+    },
+    "corruption_details": null
+  },
+  "rx_demo_005.png": {
+    "request_id": "req-9881bdb9ba63",
+    "document_id": "doc-eff425e1046c",
+    "source": {
+      "type": "image",
+      "page_count": 1
+    },
+    "ocr": {
+      "engine": "tesseract",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "\u0b85\u0bb0\u0ba3 (\u0baf\u0bcb\u0ba4\u0baf\u0bae\u0bcd\u200c \u0b9a\u0bae\u0ba4\u0bbe\u0baf \u0ba8\u0bb2 \u0bae\u0baf\u0bc8\u0bae\u0bcd\u200c",
+          "bbox": [
+            118,
+            74,
+            664,
+            46
+          ],
+          "page": 1,
+          "conf": 0.62
+        },
+        {
+          "id": "L2",
+          "text": "42 \u0b95\u0bbe\u0ba8\u0bcd\u0ba4\u0bbf \u0b9a\u0bbe\u0bb2\u0bc8, \u0b9a\u0bb2\u0bc7\u0bae\u0bcd\u200c - 636007 | \u0ba4\u0bae\u0bca\u0bb2\u0baa\u0bc8\u0b9a\u0bc7\u0bbf: 0427-2410293",
+          "bbox": [
+            118,
+            120,
+            720,
+            25
+          ],
+          "page": 1,
+          "conf": 0.83
+        },
+        {
+          "id": "L3",
+          "text": "\u0bae\u0bb0\u0ba4\u0bcd\u0ba4\u0bb5\u0bb0\u0bcd\u200c \u0baa\u0bbf. \u0b9a\u0bc1\u0ba8\u0bcd\u0ba4\u0bb0\u0bae\u0bc2\u0bb0\u0bcd\u0ba4\u0bcd\u0ba4\u0bbf, 11885, 110 Reg: TN-MC-62391",
+          "bbox": [
+            120,
+            170,
+            687,
+            28
+          ],
+          "page": 1,
+          "conf": 0.83
+        },
+        {
+          "id": "L4",
+          "text": "\u0ba8\u0bcb\u0baf\u0bbe\u0bb3\u0bbf: \u0baa\u0bbf. \u0baa\u0bbe\u0ba9\u0bae\u0ba4\u0bbf \u0bb5\u0baf\u0ba4:41 \u0baa\u0ba3\u0bc6\u0bcd\u200c BCH): 16-\u0b85\u0b95\u0bcd\u0b9f\u0bb5\u0bcb\u0baa\u0bb0\u0bcd\u200c-2026",
+          "bbox": [
+            119,
+            230,
+            820,
+            34
+          ],
+          "page": 1,
+          "conf": 0.6
+        },
+        {
+          "id": "L5",
+          "text": "O",
+          "bbox": [
+            121,
+            308,
+            21,
+            30
+          ],
+          "page": 1,
+          "conf": 0.5
+        },
+        {
+          "id": "L6",
+          "text": "1. Tab Metformin 500mg - 1-0-1 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c x 30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c",
+          "bbox": [
+            121,
+            375,
+            668,
+            25
+          ],
+          "page": 1,
+          "conf": 0.95
+        },
+        {
+          "id": "L7",
+          "text": "\u0bb5\u0bb4\u0bbf\u0bae\u0bb1\u0bc8 \u0ba4\u0bbf\u0ba9\u0bae\u0bae\u0bcd\u200c \u0b87\u0bb0\u0bb5\u0bb3\u0bc7\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd\u200c \u0baa\u0bbf\u0ba9\u0bcd\u200c \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd\u200c.",
+          "bbox": [
+            139,
+            409,
+            776,
+            23
+          ],
+          "page": 1,
+          "conf": 0.67
+        },
+        {
+          "id": "L8",
+          "text": "2. Tab Amlodipine 5mg - 1-0-0 \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c x 30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c",
+          "bbox": [
+            120,
+            465,
+            721,
+            26
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L9",
+          "text": "\u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8 Hlorig \u0b95\u0bbe\u0bb2\u0baf\u0bbf\u0bb2\u0bcd\u200c \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd\u200c \u0ba4\u0ba3\u0bcd\u0ba3\u0bc0\u0bb0\u0bcd\u200c \u0b9a\u0bc1\u0baa\u0bbf\u0ba4\u0bcd\u0ba4 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd\u200c.",
+          "bbox": [
+            140,
+            499,
+            787,
+            23
+          ],
+          "page": 1,
+          "conf": 0.59
+        },
+        {
+          "id": "L10",
+          "text": "3. Tab Pantoprazole 40mg - 1-0-0 \u0b95\u0bbe\u0bb2\u0bc8 \u0bb5\u0bae\u0bc6\u0bae\u0bcd\u200c \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd\u200c x 15 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c",
+          "bbox": [
+            120,
+            554,
+            781,
+            27
+          ],
+          "page": 1,
+          "conf": 0.93
+        },
+        {
+          "id": "L11",
+          "text": "\u0bb5\u0bb4\u0bbf\u0bae\u0bb1\u0bc8 \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b85\u0bb0\u0bc8 \u0bae\u0ba3\u0bbf \u0ba8\u0bb0\u0bc7\u0bae\u0bcd\u200c \u0bae\u0ba9\u0bcd\u200c \u0bb5\u0bb1\u0bc6\u0bae\u0bcd\u200c \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd\u200c \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd\u200c.",
+          "bbox": [
+            140,
+            589,
+            851,
+            23
+          ],
+          "page": 1,
+          "conf": 0.74
+        },
+        {
+          "id": "L12",
+          "text": "\u0b85\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4 \u0baa\u0bb0\u0bbf\u0b9a\u0b9a\u0bcb\u0ba4\u0ba9\u0bc8 30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd\u200c \u0b95\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4 \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0ba4\u0bcd\u0ba4\u0bae\u0bcd\u200c \u0bae\u0bb1\u0bcd\u0bb1\u0bae\u0bcd\u200c \u0b9a\u0bb0\u0bcd\u0b95\u0bcd\u0b95\u0bb0\u0bb2 \u0b85\u0bb3\u0bb5\u0bc1 \u0b9a\u0bb0\u0bbf\u0baa\u0bbe\u0bb0\u0bcd\u200c:",
+          "bbox": [
+            120,
+            683,
+            1080,
+            28
+          ],
+          "page": 1,
+          "conf": 0.7
+        },
+        {
+          "id": "L13",
+          "text": "Signature & Seal / \u0b95\u0baf\u0bc8\u0bae\u0bca\u0baa\u0bcd\u0baa\u0bae\u0bcd\u200c",
+          "bbox": [
+            821,
+            763,
+            288,
+            20
+          ],
+          "page": 1,
+          "conf": 0.73
+        },
+        {
+          "id": "L14",
+          "text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data",
+          "bbox": [
+            124,
+            1536,
+            619,
+            20
+          ],
+          "page": 1,
+          "conf": 0.91
+        }
+      ]
+    },
+    "prescriber": {
+      "name": {
+        "value": "\u0baa\u0bbf. \u0b9a\u0bc1\u0ba8\u0bcd\u0ba4\u0bb0\u0bae\u0bc2\u0bb0\u0bcd\u0ba4\u0bcd\u0ba4\u0bbf",
+        "raw": "\u0baa\u0bbf. \u0b9a\u0bc1\u0ba8\u0bcd\u0ba4\u0bb0\u0bae\u0bc2\u0bb0\u0bcd\u0ba4\u0bcd\u0ba4\u0bbf",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "registration_no": {
+        "value": "TN-MC-62391",
+        "raw": "TN-MC-62391",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L3"
+        ]
+      },
+      "hospital": {
+        "value": "\u0b85\u0bb0\u0ba3\u0bcb\u0ba4\u0baf\u0bae\u0bcd \u0b9a\u0bae\u0ba4\u0bbe\u0baf \u0ba8\u0bb2 \u0bae\u0bc8\u0baf\u0bae\u0bcd",
+        "raw": "\u0b85\u0bb0\u0ba3\u0bcb\u0ba4\u0baf\u0bae\u0bcd \u0b9a\u0bae\u0ba4\u0bbe\u0baf \u0ba8\u0bb2 \u0bae\u0bc8\u0baf\u0bae\u0bcd",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L1"
+        ]
+      },
+      "date": {
+        "value": "16-\u0b85\u0b95\u0bcd\u0b9f\u0bcb\u0baa\u0bb0\u0bcd-2026",
+        "raw": "16-\u0b85\u0b95\u0bcd\u0b9f\u0bb5\u0bcb\u0baa\u0bb0\u0bcd-2026",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "patient": {
+      "name": {
+        "value": "\u0baa\u0bbf. \u0baa\u0bbe\u0ba9\u0bae\u0ba4\u0bbf",
+        "raw": "\u0baa\u0bbf. \u0baa\u0bbe\u0ba9\u0bae\u0ba4\u0bbf",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      },
+      "age": {
+        "value": "41",
+        "raw": "41",
+        "status": "found",
+        "confidence": 1.0,
+        "evidence_line_ids": [
+          "L4"
+        ]
+      }
+    },
+    "medicines": [
+      {
+        "id": "med-1",
+        "name": {
+          "value": "Metformin",
+          "raw": "Metformin",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "strength": {
+          "value": "500mg",
+          "raw": "500mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "dose": {
+          "value": "1-0-1",
+          "raw": "1-0-1",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "frequency": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "timing": {
+          "value": "\u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd \u0baa\u0bbf\u0ba9\u0bcd",
+          "raw": "\u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd \u0baa\u0bbf\u0ba9\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "duration": {
+          "value": "30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "raw": "30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L6"
+          ]
+        },
+        "instructions": {
+          "value": "\u0ba4\u0bbf\u0ba9\u0bae\u0bc1\u0bae\u0bcd \u0b87\u0bb0\u0bb5\u0bc7\u0bb3\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd \u0baa\u0bbf\u0ba9\u0bcd \u0b92\u0bb0\u0bc1 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "raw": "\u0bb5\u0bb4\u0bbf\u0bae\u0bb1\u0bc8 \u0ba4\u0bbf\u0ba9\u0bae\u0bae\u0bcd \u0b87\u0bb0\u0bb5\u0bb3\u0bc7\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1\u0baa\u0bcd \u0baa\u0bbf\u0ba9\u0bcd \u0b92\u0bb0 \u0bae\u0bbe\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc8 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "status": "found",
+          "confidence": 0.9,
+          "evidence_line_ids": [
+            "L7"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-2",
+        "name": {
+          "value": "Amlodipine",
+          "raw": "Amlodipine",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "strength": {
+          "value": "5mg",
+          "raw": "5mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "dose": {
+          "value": "1-0-0",
+          "raw": "1-0-0",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "frequency": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "timing": {
+          "value": "\u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bc1\u0ba9\u0bcd",
+          "raw": "\u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "duration": {
+          "value": "30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "raw": "30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L8"
+          ]
+        },
+        "instructions": {
+          "value": "\u0ba4\u0bbf\u0ba9\u0bae\u0bc1\u0bae\u0bcd \u0b95\u0bbe\u0bb2\u0bc8\u0baf\u0bbf\u0bb2\u0bcd \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0bc1\u0ba9\u0bcd \u0ba4\u0ba3\u0bcd\u0ba3\u0bc0\u0bb0\u0bcd \u0b95\u0bc1\u0b9f\u0bbf\u0ba4\u0bcd\u0ba4\u0bc1 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "raw": "\u0bb5\u0bb4\u0bbf\u0bae\u0bc1\u0bb1\u0bc8 Hlorig \u0b95\u0bbe\u0bb2\u0baf\u0bbf\u0bb2\u0bcd \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bae\u0ba9\u0bcd \u0ba4\u0ba3\u0bcd\u0ba3\u0bc0\u0bb0\u0bcd \u0b9a\u0bc1\u0baa\u0bbf\u0ba4\u0bcd\u0ba4 \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "status": "found",
+          "confidence": 0.8,
+          "evidence_line_ids": [
+            "L9"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "needs_review"
+      },
+      {
+        "id": "med-3",
+        "name": {
+          "value": "Pantoprazole",
+          "raw": "Pantoprazole",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "strength": {
+          "value": "40mg",
+          "raw": "40mg",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "form": {
+          "value": "Tab",
+          "raw": "Tab",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "dose": {
+          "value": "1-0-0",
+          "raw": "1-0-0",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "frequency": {
+          "value": null,
+          "raw": null,
+          "status": "missing",
+          "confidence": 0.0,
+          "evidence_line_ids": []
+        },
+        "timing": {
+          "value": "\u0b95\u0bbe\u0bb2\u0bc8 \u0bb5\u0bc6\u0bb1\u0bc1\u0bae\u0bcd \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd",
+          "raw": "\u0b95\u0bbe\u0bb2\u0bc8 \u0bb5\u0bae\u0bc6\u0bae\u0bcd \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "duration": {
+          "value": "15 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "raw": "15 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd",
+          "status": "found",
+          "confidence": 1.0,
+          "evidence_line_ids": [
+            "L10"
+          ]
+        },
+        "instructions": {
+          "value": "\u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b85\u0bb0\u0bc8 \u0bae\u0ba3\u0bbf \u0ba8\u0bc7\u0bb0\u0bae\u0bcd \u0bae\u0bc1\u0ba9\u0bcd \u0bb5\u0bc6\u0bb1\u0bc1\u0bae\u0bcd \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "raw": "\u0bb5\u0bb4\u0bbf\u0bae\u0bb1\u0bc8 \u0b95\u0bbe\u0bb2\u0bc8 \u0b89\u0ba3\u0bb5\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0b85\u0bb0\u0bc8 \u0bae\u0ba3\u0bbf \u0ba8\u0bb0\u0bc7\u0bae\u0bcd \u0bae\u0ba9\u0bcd \u0bb5\u0bb1\u0bc6\u0bae\u0bcd \u0bb5\u0baf\u0bbf\u0bb1\u0bcd\u0bb1\u0bbf\u0bb2\u0bcd \u0b89\u0b9f\u0bcd\u0b95\u0bca\u0bb3\u0bcd\u0bb3\u0bb5\u0bc1\u0bae\u0bcd",
+          "status": "found",
+          "confidence": 0.9,
+          "evidence_line_ids": [
+            "L11"
+          ]
+        },
+        "frequency_normalized": null,
+        "suggestions": [],
+        "status": "needs_review"
+      }
+    ],
+    "follow_up": {
+      "value": "30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4\u0bc1 \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0bc1\u0ba4\u0bcd\u0ba4\u0bae\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bb0\u0bcd\u0b95\u0bcd\u0b95\u0bb0\u0bc8 \u0b85\u0bb3\u0bb5\u0bc1 \u0b9a\u0bb0\u0bbf\u0baa\u0bbe\u0bb0\u0bcd\u0ba4\u0bcd\u0ba4\u0bb2\u0bcd",
+      "raw": "\u0b85\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4 \u0baa\u0bb0\u0bbf\u0b9a\u0b9a\u0bcb\u0ba4\u0ba9\u0bc8 30 \u0ba8\u0bbe\u0b9f\u0bcd\u0b95\u0bb3\u0bcd \u0b95\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4 \u0b87\u0bb0\u0ba4\u0bcd\u0ba4 \u0b85\u0bb4\u0ba4\u0bcd\u0ba4\u0bae\u0bcd \u0bae\u0bb1\u0bcd\u0bb1\u0bae\u0bcd \u0b9a\u0bb0\u0bcd\u0b95\u0bcd\u0b95\u0bb0\u0bb2 \u0b85\u0bb3\u0bb5\u0bc1 \u0b9a\u0bb0\u0bbf\u0baa\u0bbe\u0bb0\u0bcd",
+      "status": "found",
+      "confidence": 0.9,
+      "evidence_line_ids": [
+        "L12"
+      ]
+    },
+    "flags": [],
+    "overall_status": "ready",
+    "review_reasons": [],
+    "metrics": {
+      "latency_ms": 87745.81,
+      "model": "Gemma-4-31B-IT",
+      "tokens_in": 1593,
+      "tokens_out": 1578,
+      "gpu": "AMD Token Factory"
+    },
+    "image": {
+      "width": 1200,
+      "height": 1600
+    },
+    "corruption_details": null
+  }
+}

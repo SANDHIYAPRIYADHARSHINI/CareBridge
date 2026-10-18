@@ -1,5 +1,6 @@
 /* ==========================================================================
-   TodayScreen Styles — Patient Calm Home
+   TodayScreen Styles — Patient Calm Home & Your Day Ribbon
+   Source: docs/design-v2.md Section 4 & 5
    ========================================================================== */
 
 .today-container {
@@ -11,6 +12,7 @@
   width: 100%;
 }
 
+/* Greeting Header */
 .today-header {
   display: flex;
   flex-direction: column;
@@ -22,14 +24,19 @@
   font-size: clamp(2rem, 3.5vw, 2.75rem);
   font-weight: 700;
   color: var(--ink);
+  line-height: 1.2;
 }
 
 .today-subtitle {
   color: var(--ink-soft);
   font-size: 1.05rem;
+  line-height: 1.5;
 }
 
-/* Day Ribbon Card */
+/* ==========================================================================
+   Your Day Ribbon Card
+   ========================================================================== */
+
 .day-ribbon-card {
   background-color: var(--card);
   border: 1px solid var(--hairline);
@@ -44,6 +51,14 @@
 .ribbon-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ribbon-title-wrap {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
@@ -54,13 +69,27 @@
   color: var(--ink);
 }
 
+.ribbon-date-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Grid of time slots: Morning / Afternoon / Night */
 .ribbon-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .ribbon-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -74,60 +103,228 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .slot-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
+  justify-content: space-between;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.slot-badge-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--ink);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--hairline);
+}
+
+.slot-badge.morning .slot-badge-left svg {
+  color: #B96A00;
+}
+
+.slot-badge.afternoon .slot-badge-left svg {
+  color: var(--primary);
+}
+
+.slot-badge.night .slot-badge-left svg {
+  color: #2D3A54;
+}
+
+.slot-time {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-muted);
 }
 
 .slot-pills {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-height: 48px;
+  gap: 0.65rem;
+  min-height: 52px;
 }
+
+/* ==========================================================================
+   Pill Chip (Shared Element Destination)
+   ========================================================================== */
 
 .pill-chip {
   background-color: var(--card);
   border: 1px solid var(--hairline);
   border-radius: var(--radius-sm);
-  padding: 0.55rem 0.65rem;
+  padding: 0.7rem 0.75rem;
   display: flex;
   align-items: flex-start;
+  gap: 0.65rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.pill-chip:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-subtle);
+}
+
+.pill-chip.pill-chip-taken {
+  background-color: rgba(231, 243, 241, 0.45);
+  border-color: rgba(11, 95, 90, 0.25);
+  opacity: 0.82;
+}
+
+.pill-chip.pill-chip-taken .pill-name {
+  text-decoration: line-through;
+  color: var(--ink-soft);
+}
+
+/* Checkbox Button */
+.pill-check-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--hairline);
+  background-color: var(--canvas);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  margin-top: 2px;
+}
+
+.pill-check-btn:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-subtle);
+}
+
+.pill-check-btn.checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.pill-chip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.pill-name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: 0.5rem;
 }
 
-.pill-chip-text {
-  display: flex;
-  flex-direction: column;
-}
-
 .pill-name {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--ink);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.pill-meta {
-  font-size: 0.75rem;
+.pill-strength {
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--ink-soft);
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.pill-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pill-timing {
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+}
+
+.pill-status-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.pill-chip-taken .pill-status-label {
+  color: var(--primary);
 }
 
 .empty-slot-text {
   color: var(--ink-muted);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-style: italic;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
+  text-align: center;
 }
 
+.empty-slot-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.85rem 0.5rem;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  background-color: rgba(251, 248, 242, 0.5);
+  border: 1px dashed var(--hairline);
+  border-radius: var(--radius-sm);
+}
+
+/* Empty Ribbon Banner */
+.ribbon-empty-banner {
+  background-color: var(--canvas);
+  border: 1px dashed var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.ribbon-empty-text {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0;
+  max-width: 540px;
+}
+
+.load-sample-btn {
+  background-color: var(--card);
+  border: 1px solid var(--hairline);
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.load-sample-btn:hover {
+  background-color: var(--primary-subtle);
+  border-color: var(--primary);
+}
+
+/* Ribbon Bottom Action */
 .ribbon-footer-action {
   display: flex;
   justify-content: flex-end;
@@ -138,21 +335,222 @@
 .view-rx-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   background-color: transparent;
   color: var(--primary);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
 }
 
 .view-rx-button:hover {
-  text-decoration: underline;
+  background-color: var(--primary-subtle);
 }
 
-/* Add Action Card */
+/* ==========================================================================
+   Recent Documents Section
+   ========================================================================== */
+
+.recent-docs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.section-subtitle {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.recent-docs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recent-doc-card {
+  background-color: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.2s ease;
+}
+
+.recent-doc-card:hover {
+  border-color: var(--primary);
+}
+
+.doc-thumbnail-wrap {
+  width: 72px;
+  height: 96px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background-color: var(--canvas);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(23, 35, 31, 0.08);
+}
+
+.doc-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.doc-thumbnail-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(11, 95, 90, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.doc-thumbnail-wrap:hover .doc-thumbnail-overlay {
+  opacity: 1;
+}
+
+.doc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.doc-hospital-name {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.doc-date {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.doc-physician {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.doc-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.doc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.doc-tag.verified-tag {
+  background-color: var(--ok-bg);
+  color: var(--ok);
+  border: 1px solid rgba(11, 95, 90, 0.2);
+}
+
+.doc-tag.line-tag {
+  background-color: var(--canvas);
+  color: var(--ink-soft);
+  border: 1px solid var(--hairline);
+}
+
+.doc-action {
+  flex-shrink: 0;
+}
+
+.doc-review-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--canvas);
+  border: 1px solid var(--hairline);
+  color: var(--primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.doc-review-btn:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+@media (max-width: 640px) {
+  .recent-doc-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .doc-thumbnail-wrap {
+    width: 60px;
+    height: 80px;
+  }
+  .doc-action {
+    width: 100%;
+  }
+  .doc-review-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Quiet "Add a prescription" Action Card
+   ========================================================================== */
+
 .add-action-card {
   background-color: var(--card);
   border: 1.5px dashed var(--hairline);
@@ -205,6 +603,7 @@
   color: var(--ink-soft);
   font-size: 0.92rem;
   margin: 0;
+  line-height: 1.45;
 }
 
 .add-card-cta {
@@ -216,9 +615,10 @@
   font-weight: 600;
   border: none;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
-.add-card-cta:hover {
+.add-action-card:hover .add-card-cta {
   background-color: var(--primary-hover);
 }
 
@@ -229,5 +629,23 @@
   }
   .add-card-cta {
     width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .today-container {
+    padding-bottom: 6.5rem;
+  }
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .pill-chip,
+  .recent-doc-card,
+  .add-action-card,
+  .pill-check-btn {
+    transition: none !important;
   }
 }

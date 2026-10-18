@@ -93,6 +93,10 @@
   "flags": [],
   "overall_status": "ready",
   "review_reasons": [],
+  "image": {
+    "width": 1200,
+    "height": 1600
+  },
   "metrics": {
     "latency_ms": 342.5,
     "model": "google/gemma-3-27b-it",

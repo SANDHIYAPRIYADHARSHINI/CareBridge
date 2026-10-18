@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # ruff: noqa: E501
-"""bench_latency.py — AMD ROCm latency, throughput, and concurrency benchmark.
+"""bench_latency.py — AMD Token Factory latency, throughput, and concurrency benchmark.
 
-Per docs/amd-deployment.md and docs/requirements.md:
-- Concurrency scaling: --concurrency 1 4 8 16 over extraction and chat requests.
-- Records p50 and p95 latency, requests/s, output tokens/s, time to first token (chat stream).
-- Telemetry: Samples rocm-smi once a second if available (VRAM memory & GPU utilization).
+Per hackathon specifications:
+- Concurrency scaling: --concurrency 1 2 4 8 only.
+- 8 requests per tier by default.
+- 60 s cooldown between tiers to respect shared RPM limits.
+- Counts 429 Rate Limit responses per tier.
+- Queries GET /v1/usage before and after benchmark run.
+- Labeled: 'AMD Token Factory shared endpoint (rate limited), client-side latency'.
 - Guarded summary: ONLY real runs may write eval/results/summary.json.
 - --dry-run uses FakeLLM simulation, prints 'DRY RUN, not real results',
   and writes NOTHING to summary.json.
@@ -27,17 +30,21 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+import httpx
+
 # Ensure services/ai is on sys.path
 EVAL_DIR = Path(__file__).resolve().parent
 AI_DIR = EVAL_DIR.parent
 if str(AI_DIR) not in sys.path:
     sys.path.insert(0, str(AI_DIR))
 
-from app.config import get_settings  # noqa: E402
+from app.config import Settings, get_settings  # noqa: E402
 from app.core.llm import LLMClient  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger("carebridge.eval.latency")
+
+ENDPOINT_LABEL = "AMD Token Factory shared endpoint (rate limited), client-side latency"
 
 
 @dataclass
@@ -45,11 +52,11 @@ class GpuTelemetrySample:
     timestamp: float
     gpu_utilization_pct: float
     vram_used_mb: float
-    device_name: str = "AMD Instinct GPU"
+    device_name: str = "AMD Token Factory (Hosted)"
 
 
 class RocmSmiSampler:
-    """Background sampler querying rocm-smi every second during benchmarks."""
+    """Optional background sampler querying rocm-smi if local GPU is available."""
 
     def __init__(self, interval: float = 1.0) -> None:
         self.interval = interval
@@ -57,7 +64,7 @@ class RocmSmiSampler:
         self._running = False
         self._thread: threading.Thread | None = None
         self._has_rocm_smi = shutil.which("rocm-smi") is not None
-        self._detected_device: str = "AMD Instinct ROCm"
+        self._detected_device: str = "AMD Token Factory (Hosted)"
 
     def start(self) -> None:
         self._running = True
@@ -80,7 +87,6 @@ class RocmSmiSampler:
     def _query_gpu(self) -> GpuTelemetrySample | None:
         now = time.time()
         if not self._has_rocm_smi:
-            # Fallback to nvidia-smi if running on dual dev box or record non-GPU fallback
             if shutil.which("nvidia-smi"):
                 try:
                     res = subprocess.run(
@@ -104,11 +110,10 @@ class RocmSmiSampler:
                 timestamp=now,
                 gpu_utilization_pct=0.0,
                 vram_used_mb=0.0,
-                device_name="ROCm SMI not available",
+                device_name="AMD Token Factory (Hosted)",
             )
 
         try:
-            # Run rocm-smi for utilization and memory
             res = subprocess.run(
                 ["rocm-smi", "--showuse", "--showmeminfo", "vram"],
                 capture_output=True,
@@ -116,11 +121,9 @@ class RocmSmiSampler:
                 timeout=1.5,
             )
             out = res.stdout
-            # Extract GPU use %
             use_match = re.search(r"GPU use \(%\):\s*(\d+)", out)
             util_pct = float(use_match.group(1)) if use_match else 0.0
 
-            # Extract VRAM use
             vram_match = re.search(r"VRAM Total Used Memory \(B\):\s*(\d+)", out)
             vram_mb = (float(vram_match.group(1)) / (1024 * 1024)) if vram_match else 0.0
 
@@ -138,7 +141,7 @@ class RocmSmiSampler:
         if not self.samples:
             return {
                 "available": False,
-                "device_name": "ROCm SMI not detected",
+                "device_name": "AMD Token Factory (Hosted)",
                 "avg_utilization_pct": 0.0,
                 "peak_utilization_pct": 0.0,
                 "avg_vram_mb": 0.0,
@@ -148,7 +151,7 @@ class RocmSmiSampler:
 
         utils = [s.gpu_utilization_pct for s in self.samples]
         vrams = [s.vram_used_mb for s in self.samples]
-        dev_name = self.samples[-1].device_name if self.samples else "AMD Instinct GPU"
+        dev_name = self.samples[-1].device_name if self.samples else "AMD Token Factory (Hosted)"
 
         return {
             "available": True,
@@ -173,16 +176,21 @@ class ConcurrencyBenchmarkPoint:
     ttft_p50_ms: float
     gpu_avg_util_pct: float
     gpu_avg_vram_mb: float
+    rate_limit_429_count: int = 0
 
 
 @dataclass
 class BenchmarkSuiteSummary:
+    endpoint_label: str
     model: str
     gpu: str
     is_dry_run: bool
     generated_at: str
     concurrency_table: list[dict[str, Any]]
     telemetry: dict[str, Any]
+    usage_before: dict[str, Any] | None = None
+    usage_after: dict[str, Any] | None = None
+    usage_delta: dict[str, Any] | None = None
 
 
 def calculate_percentiles(latencies: list[float]) -> tuple[float, float]:
@@ -195,35 +203,50 @@ def calculate_percentiles(latencies: list[float]) -> tuple[float, float]:
     return round(sorted_l[idx_50], 1), round(sorted_l[idx_95], 1)
 
 
-async def simulate_fake_request(is_stream: bool = False) -> tuple[float, int, float]:
+async def fetch_token_factory_usage(settings: Settings) -> dict[str, Any] | None:
+    """Reads GET /v1/usage from AMD Token Factory."""
+    url = f"{settings.LLM_BASE_URL.rstrip('/')}/usage"
+    headers = {"Authorization": f"Bearer {settings.LLM_API_KEY}"}
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(url, headers=headers)
+            if resp.status_code == 200:
+                return resp.json()
+    except Exception as exc:
+        logger.warning("Failed to fetch AMD Token Factory usage from %s: %s", url, exc)
+    return None
+
+
+async def simulate_fake_request(is_stream: bool = False) -> tuple[float, int, float, bool]:
     """Simulates realistic fake LLM request latency and token output for dry runs."""
     start = time.perf_counter()
-    # Simulate first token latency (TTFT)
     ttft_s = 0.08 + (0.04 * (hash(time.time()) % 10) / 10.0)
     await asyncio.sleep(ttft_s)
     ttft_ms = ttft_s * 1000.0
 
-    # Simulate rest of generation
     rest_s = 0.15 + (0.08 * (hash(start) % 10) / 10.0)
     await asyncio.sleep(rest_s)
 
     total_latency_ms = (time.perf_counter() - start) * 1000.0
     tokens = 180 + int(hash(start) % 40)
-    return total_latency_ms, tokens, ttft_ms
+    return total_latency_ms, tokens, ttft_ms, False
 
 
 async def execute_real_request(
     client: LLMClient,
     prompt: str,
     is_stream: bool = False,
-) -> tuple[float, int, float]:
-    """Executes a real LLM request against the configured vLLM ROCm endpoint."""
+) -> tuple[float, int, float, bool]:
+    """Executes a real LLM request against the configured AMD Token Factory endpoint.
+
+    Returns (latency_ms, tokens_out, ttft_ms, is_429).
+    """
     start = time.perf_counter()
     tokens = 0
     ttft_ms = 0.0
+    is_429 = False
 
     if is_stream:
-        # Time to first token measurement
         first_chunk = True
         try:
             async for _chunk in client.generate_stream(prompt):
@@ -231,21 +254,33 @@ async def execute_real_request(
                     ttft_ms = (time.perf_counter() - start) * 1000.0
                     first_chunk = False
                 tokens += 1
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 429:
+                is_429 = True
+            logger.debug("Streaming call HTTP error: %s", exc)
         except Exception as exc:
+            if "429" in str(exc):
+                is_429 = True
             logger.debug("Streaming call error: %s", exc)
     else:
         try:
             res = await client.generate_chat(
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=512,
+                max_tokens=256,
             )
             tokens = res.metrics.tokens_out or 150
             ttft_ms = res.metrics.latency_ms * 0.35
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 429:
+                is_429 = True
+            logger.debug("Chat call HTTP error: %s", exc)
         except Exception as exc:
+            if "429" in str(exc):
+                is_429 = True
             logger.debug("Chat call error: %s", exc)
 
     total_latency_ms = (time.perf_counter() - start) * 1000.0
-    return total_latency_ms, max(tokens, 10), ttft_ms
+    return total_latency_ms, max(tokens, 10), ttft_ms, is_429
 
 
 async def benchmark_concurrency_tier(
@@ -262,6 +297,7 @@ async def benchmark_concurrency_tier(
     latencies: list[float] = []
     ttfts: list[float] = []
     total_tokens = 0
+    count_429 = 0
 
     prompts = [
         "What are the dosage instructions for Metformin 500mg in my prescription?",
@@ -271,17 +307,19 @@ async def benchmark_concurrency_tier(
     ]
 
     async def worker(req_idx: int) -> None:
-        nonlocal total_tokens
+        nonlocal total_tokens, count_429
         async with semaphore:
             is_stream = (req_idx % 2 == 0)
             prompt = prompts[req_idx % len(prompts)]
 
             if is_dry_run:
-                lat, tok, ttft = await simulate_fake_request(is_stream=is_stream)
+                lat, tok, ttft, is_429 = await simulate_fake_request(is_stream=is_stream)
             else:
                 assert client is not None
-                lat, tok, ttft = await execute_real_request(client, prompt, is_stream=is_stream)
+                lat, tok, ttft, is_429 = await execute_real_request(client, prompt, is_stream=is_stream)
 
+            if is_429:
+                count_429 += 1
             latencies.append(lat)
             ttfts.append(ttft)
             total_tokens += tok
@@ -314,16 +352,22 @@ async def benchmark_concurrency_tier(
         ttft_p50_ms=ttft_p50,
         gpu_avg_util_pct=avg_util,
         gpu_avg_vram_mb=avg_vram,
+        rate_limit_429_count=count_429,
     )
 
 
-def print_concurrency_table(points: list[ConcurrencyBenchmarkPoint], gpu_name: str) -> None:
+def print_concurrency_table(
+    points: list[ConcurrencyBenchmarkPoint],
+    gpu_name: str,
+    endpoint_label: str = ENDPOINT_LABEL,
+) -> None:
     """Prints the benchmark concurrency table matching AmdPanel.tsx specifications."""
-    print("\n==========================================================================")
-    print(f" AMD ROCm Concurrency Scaling Benchmark — {gpu_name}")
-    print("==========================================================================")
-    print(f"{'Concurrency':<12} | {'P50 (ms)':<10} | {'P95 (ms)':<10} | {'Throughput':<12} | {'Req/s':<8} | {'TTFT P50':<10}")
-    print("-" * 74)
+    print("\n==========================================================================================")
+    print(f" {endpoint_label}")
+    print(f" Compute Provider / Host: {gpu_name}")
+    print("==========================================================================================")
+    print(f"{'Concurrency':<12} | {'P50 (ms)':<10} | {'P95 (ms)':<10} | {'Throughput':<12} | {'Req/s':<8} | {'TTFT P50':<10} | {'429s':<6}")
+    print("-" * 88)
     for p in points:
         c_str = f"{p.concurrency}x"
         p50_str = f"{p.p50_ms:.1f} ms"
@@ -331,19 +375,56 @@ def print_concurrency_table(points: list[ConcurrencyBenchmarkPoint], gpu_name: s
         tps_str = f"{p.tokens_per_sec:.1f} t/s"
         rps_str = f"{p.requests_per_sec:.1f}"
         ttft_str = f"{p.ttft_p50_ms:.1f} ms"
-        print(f"{c_str:<12} | {p50_str:<10} | {p95_str:<10} | {tps_str:<12} | {rps_str:<8} | {ttft_str:<10}")
-    print("-" * 74)
+        r429_str = str(p.rate_limit_429_count)
+        print(f"{c_str:<12} | {p50_str:<10} | {p95_str:<10} | {tps_str:<12} | {rps_str:<8} | {ttft_str:<10} | {r429_str:<6}")
+    print("-" * 88)
 
 
 async def main() -> None:
-    parser = argparse.ArgumentParser(description="CareBridge AI AMD ROCm Latency and Concurrency Benchmark")
-    parser.add_argument("--concurrency", type=int, nargs="+", default=[1, 4, 8, 16], help="Concurrency levels (default: 1 4 8 16)")
-    parser.add_argument("--requests-per-tier", type=int, default=70, help="Total requests per concurrency level (default: 70 = 30 rx + 40 chat)")
-    parser.add_argument("--dry-run", action="store_true", help="Run with FakeLLM simulation; writes NOTHING to summary.json")
-    parser.add_argument("--output", type=str, default=str(AI_DIR / "eval" / "results" / "latency_bench.json"), help="Output JSON path")
-    parser.add_argument("--update-summary", action="store_true", help="Update eval/results/summary.json (real runs only)")
+    parser = argparse.ArgumentParser(description="CareBridge AI AMD Token Factory Latency and Concurrency Benchmark")
+    parser.add_argument(
+        "--concurrency",
+        type=int,
+        nargs="+",
+        default=[1, 2, 4, 8],
+        choices=[1, 2, 4, 8],
+        help="Concurrency levels allowed: 1 2 4 8 only (default: 1 2 4 8)",
+    )
+    parser.add_argument(
+        "--requests-per-tier",
+        type=int,
+        default=8,
+        help="Total requests per concurrency level (default: 8 requests per tier)",
+    )
+    parser.add_argument(
+        "--cooldown",
+        type=float,
+        default=60.0,
+        help="Cooldown seconds between concurrency tiers (default: 60.0s)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Run with FakeLLM simulation; writes NOTHING to summary.json",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=str(AI_DIR / "eval" / "results" / "latency_bench.json"),
+        help="Output JSON path",
+    )
+    parser.add_argument(
+        "--update-summary",
+        action="store_true",
+        help="Update eval/results/summary.json (real runs only)",
+    )
 
     args = parser.parse_args()
+
+    # Enforce concurrency 1 2 4 8 only
+    for c in args.concurrency:
+        if c not in (1, 2, 4, 8):
+            parser.error(f"Invalid concurrency {c}. Only 1, 2, 4, 8 are permitted on AMD Token Factory.")
 
     if args.dry_run:
         print("\n=======================================================")
@@ -354,6 +435,19 @@ async def main() -> None:
 
     settings = get_settings()
 
+    # Read GET /v1/usage before benchmark run
+    usage_before: dict[str, Any] | None = None
+    if not args.dry_run:
+        logger.info("Reading GET /v1/usage before benchmark run...")
+        usage_before = await fetch_token_factory_usage(settings)
+        if usage_before:
+            logger.info(
+                "AMD Token Factory usage before: rpm_limit=%s, daily_used_usd=%s, today_requests=%s",
+                usage_before.get("rpm_limit"),
+                usage_before.get("daily_cost_used_usd"),
+                usage_before.get("today", {}).get("requests"),
+            )
+
     # Start background GPU sampler
     sampler = RocmSmiSampler(interval=1.0)
     sampler.start()
@@ -362,7 +456,14 @@ async def main() -> None:
     concurrency_list = sorted(args.concurrency)
 
     try:
-        for c in concurrency_list:
+        for idx, c in enumerate(concurrency_list):
+            if idx > 0 and args.cooldown > 0:
+                logger.info(
+                    "Cooldown for %.1fs between tiers to respect AMD Token Factory rate limits...",
+                    args.cooldown,
+                )
+                await asyncio.sleep(args.cooldown)
+
             logger.info("Evaluating concurrency %dx (%d requests)...", c, args.requests_per_tier)
             point = await benchmark_concurrency_tier(
                 concurrency=c,
@@ -374,10 +475,26 @@ async def main() -> None:
     finally:
         sampler.stop()
 
-    gpu_telemetry = sampler.get_summary()
-    gpu_name = gpu_telemetry.get("device_name", "AMD Instinct (Pending)")
+    # Read GET /v1/usage after benchmark run
+    usage_after: dict[str, Any] | None = None
+    usage_delta: dict[str, Any] | None = None
+    if not args.dry_run:
+        logger.info("Reading GET /v1/usage after benchmark run...")
+        usage_after = await fetch_token_factory_usage(settings)
+        if usage_before and usage_after:
+            today_b = usage_before.get("today", {})
+            today_a = usage_after.get("today", {})
+            usage_delta = {
+                "requests_delta": (today_a.get("requests", 0) - today_b.get("requests", 0)),
+                "tokens_delta": (today_a.get("total_tokens", 0) - today_b.get("total_tokens", 0)),
+                "cost_delta_usd": round(today_a.get("cost", 0.0) - today_b.get("cost", 0.0), 6),
+            }
+            logger.info("AMD Token Factory usage delta: %s", usage_delta)
 
-    print_concurrency_table(benchmark_points, gpu_name)
+    gpu_telemetry = sampler.get_summary()
+    gpu_name = "hosted on AMD Token Factory"
+
+    print_concurrency_table(benchmark_points, gpu_name, ENDPOINT_LABEL)
 
     results_dir = AI_DIR / "eval" / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
@@ -391,17 +508,22 @@ async def main() -> None:
             "tokens_per_sec": p.tokens_per_sec,
             "requests_per_sec": p.requests_per_sec,
             "ttft_p50_ms": p.ttft_p50_ms,
+            "rate_limit_429_count": p.rate_limit_429_count,
         }
         for p in benchmark_points
     ]
 
     report = BenchmarkSuiteSummary(
+        endpoint_label=ENDPOINT_LABEL,
         model=settings.LLM_MODEL,
         gpu=gpu_name,
         is_dry_run=args.dry_run,
         generated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         concurrency_table=concurrency_table_data,
         telemetry=gpu_telemetry,
+        usage_before=usage_before,
+        usage_after=usage_after,
+        usage_delta=usage_delta,
     )
 
     with open(out_file, "w", encoding="utf-8") as f:
@@ -413,8 +535,7 @@ async def main() -> None:
     summary_path = results_dir / "summary.json"
     if args.dry_run:
         logger.info("DRY RUN: skipping any update to %s (dry-run protection active)", summary_path)
-    else:
-        # Real run: update summary.json with measured concurrency table
+    elif args.update_summary:
         summary_data: dict[str, Any] = {}
         if summary_path.exists():
             try:
@@ -425,7 +546,6 @@ async def main() -> None:
 
         benchmarks = summary_data.get("benchmarks", {})
         benchmarks["concurrency_table"] = concurrency_table_data
-        # If extraction_accuracy was not populated, set defaults from eval
         benchmarks.setdefault("extraction_accuracy", 0.962)
         benchmarks.setdefault("flag_recall", 1.0)
         benchmarks.setdefault("unsupported_rate", 0.95)
@@ -435,12 +555,15 @@ async def main() -> None:
         summary_data["status"] = "ready"
         summary_data["model"] = settings.LLM_MODEL
         summary_data["gpu"] = gpu_name
+        summary_data["endpoint_label"] = ENDPOINT_LABEL
         summary_data["generated_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         summary_data["benchmarks"] = benchmarks
+        if usage_delta:
+            summary_data["usage_delta"] = usage_delta
 
         with open(summary_path, "w", encoding="utf-8") as f:
             json.dump(summary_data, f, indent=2)
-        logger.info("Updated %s with live AMD ROCm concurrency metrics", summary_path)
+        logger.info("Updated %s with live AMD Token Factory benchmark metrics", summary_path)
 
 
 if __name__ == "__main__":

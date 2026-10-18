@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { LayoutGroup } from "motion/react";
 import {
   Sun,
   PlusCircle,
@@ -130,6 +131,8 @@ export function App() {
   const handleConfirmReminders = () => {
     if (currentExtraction) {
       setConfirmedExtraction(currentExtraction);
+    } else {
+      setConfirmedExtraction(rxDemo001Fixture);
     }
     setActiveTab("today");
   };
@@ -282,54 +285,62 @@ export function App() {
 
         {/* Feature Viewport Container */}
         <main className="feature-viewport">
-          {activeTab === "today" && (
-            <TodayScreen
-              language={language}
-              confirmedExtraction={confirmedExtraction}
-              onNavigateToAdd={() => setActiveTab("add")}
-              onNavigateToCheck={() => {
-                if (!currentExtraction) {
-                  setCurrentExtraction(rxDemo001Fixture);
-                  setCurrentImageUrl("/rx_demo_001.png");
-                }
-                setActiveTab("check");
-              }}
-            />
-          )}
-
-          {activeTab === "add" && (
-            <UploadScreen
-              onExtractionSuccess={handleExtractionSuccess}
-              useFixtures={useFixtures}
-              onToggleFixtures={(val) => setUseFixtures(val)}
-              language={language}
-            />
-          )}
-
-          {activeTab === "check" && (
-            <PrescriptionReview
-              extraction={currentExtraction || rxDemo001Fixture}
-              imageUrl={currentImageUrl}
-              useFixtures={useFixtures}
-              onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
-              onConfirmReminders={handleConfirmReminders}
-              onReUpload={() => setActiveTab("add")}
-            />
-          )}
-
-          {activeTab === "ask" && (
-            <div style={{ maxWidth: "860px", margin: "0 auto", width: "100%" }}>
-              <ChatPanel
+          <LayoutGroup id="carebridge-flow">
+            {activeTab === "today" && (
+              <TodayScreen
                 language={language}
-                onLanguageChange={(lang) => setLanguage(lang)}
-                confirmedExtraction={confirmedExtraction || currentExtraction}
-                useFixtures={useFixtures}
-                onCitationClick={(lineIds) => {
-                  setHighlightedLineIds(lineIds);
+                confirmedExtraction={confirmedExtraction}
+                imageUrl={currentImageUrl}
+                onNavigateToAdd={() => setActiveTab("add")}
+                onNavigateToCheck={() => {
+                  if (!currentExtraction) {
+                    setCurrentExtraction(rxDemo001Fixture);
+                    setCurrentImageUrl("/rx_demo_001.png");
+                  }
+                  setActiveTab("check");
+                }}
+                onLoadSample={() => {
+                  setCurrentExtraction(rxDemo001Fixture);
+                  setConfirmedExtraction(rxDemo001Fixture);
+                  setCurrentImageUrl("/rx_demo_001.png");
                 }}
               />
-            </div>
-          )}
+            )}
+
+            {activeTab === "add" && (
+              <UploadScreen
+                onExtractionSuccess={handleExtractionSuccess}
+                useFixtures={useFixtures}
+                onToggleFixtures={(val) => setUseFixtures(val)}
+                language={language}
+              />
+            )}
+
+            {activeTab === "check" && (
+              <PrescriptionReview
+                extraction={currentExtraction || rxDemo001Fixture}
+                imageUrl={currentImageUrl}
+                useFixtures={useFixtures}
+                onHoverLine={(lineIds) => setHighlightedLineIds(lineIds)}
+                onConfirmReminders={handleConfirmReminders}
+                onReUpload={() => setActiveTab("add")}
+              />
+            )}
+
+            {activeTab === "ask" && (
+              <div style={{ maxWidth: "860px", margin: "0 auto", width: "100%" }}>
+                <ChatPanel
+                  language={language}
+                  onLanguageChange={(lang) => setLanguage(lang)}
+                  confirmedExtraction={confirmedExtraction || currentExtraction}
+                  useFixtures={useFixtures}
+                  onCitationClick={(lineIds) => {
+                    setHighlightedLineIds(lineIds);
+                  }}
+                />
+              </div>
+            )}
+          </LayoutGroup>
         </main>
       </div>
 

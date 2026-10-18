@@ -6,6 +6,7 @@ and clinical verification rules to produce an ExtractionResult (RX-3 to RX-8).
 
 from __future__ import annotations
 
+import io
 import logging
 import time
 import uuid
@@ -23,6 +24,7 @@ from app.schemas.common import ExtractedField, Flag, Metrics, OcrLine
 from app.schemas.prescription import (
     DocumentSource,
     ExtractionResult,
+    ImageDimensions,
     Medicine,
     OcrResult,
     PatientInfo,
@@ -48,11 +50,11 @@ def _read_prompt_template(settings: Settings) -> str:
 
 
 def parse_extracted_field(data: Any) -> ExtractedField:
-    """Safely normalizes arbitrary LLM dictionary output into an ExtractedField."""
+    """Safely normalizes arbitrary LLM dictionary or string output into an ExtractedField."""
     if isinstance(data, dict):
         status = data.get("status", "missing")
         if status not in ("found", "missing", "unclear", "conflict"):
-            status = "unclear" if data.get("value") else "missing"
+            status = "found" if data.get("value") else "missing"
 
         val = data.get("value")
         val_str = str(val).strip() if val is not None else None
@@ -70,9 +72,12 @@ def parse_extracted_field(data: Any) -> ExtractedField:
             conf = 0.5
 
         raw_ev = data.get("evidence_line_ids", [])
-        evidence_ids = (
-            [str(x).strip() for x in raw_ev if str(x).strip()] if isinstance(raw_ev, list) else []
-        )
+        if isinstance(raw_ev, list):
+            evidence_ids = [str(x).strip() for x in raw_ev if str(x).strip()]
+        elif isinstance(raw_ev, str) and raw_ev.strip():
+            evidence_ids = [s.strip() for s in raw_ev.replace(",", " ").split() if s.strip()]
+        else:
+            evidence_ids = []
 
         return ExtractedField(
             value=val_str,
@@ -82,13 +87,13 @@ def parse_extracted_field(data: Any) -> ExtractedField:
             evidence_line_ids=evidence_ids,
         )
 
-    if isinstance(data, str) and data.strip():
-        clean_s = data.strip()
+    if isinstance(data, (str, int, float)) and str(data).strip():
+        clean_s = str(data).strip()
         return ExtractedField(
             value=clean_s,
             raw=clean_s,
             status="found",
-            confidence=0.7,
+            confidence=0.8,
             evidence_line_ids=[],
         )
 
@@ -105,28 +110,88 @@ def _parse_llm_json_to_extraction(
     parsed: dict[str, Any],
     ocr_lines: list[OcrLine],
 ) -> tuple[PrescriberInfo, PatientInfo, list[Medicine], ExtractedField]:
-    """Parses raw JSON dictionary from LLM into structured schema entities."""
+    """Parses raw JSON dictionary from LLM into structured schema entities with synonyms."""
     # 1. Prescriber
     pr_data = parsed.get("prescriber", {}) if isinstance(parsed.get("prescriber"), dict) else {}
+    doc_details = (
+        parsed.get("doctor_details", {})
+        if isinstance(parsed.get("doctor_details"), dict)
+        else {}
+    )
+    clinic_details = (
+        parsed.get("clinic_details", {})
+        if isinstance(parsed.get("clinic_details"), dict)
+        else {}
+    )
+
+    pr_name_raw = (
+        pr_data.get("name")
+        or pr_data.get("doctor_name")
+        or doc_details.get("doctor_name")
+    )
+    pr_reg_raw = (
+        pr_data.get("registration_no")
+        or pr_data.get("registration_number")
+        or pr_data.get("reg_no")
+        or doc_details.get("registration_number")
+    )
+    pr_hosp_raw = (
+        pr_data.get("hospital")
+        or pr_data.get("clinic_name")
+        or pr_data.get("clinic")
+        or clinic_details.get("clinic_name")
+    )
+    pr_date_raw = (
+        pr_data.get("date")
+        or parsed.get("date")
+        or (
+            parsed.get("patient", {}).get("date")
+            if isinstance(parsed.get("patient"), dict)
+            else None
+        )
+    )
+
     prescriber = PrescriberInfo(
-        name=parse_extracted_field(pr_data.get("name")),
-        registration_no=parse_extracted_field(pr_data.get("registration_no")),
-        hospital=parse_extracted_field(pr_data.get("hospital")),
-        date=parse_extracted_field(pr_data.get("date")),
+        name=parse_extracted_field(pr_name_raw),
+        registration_no=parse_extracted_field(pr_reg_raw),
+        hospital=parse_extracted_field(pr_hosp_raw),
+        date=parse_extracted_field(pr_date_raw),
     )
 
     # 2. Patient
     pa_data = parsed.get("patient", {}) if isinstance(parsed.get("patient"), dict) else {}
+    pat_details = (
+        parsed.get("patient_details", {})
+        if isinstance(parsed.get("patient_details"), dict)
+        else {}
+    )
+    pa_name_raw = (
+        pa_data.get("name")
+        or pa_data.get("patient_name")
+        or pat_details.get("patient_name")
+    )
+    pa_age_raw = pa_data.get("age") or pat_details.get("age")
+
     patient = PatientInfo(
-        name=parse_extracted_field(pa_data.get("name")),
-        age=parse_extracted_field(pa_data.get("age")),
+        name=parse_extracted_field(pa_name_raw),
+        age=parse_extracted_field(pa_age_raw),
     )
 
     # 3. Follow-up
-    follow_up = parse_extracted_field(parsed.get("follow_up"))
+    raw_fu = parsed.get("follow_up")
+    if isinstance(raw_fu, dict):
+        if "instructions" in raw_fu and isinstance(raw_fu["instructions"], (dict, str)):
+            follow_up = parse_extracted_field(raw_fu["instructions"])
+        elif "value" in raw_fu:
+            follow_up = parse_extracted_field(raw_fu)
+        else:
+            fu_parts = [str(v) for k, v in raw_fu.items() if v and isinstance(v, (str, int))]
+            follow_up = parse_extracted_field(" ".join(fu_parts) if fu_parts else None)
+    else:
+        follow_up = parse_extracted_field(raw_fu)
 
     # 4. Medicines
-    raw_meds = parsed.get("medicines", [])
+    raw_meds = parsed.get("medicines") or parsed.get("prescriptions") or []
     medicines: list[Medicine] = []
     if isinstance(raw_meds, list):
         for idx, m_dict in enumerate(raw_meds):
@@ -134,16 +199,26 @@ def _parse_llm_json_to_extraction(
                 continue
 
             med_id = str(m_dict.get("id") or f"med-{idx + 1}")
+            med_name = (
+                m_dict.get("name")
+                or m_dict.get("drug_name")
+                or m_dict.get("medicine_name")
+                or m_dict.get("medication")
+            )
+            med_form = m_dict.get("form") or m_dict.get("route") or m_dict.get("dosage_form")
+            med_dose = m_dict.get("dose") or m_dict.get("dosage")
+            med_instr = m_dict.get("instructions") or m_dict.get("directions")
+
             med = Medicine(
                 id=med_id,
-                name=parse_extracted_field(m_dict.get("name")),
+                name=parse_extracted_field(med_name),
                 strength=parse_extracted_field(m_dict.get("strength")),
-                form=parse_extracted_field(m_dict.get("form")),
-                dose=parse_extracted_field(m_dict.get("dose")),
+                form=parse_extracted_field(med_form),
+                dose=parse_extracted_field(med_dose),
                 frequency=parse_extracted_field(m_dict.get("frequency")),
                 timing=parse_extracted_field(m_dict.get("timing")),
                 duration=parse_extracted_field(m_dict.get("duration")),
-                instructions=parse_extracted_field(m_dict.get("instructions")),
+                instructions=parse_extracted_field(med_instr),
                 frequency_normalized=None,
                 suggestions=[],
                 status="needs_review",
@@ -173,6 +248,16 @@ async def extract_prescription(
     cfg = settings or get_settings()
     req_id = request_id or f"req-{uuid.uuid4().hex[:12]}"
     doc_id = f"doc-{uuid.uuid4().hex[:12]}"
+
+    # Determine image dimensions from input
+    if isinstance(image_input, (str, Path)):
+        _img_probe = Image.open(image_input)
+    elif isinstance(image_input, bytes):
+        _img_probe = Image.open(io.BytesIO(image_input))
+    else:
+        _img_probe = image_input
+
+    image_dimensions = ImageDimensions(width=_img_probe.width, height=_img_probe.height)
 
     # Step 1: OCR line extraction
     ocr_lines, detected_skew = extract_ocr_lines(
@@ -213,6 +298,7 @@ async def extract_prescription(
             ],
             overall_status="unreadable",
             review_reasons=["Document is unreadable: zero text lines extracted."],
+            image=image_dimensions,
             metrics=Metrics(
                 latency_ms=round(elapsed_ms, 2),
                 model=cfg.LLM_MODEL,
@@ -247,6 +333,7 @@ async def extract_prescription(
             image=image_input,
             system_prompt=system_prompt,
             json_mode=True,
+            max_tokens=3500,
         )
     finally:
         if should_close_client:
@@ -318,6 +405,7 @@ async def extract_prescription(
         flags=flags,
         overall_status=overall_status,
         review_reasons=review_reasons,
+        image=image_dimensions,
         metrics=Metrics(
             latency_ms=round(elapsed_ms, 2),
             model=response.metrics.model,

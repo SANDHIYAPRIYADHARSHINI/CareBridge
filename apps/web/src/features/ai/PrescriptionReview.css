@@ -27,20 +27,8 @@
   overflow: visible;
 }
 
-@keyframes drawLeaderLine {
-  from {
-    stroke-dashoffset: 120;
-    opacity: 0.2;
-  }
-  to {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-}
-
 .leader-line-path {
-  stroke-dasharray: 6 3;
-  animation: drawLeaderLine 0.22s ease-out forwards;
+  /* motion/react handles pathLength animation */
 }
 
 /* ==========================================================================
@@ -410,17 +398,6 @@
   gap: 1.25rem;
 }
 
-@keyframes cardStagger {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .medicine-card {
   background-color: var(--card);
   border: 1px solid var(--hairline);
@@ -431,7 +408,6 @@
   gap: 1.25rem;
   box-shadow: var(--shadow-subtle);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  animation: cardStagger 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .medicine-card.card-warn {
@@ -723,15 +699,6 @@
   justify-content: flex-end;
 }
 
-@keyframes sheetSlideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
 .mobile-sheet-content {
   background-color: var(--card);
   height: 90vh;
@@ -739,7 +706,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: sheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .doc-viewer-panel.sheet-mode {

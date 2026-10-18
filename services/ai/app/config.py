@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(str(BASE_DIR / ".env"), ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     LLM_BASE_URL: str = "http://localhost:8000/v1"
     LLM_API_KEY: str = "local"
     LLM_MODEL: str = "google/gemma-3-27b-it"
+    LLM_MAX_CONCURRENCY: int = 3
     WHISPER_MODEL: str = "openai/whisper-large-v3-turbo"
     EMBED_MODEL: str = "BAAI/bge-m3"
     OCR_LANGS: str = "eng+tam"

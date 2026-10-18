@@ -51,8 +51,8 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             const hData = await healthRes.json();
             setHealthStatus({
               status: hData.status || "ok",
-              model: hData.model || "Gemma 2 9B (vLLM ROCm)",
-              device: hData.device || "AMD Instinct / ROCm",
+              model: hData.model || "Gemma-4-31B-IT",
+              device: hData.compute_location || hData.device || "hosted on AMD Token Factory",
             });
           } else {
             setHealthStatus(null);
@@ -128,7 +128,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             <span className="dev-switch-title">Backend Connection &amp; Data Source</span>
           </div>
           <p className="dev-switch-desc">
-            Toggle between the live Python FastAPI / vLLM ROCm backend on Port 8100 and offline synthetic demo fixtures.
+            Toggle between the live Python FastAPI backend on Port 8100 (LLM on AMD Token Factory, OCR &amp; embeddings on CPU) and offline synthetic demo fixtures.
           </p>
           <div className="dev-toggle-row">
             <button
@@ -166,7 +166,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
           <div className="amd-meta-row">
             <span className="amd-meta-label">Compute Device</span>
             <span className="amd-meta-val font-mono">
-              {healthStatus ? healthStatus.device : "AMD ROCm / CPU fallback"}
+              {healthStatus ? healthStatus.device : "LLM on AMD Token Factory (hosted), OCR and embeddings on this server's CPU"}
             </span>
           </div>
           <div className="amd-meta-row">
@@ -178,7 +178,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
         {loading ? (
           <div style={{ textAlign: "center", padding: "3rem", color: "var(--eng-muted)" }}>
             <Gauge size={32} className="skeleton-spinner" />
-            <p style={{ marginTop: "0.5rem" }}>Querying AMD ROCm device counters...</p>
+            <p style={{ marginTop: "0.5rem" }}>Querying AMD Token Factory endpoint status...</p>
           </div>
         ) : !benchmarks || forceEmpty ? (
           /* Empty State per docs/design-v2.md: "shows 'no benchmark yet' when empty, never fake numbers" */
@@ -186,9 +186,9 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
             <Cpu size={44} className="amd-empty-icon" />
             <h4>No Benchmark Yet</h4>
             <p style={{ margin: "0.5rem 0 1rem 0", color: "var(--eng-muted)", fontSize: "0.88rem" }}>
-              Run the benchmark suite against your AMD ROCm accelerator to measure real throughput and latency:
+              Run the benchmark suite against AMD Token Factory to measure client-side latency:
             </p>
-            <code className="font-mono">python eval/bench_latency.py --concurrency 1 4 8 16</code>
+            <code className="font-mono">python eval/bench_latency.py --concurrency 1 2 4 8</code>
             <div className="amd-preview-action">
               <button
                 type="button"
@@ -210,7 +210,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
                 <div className="amd-sample-banner-text">
                   <div className="amd-sample-headline">Sample layout preview, not measured</div>
                   <div className="amd-sample-subtext">
-                    Illustrative preview data. Live numbers are recorded when running eval scripts on AMD hardware.
+                    Illustrative preview data. Live numbers are recorded when running eval scripts on AMD Token Factory.
                   </div>
                 </div>
                 <button
@@ -229,7 +229,7 @@ export const AmdPanel: React.FC<AmdPanelProps> = ({
               <div className="amd-section-header-row">
                 <h3 className="amd-section-title">
                   <Speedometer size={16} color="var(--eng-accent)" />
-                  <span>ROCm vLLM Concurrency Scaling</span>
+                  <span>AMD Token Factory Concurrency Scaling</span>
                 </h3>
               </div>
 

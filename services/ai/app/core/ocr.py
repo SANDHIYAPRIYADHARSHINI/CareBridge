@@ -7,6 +7,7 @@ image deskewing, and Tamil Unicode script detection.
 from __future__ import annotations
 
 import logging
+import math
 import os
 import re
 import shutil
@@ -154,6 +155,61 @@ def deskew_image(image: Image.Image) -> tuple[Image.Image, float]:
     return image, 0.0
 
 
+def map_box_to_original(
+    box: list[int],
+    angle: float,
+    orig_size: tuple[int, int],
+    rot_size: tuple[int, int],
+) -> list[int]:
+    """Maps a bounding box [left, top, w, h] from a deskewed/rotated image back
+    to the original image coordinate space.
+    """
+    if abs(angle) <= 0.5 or orig_size == rot_size:
+        return [
+            max(0, min(orig_size[0], box[0])),
+            max(0, min(orig_size[1], box[1])),
+            max(1, box[2]),
+            max(1, box[3]),
+        ]
+
+    w_orig, h_orig = orig_size
+    w_rot, h_rot = rot_size
+    cx_orig, cy_orig = w_orig / 2.0, h_orig / 2.0
+    cx_rot, cy_rot = w_rot / 2.0, h_rot / 2.0
+
+    # The image was rotated by -angle in PIL (rotate(-angle, expand=True)).
+    # To map points back from rotated to original, rotate by +angle degrees.
+    rad = math.radians(angle)
+    cos_a = math.cos(rad)
+    sin_a = math.sin(rad)
+
+    x, y, w, h = box
+    corners = [
+        (x, y),
+        (x + w, y),
+        (x, y + h),
+        (x + w, y + h),
+    ]
+
+    orig_corners = []
+    for cx_c, cy_c in corners:
+        dx_rot = cx_c - cx_rot
+        dy_rot = cy_c - cy_rot
+        dx_orig = dx_rot * cos_a + dy_rot * sin_a
+        dy_orig = -dx_rot * sin_a + dy_rot * cos_a
+        orig_corners.append((dx_orig + cx_orig, dy_orig + cy_orig))
+
+    xs = [pt[0] for pt in orig_corners]
+    ys = [pt[1] for pt in orig_corners]
+
+    min_x = max(0, int(round(min(xs))))
+    min_y = max(0, int(round(min(ys))))
+    max_x = min(w_orig, int(round(max(xs))))
+    max_y = min(h_orig, int(round(max(ys))))
+
+    return [min_x, min_y, max(1, max_x - min_x), max(1, max_y - min_y)]
+
+
 def extract_ocr_lines(
     image_input: Image.Image | str | Path,
     lang: str = "eng+tam",
@@ -161,8 +217,8 @@ def extract_ocr_lines(
 ) -> tuple[list[OcrLine], float]:
     """Runs OCR on an image and returns (list[OcrLine], detected_skew_angle).
 
-    Each OcrLine has a sequential ID (L1, L2, ...), combined text, merged bounding box,
-    and average word confidence.
+    Each OcrLine has a sequential ID (L1, L2, ...), combined text, merged bounding box
+    mapped to the original image coordinate space, and average word confidence.
 
     Raises:
         RuntimeError: If Tesseract binary or required language pack is missing.
@@ -174,12 +230,16 @@ def extract_ocr_lines(
     else:
         image = image_input.convert("RGB")
 
+    orig_w, orig_h = image.size
     detected_angle = 0.0
+    ocr_image = image
     if deskew:
-        image, detected_angle = deskew_image(image)
+        ocr_image, detected_angle = deskew_image(image)
+
+    rot_w, rot_h = ocr_image.size
 
     data = pytesseract.image_to_data(
-        image,
+        ocr_image,
         lang=lang,
         output_type=pytesseract.Output.DICT,
     )
@@ -224,7 +284,14 @@ def extract_ocr_lines(
         max_x = max(w["left"] + w["width"] for w in words)
         max_y = max(w["top"] + w["height"] for w in words)
 
-        bbox = [min_x, min_y, max(1, max_x - min_x), max(1, max_y - min_y)]
+        raw_bbox = [min_x, min_y, max(1, max_x - min_x), max(1, max_y - min_y)]
+        mapped_bbox = map_box_to_original(
+            raw_bbox,
+            detected_angle,
+            orig_size=(orig_w, orig_h),
+            rot_size=(rot_w, rot_h),
+        )
+
         avg_conf = sum(w["conf"] for w in words) / (len(words) * 100.0)
         avg_conf = round(min(1.0, max(0.0, avg_conf)), 2)
 
@@ -232,7 +299,7 @@ def extract_ocr_lines(
             OcrLine(
                 id=f"L{line_idx}",
                 text=combined_text,
-                bbox=bbox,
+                bbox=mapped_bbox,
                 page=1,
                 conf=avg_conf,
             )

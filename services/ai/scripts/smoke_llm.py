@@ -25,18 +25,37 @@ from app.core.ocr import extract_ocr_lines  # noqa: E402
 
 async def smoke_test() -> None:
     settings = get_settings()
-    img_path = BASE_DIR / "eval" / "data" / "rx_001.png"
+
+    # Determine image path from CLI argument or default to demo/rx_demo_001.png
+    cli_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if cli_args:
+        candidate = Path(cli_args[0])
+        if candidate.exists():
+            img_path = candidate.resolve()
+        elif (BASE_DIR.parent.parent / candidate).exists():
+            img_path = (BASE_DIR.parent.parent / candidate).resolve()
+        elif (BASE_DIR / candidate).exists():
+            img_path = (BASE_DIR / candidate).resolve()
+        else:
+            img_path = candidate
+    else:
+        demo_candidate = BASE_DIR.parent.parent / "demo" / "rx_demo_001.png"
+        img_path = (
+            demo_candidate
+            if demo_candidate.exists()
+            else BASE_DIR / "eval" / "data" / "rx_001.png"
+        )
 
     if not img_path.exists():
         print(f"Error: Sample image not found at {img_path}")
-        print("Please run eval/generate_synthetic.py first.")
+        print("Please check image path or run eval/generate_synthetic.py first.")
         sys.exit(1)
 
     print("=" * 60)
     print("CareBridge AI: LLM Smoke Test")
     print(f"Endpoint: {settings.LLM_BASE_URL}")
     print(f"Model:    {settings.LLM_MODEL}")
-    print(f"Image:    {img_path.name}")
+    print(f"Image:    {img_path}")
     print("=" * 60)
 
     # 1. Extract OCR lines
@@ -57,7 +76,7 @@ async def smoke_test() -> None:
         f"Output JSON with prescriber, patient, medicines, follow_up, flags, and overall_status."
     )
 
-    use_mock = "--mock" in sys.argv or settings.MOCK_MODE
+    use_mock = "--mock" in sys.argv or (settings.MOCK_MODE and "--live" not in sys.argv)
     transport = None
 
     if use_mock:
@@ -83,7 +102,7 @@ async def smoke_test() -> None:
 
         transport = httpx.MockTransport(mock_handler)
 
-    client = LLMClient(settings=settings, transport=transport, timeout=60.0)
+    client = LLMClient(settings=settings, transport=transport, timeout=120.0)
 
     print("Sending vision request with image and OCR lines...")
     try:

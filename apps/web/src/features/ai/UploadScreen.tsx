@@ -449,6 +449,16 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({
             </div>
           ) : (
             <div className="upload-main-stack">
+              {/* Synthetic Data Notice per hackathon safety policy */}
+              <div className="demo-synthetic-banner" role="note">
+                <span className="demo-synthetic-icon" aria-hidden="true">🛡️</span>
+                <span className="demo-synthetic-text">
+                  {language === "ta"
+                    ? "டெமோ பயன்பாட்டிற்கு மட்டுமே: செயற்கை மருந்துச் சீட்டுகளை மட்டுமே பதிவேற்றவும், உண்மையான மருத்துவ ஆவணங்களை அல்ல."
+                    : "Demo only: upload synthetic prescriptions, not real medical records."}
+                </span>
+              </div>
+
               {/* Dropzone */}
               <Dropzone
                 onFileSelect={async (file) => {

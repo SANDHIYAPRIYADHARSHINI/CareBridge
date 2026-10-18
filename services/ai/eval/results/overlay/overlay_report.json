@@ -1,0 +1,855 @@
+{
+  "prescriptions": [
+    {
+      "prescription": "rx_demo_001.png",
+      "image_size": [
+        1200,
+        1600
+      ],
+      "skew_detected": 0.0,
+      "gt_line_count": 12,
+      "detected_line_count": 14,
+      "mean_iou": 0.4623,
+      "overlay_path": "C:\\Users\\mahin\\OneDrive\\Desktop\\Projects\\CareBridge\\services\\ai\\eval\\results\\overlay\\rx_demo_001_overlay.png",
+      "lines": [
+        {
+          "gt_id": "L1",
+          "gt_text": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+          "gt_bbox": [
+            120,
+            70,
+            710,
+            24
+          ],
+          "best_det_id": "L1",
+          "best_det_text": "ARUNODHAYAM COMMUNITY HEALTH CLINIC",
+          "iou": 0.306
+        },
+        {
+          "gt_id": "L2",
+          "gt_text": "42 Gandhi Road, Salem - 636007 | Ph: 0427-2410293",
+          "gt_bbox": [
+            120,
+            115,
+            510,
+            22
+          ],
+          "best_det_id": "L2",
+          "best_det_text": "42 Gandhi Road, Salem - 636007 | Ph: 0427-2410293",
+          "iou": 0.4956
+        },
+        {
+          "gt_id": "L3",
+          "gt_text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med)    Reg: TN-MC-10293",
+          "gt_bbox": [
+            120,
+            165,
+            717,
+            24
+          ],
+          "best_det_id": "L3",
+          "best_det_text": "Dr. R. Senthamilselvan, MBBS, MD (Gen Med) Reg: TN-MC-10293",
+          "iou": 0.4979
+        },
+        {
+          "gt_id": "L4",
+          "gt_text": "Patient: R. Murugan    Age: 54 M    Date: 14-Oct-2026",
+          "gt_bbox": [
+            120,
+            230,
+            517,
+            21
+          ],
+          "best_det_id": "L4",
+          "best_det_text": "Patient: R. Murugan Age:54M_ Date: 14-Oct-2026",
+          "iou": 0.4316
+        },
+        {
+          "gt_id": "L5",
+          "gt_text": "1. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "gt_bbox": [
+            120,
+            370,
+            516,
+            22
+          ],
+          "best_det_id": "L6",
+          "best_det_text": "1. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "iou": 0.4979
+        },
+        {
+          "gt_id": "L6",
+          "gt_text": "    Directions: Take 1 tablet after meals twice daily with water.",
+          "gt_bbox": [
+            120,
+            406,
+            478,
+            18
+          ],
+          "best_det_id": "L7",
+          "best_det_text": "Directions: Take 1 tablet after meals twice daily with water.",
+          "iou": 0.4825
+        },
+        {
+          "gt_id": "L7",
+          "gt_text": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days",
+          "gt_bbox": [
+            120,
+            460,
+            571,
+            22
+          ],
+          "best_det_id": "L8",
+          "best_det_text": "2. Tab Atorvastatin 10mg - 0-0-1 night after food x 30 days",
+          "iou": 0.4987
+        },
+        {
+          "gt_id": "L8",
+          "gt_text": "    Directions: Take 1 tablet at bedtime after dinner.",
+          "gt_bbox": [
+            120,
+            496,
+            400,
+            14
+          ],
+          "best_det_id": "L9",
+          "best_det_text": "Directions: Take 1 tablet at bedtime after dinner.",
+          "iou": 0.3506
+        },
+        {
+          "gt_id": "L9",
+          "gt_text": "3. Tab Amlodipine 5mg - 1-0-0 morning before food x 30 days",
+          "gt_bbox": [
+            120,
+            550,
+            608,
+            22
+          ],
+          "best_det_id": "L10",
+          "best_det_text": "3. Tab Amlodipine 5mg - 1-0-0 morning before food x 30 days",
+          "iou": 0.5327
+        },
+        {
+          "gt_id": "L10",
+          "gt_text": "    Directions: Take 1 tablet once daily in the morning with water.",
+          "gt_bbox": [
+            120,
+            586,
+            506,
+            18
+          ],
+          "best_det_id": "L11",
+          "best_det_text": "Directions: Take 1 tablet once daily in the morning with water.",
+          "iou": 0.4641
+        },
+        {
+          "gt_id": "L11",
+          "gt_text": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+          "gt_bbox": [
+            120,
+            680,
+            688,
+            22
+          ],
+          "best_det_id": "L12",
+          "best_det_text": "Follow-up: Review in 1 month with fasting blood sugar and lipid profile.",
+          "iou": 0.5316
+        },
+        {
+          "gt_id": "L12",
+          "gt_text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+          "gt_bbox": [
+            120,
+            1530,
+            625,
+            18
+          ],
+          "best_det_id": "L14",
+          "best_det_text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "iou": 0.4585
+        }
+      ]
+    },
+    {
+      "prescription": "rx_demo_002.png",
+      "image_size": [
+        1200,
+        1600
+      ],
+      "skew_detected": 0.0,
+      "gt_line_count": 12,
+      "detected_line_count": 14,
+      "mean_iou": 0.5487,
+      "overlay_path": "C:\\Users\\mahin\\OneDrive\\Desktop\\Projects\\CareBridge\\services\\ai\\eval\\results\\overlay\\rx_demo_002_overlay.png",
+      "lines": [
+        {
+          "gt_id": "L1",
+          "gt_text": "VASANTHAM FAMILY MEDICAL CENTRE",
+          "gt_bbox": [
+            120,
+            70,
+            602,
+            24
+          ],
+          "best_det_id": "L1",
+          "best_det_text": "VASANTHAM FAMILY MEDICAL CENTRE",
+          "iou": 0.3402
+        },
+        {
+          "gt_id": "L2",
+          "gt_text": "15 Anna Salai, Madurai - 625001 | Ph: 0452-2531092",
+          "gt_bbox": [
+            120,
+            115,
+            506,
+            22
+          ],
+          "best_det_id": "L2",
+          "best_det_text": "15 Anna Salai, Madurai - 625001 | Ph: 0452-2531092",
+          "iou": 0.6005
+        },
+        {
+          "gt_id": "L3",
+          "gt_text": "Dr. K. Anbazhagan, MBBS, DNB (Family Med)    Reg: TN-MC-28401",
+          "gt_bbox": [
+            120,
+            165,
+            711,
+            24
+          ],
+          "best_det_id": "L3",
+          "best_det_text": "Dr. K. Anbazhagan, MBBS, DNB (Family Med) Reg: TN-MC-28401",
+          "iou": 0.5589
+        },
+        {
+          "gt_id": "L4",
+          "gt_text": "Patient: S. Revathi    Age: 38 F    Date: 15-Oct-2026",
+          "gt_bbox": [
+            120,
+            230,
+            490,
+            22
+          ],
+          "best_det_id": "L4",
+          "best_det_text": "Patient: 5. Revathi Age: 38F Date: 15-Oct-2026",
+          "iou": 0.5659
+        },
+        {
+          "gt_id": "L5",
+          "gt_text": "1. Tab Pantoprazole 40mg - 1-0-0 empty stomach morning x 15 days",
+          "gt_bbox": [
+            120,
+            370,
+            668,
+            22
+          ],
+          "best_det_id": "L6",
+          "best_det_text": "1. Tab Pantoprazole 40mg - 1-0-0 empty stomach morning x 15 days",
+          "iou": 0.5635
+        },
+        {
+          "gt_id": "L6",
+          "gt_text": "    Directions: Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+          "gt_bbox": [
+            120,
+            406,
+            663,
+            18
+          ],
+          "best_det_id": "L7",
+          "best_det_text": "Directions: Take 1 tablet in morning on empty stomach 30 mins before breakfast.",
+          "iou": 0.5268
+        },
+        {
+          "gt_id": "L7",
+          "gt_text": "2. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "gt_bbox": [
+            120,
+            460,
+            516,
+            22
+          ],
+          "best_det_id": "L8",
+          "best_det_text": "2. Tab Metformin 500mg - 1-0-1 after food x 30 days",
+          "iou": 0.5835
+        },
+        {
+          "gt_id": "L8",
+          "gt_text": "    Directions: Take 1 tablet twice daily after meals with water.",
+          "gt_bbox": [
+            120,
+            496,
+            478,
+            18
+          ],
+          "best_det_id": "L9",
+          "best_det_text": "Directions: Take 1 tablet twice daily after meals with water.",
+          "iou": 0.5855
+        },
+        {
+          "gt_id": "L9",
+          "gt_text": "3. Tab Paracetamol 650mg - SOS after food as needed x 5 days",
+          "gt_bbox": [
+            120,
+            550,
+            613,
+            22
+          ],
+          "best_det_id": "L10",
+          "best_det_text": "3. Tab Paracetamol 650mg - SOS after food as needed x 5 days",
+          "iou": 0.5645
+        },
+        {
+          "gt_id": "L10",
+          "gt_text": "    Directions: Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+          "gt_bbox": [
+            120,
+            586,
+            635,
+            18
+          ],
+          "best_det_id": "L11",
+          "best_det_text": "Directions: Take 1 tablet as needed for fever or pain (maximum 3 tablets/day).",
+          "iou": 0.535
+        },
+        {
+          "gt_id": "L11",
+          "gt_text": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+          "gt_bbox": [
+            120,
+            680,
+            584,
+            22
+          ],
+          "best_det_id": "L12",
+          "best_det_text": "Follow-up: Review after 2 weeks or SOS if symptoms persist.",
+          "iou": 0.5839
+        },
+        {
+          "gt_id": "L12",
+          "gt_text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+          "gt_bbox": [
+            120,
+            1530,
+            625,
+            18
+          ],
+          "best_det_id": "L14",
+          "best_det_text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "iou": 0.5762
+        }
+      ]
+    },
+    {
+      "prescription": "rx_demo_003.png",
+      "image_size": [
+        1200,
+        1600
+      ],
+      "skew_detected": 0.0,
+      "gt_line_count": 12,
+      "detected_line_count": 14,
+      "mean_iou": 0.5988,
+      "overlay_path": "C:\\Users\\mahin\\OneDrive\\Desktop\\Projects\\CareBridge\\services\\ai\\eval\\results\\overlay\\rx_demo_003_overlay.png",
+      "lines": [
+        {
+          "gt_id": "L1",
+          "gt_text": "SENTHAMIZH WELFARE CLINIC / செந்தமிழ் நலவாழ்வு மையம்",
+          "gt_bbox": [
+            120,
+            70,
+            1035,
+            38
+          ],
+          "best_det_id": "L1",
+          "best_det_text": "SENTHAMIZH WELFARE CLINIC / சநெதமிழ்‌ நலவாழ்வு மயைம்‌",
+          "iou": 0.7082
+        },
+        {
+          "gt_id": "L2",
+          "gt_text": "204 Velachery Main Road, Chennai - 600042 | Ph: 044-22441920",
+          "gt_bbox": [
+            120,
+            115,
+            622,
+            22
+          ],
+          "best_det_id": "L2",
+          "best_det_text": "204 Velachery Main Road, Chennai - 600042 | Ph: 044-22441920",
+          "iou": 0.4976
+        },
+        {
+          "gt_id": "L3",
+          "gt_text": "Dr. V. Malathi, MBBS, MD (Internal Med)    Reg: TN-MC-39182",
+          "gt_bbox": [
+            120,
+            165,
+            662,
+            24
+          ],
+          "best_det_id": "L3",
+          "best_det_text": "Dr. V. Malathi, MBBS, MD (Internal Med) Reg: TN-MC-39182",
+          "iou": 0.4983
+        },
+        {
+          "gt_id": "L4",
+          "gt_text": "நோயாளி / Patient: K. Lakshmi    வயது / Age: 62 F    தேதி / Date: 15-Oct-2026",
+          "gt_bbox": [
+            120,
+            230,
+            817,
+            24
+          ],
+          "best_det_id": "L4",
+          "best_det_text": "நோயாளி / Patient: K. Lakshmi வயத / Age: 62 F ததே/ Date: 15-Oct-2026",
+          "iou": 0.6883
+        },
+        {
+          "gt_id": "L5",
+          "gt_text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப் பின் / after food x 30 days",
+          "gt_bbox": [
+            120,
+            370,
+            738,
+            24
+          ],
+          "best_det_id": "L6",
+          "best_det_text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப்‌ பின்‌ / after food x 30 days",
+          "iou": 0.632
+        },
+        {
+          "gt_id": "L6",
+          "gt_text": "    விவரம்: உணவுக்குப் பின் ஒரு மாத்திரை / 1 tab after food twice daily.",
+          "gt_bbox": [
+            120,
+            406,
+            642,
+            20
+          ],
+          "best_det_id": "L7",
+          "best_det_text": "விவரம்‌: உணவுக்குப்‌ பின்‌ ஒர மாத்திரை/ 1 tab after food twice daily.",
+          "iou": 0.6223
+        },
+        {
+          "gt_id": "L7",
+          "gt_text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு முன் / morning before food x 30 days",
+          "gt_bbox": [
+            120,
+            460,
+            897,
+            23
+          ],
+          "best_det_id": "L8",
+          "best_det_text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு மன்‌ / morning before food x 30 days",
+          "iou": 0.5662
+        },
+        {
+          "gt_id": "L8",
+          "gt_text": "    விவரம்: தினமும் காலையில் ஒரு மாத்திரை / Take 1 tab morning before food.",
+          "gt_bbox": [
+            120,
+            496,
+            714,
+            20
+          ],
+          "best_det_id": "L9",
+          "best_det_text": "விவரம்‌: தினமம்‌ காலயில்‌ ஒர மாத்திர / Take 1 tab morning before food.",
+          "iou": 0.6749
+        },
+        {
+          "gt_id": "L9",
+          "gt_text": "3. Tab Atorvastatin 10mg - 0-0-1 இரவு உணவுக்குப் பின் / night after food x 30 days",
+          "gt_bbox": [
+            120,
+            550,
+            861,
+            24
+          ],
+          "best_det_id": "L10",
+          "best_det_text": "3. Tab Atorvastatin 10mg - 0-0-1 இரவு உணவுக்குப்‌ பின்‌ / night after food x 30 days",
+          "iou": 0.6322
+        },
+        {
+          "gt_id": "L10",
+          "gt_text": "    விவரம்: இரவு உணவுக்குப் பின் தூங்கும் முன் / Take 1 tab at bedtime after dinner.",
+          "gt_bbox": [
+            120,
+            586,
+            730,
+            20
+          ],
+          "best_det_id": "L11",
+          "best_det_text": "விவரம்‌: இரவு உணவுக்குப்‌ பின்‌ தங்கும்‌ மன்‌ / Take 1 tab at bedtime after dinner.",
+          "iou": 0.6245
+        },
+        {
+          "gt_id": "L11",
+          "gt_text": "அடுத்த பரிசோதனை / Follow-up: 1 மாதத்திற்குப் பின் இரத்த அழுத்த அட்டவணையுடன் வரவும் (Review in 1 month).",
+          "gt_bbox": [
+            120,
+            680,
+            1322,
+            24
+          ],
+          "best_det_id": "L12",
+          "best_det_text": "அடத்த பரிசோதனை / Follow-up: 1 மாதத்திற்கப்‌ பின்‌ இரத்த அழத்த அட்டவணயைபடன்‌ வர;",
+          "iou": 0.5649
+        },
+        {
+          "gt_id": "L12",
+          "gt_text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+          "gt_bbox": [
+            120,
+            1530,
+            625,
+            18
+          ],
+          "best_det_id": "L14",
+          "best_det_text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data",
+          "iou": 0.4767
+        }
+      ]
+    },
+    {
+      "prescription": "rx_demo_004.png",
+      "image_size": [
+        1200,
+        1600
+      ],
+      "skew_detected": 0.0,
+      "gt_line_count": 12,
+      "detected_line_count": 14,
+      "mean_iou": 0.6386,
+      "overlay_path": "C:\\Users\\mahin\\OneDrive\\Desktop\\Projects\\CareBridge\\services\\ai\\eval\\results\\overlay\\rx_demo_004_overlay.png",
+      "lines": [
+        {
+          "gt_id": "L1",
+          "gt_text": "KURUNJI RURAL HEALTH DISPENSARY / குறிஞ்சி மருந்தகம்",
+          "gt_bbox": [
+            120,
+            70,
+            935,
+            37
+          ],
+          "best_det_id": "L1",
+          "best_det_text": "KURUNJI RURAL HEALTH DISPENSARY / சுறிஞ்சி மரந்தகம்‌",
+          "iou": 0.6631
+        },
+        {
+          "gt_id": "L2",
+          "gt_text": "88 Thanjavur Main Road, Trichy - 620001 | Ph: 0431-2701824",
+          "gt_bbox": [
+            120,
+            115,
+            589,
+            22
+          ],
+          "best_det_id": "L2",
+          "best_det_text": "88 Thanjavur Main Road, Trichy - 620001 | Ph: 0431-2701824",
+          "iou": 0.5488
+        },
+        {
+          "gt_id": "L3",
+          "gt_text": "Dr. S. Meenakshi, MBBS    Reg: TN-MC-51042",
+          "gt_bbox": [
+            120,
+            165,
+            487,
+            24
+          ],
+          "best_det_id": "L3",
+          "best_det_text": "Dr. 5. Meenakshi, 11885 Reg: TN-MC-51042",
+          "iou": 0.5271
+        },
+        {
+          "gt_id": "L4",
+          "gt_text": "நோயாளி / Patient: P. Alagappan    வயது / Age: 68 M    தேதி / Date: 16-Oct-2026",
+          "gt_bbox": [
+            120,
+            230,
+            851,
+            24
+          ],
+          "best_det_id": "L4",
+          "best_det_text": "நோயாளி / Patient: 7. Alagappan வயத / Age: 68M ததே / Date: 16-Oct-2026",
+          "iou": 0.7033
+        },
+        {
+          "gt_id": "L5",
+          "gt_text": "1. Tab Pantoprazole 40mg - 1-0-0 காலை வெறும் வயிற்றில் / empty stomach morning x 15 days",
+          "gt_bbox": [
+            120,
+            370,
+            989,
+            24
+          ],
+          "best_det_id": "L6",
+          "best_det_text": "1. Tab Pantoprazole 40mg - 1-0-0 காலை வமழெம்‌ வயிற்றில்‌ / empty stomach morning x 15 days",
+          "iou": 0.6109
+        },
+        {
+          "gt_id": "L6",
+          "gt_text": "    விவரம்: காலை உணவுக்கு 30 நிமிடம் முன் / Take 30 mins before breakfast.",
+          "gt_bbox": [
+            120,
+            406,
+            685,
+            20
+          ],
+          "best_det_id": "L7",
+          "best_det_text": "விவரம்‌: காலை உணவுக்கு 30 றிமிடம்‌ மன்‌ / Take 30 mins before breakfast.",
+          "iou": 0.7298
+        },
+        {
+          "gt_id": "L7",
+          "gt_text": "2. Tab Atorvastatin 10mg - 0-0-1 இரவு உணவுக்குப் பின் / night after food x 30 days",
+          "gt_bbox": [
+            120,
+            460,
+            861,
+            24
+          ],
+          "best_det_id": "L8",
+          "best_det_text": "2. Tab Atorvastatin 10mg - 0-0-1 இரவு உணவுக்குப்‌ பின்‌ / night after food x 30 days",
+          "iou": 0.6746
+        },
+        {
+          "gt_id": "L8",
+          "gt_text": "    விவரம்: இரவு உணவுக்குப் பின் படுக்கைக்கு முன் / Take 1 tab at bedtime.",
+          "gt_bbox": [
+            120,
+            496,
+            682,
+            20
+          ],
+          "best_det_id": "L9",
+          "best_det_text": "விவரம்‌: இரவு உணவுக்குப்‌ பின்‌ படக்ககைகு மன்‌ / Take 1 tab at bedtime.",
+          "iou": 0.6522
+        },
+        {
+          "gt_id": "L9",
+          "gt_text": "3. Tab Paracetamol 650mg - SOS தேவைப்படும் போது / as needed x 5 days",
+          "gt_bbox": [
+            120,
+            550,
+            783,
+            23
+          ],
+          "best_det_id": "L10",
+          "best_det_text": "3. Tab Paracetamol 650mg - SOS தவேபை்படம்‌ போது / as needed x 5 days",
+          "iou": 0.6459
+        },
+        {
+          "gt_id": "L10",
+          "gt_text": "    விவரம்: காய்ச்சல் அல்லது உடல் வலிக்கு / For fever or body pain.",
+          "gt_bbox": [
+            120,
+            586,
+            611,
+            20
+          ],
+          "best_det_id": "L11",
+          "best_det_text": "விவரம்‌: காய்ச்சல்‌ அல்லத உடல்‌ வலிக்க / For fever or body pain.",
+          "iou": 0.7274
+        },
+        {
+          "gt_id": "L11",
+          "gt_text": "அடுத்த பரிசோதனை / Next review: 15 நாட்கள் கழித்து மீண்டும் வரவும் (Review in 15 days).",
+          "gt_bbox": [
+            120,
+            680,
+            1019,
+            24
+          ],
+          "best_det_id": "L12",
+          "best_det_text": "AL SS பரிசமோதனை/ Next review: 15 நாட்கள்‌ கழித்த மீண்டும்‌ வரவும்‌ (Review in 15 days).",
+          "iou": 0.6442
+        },
+        {
+          "gt_id": "L12",
+          "gt_text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+          "gt_bbox": [
+            120,
+            1530,
+            625,
+            18
+          ],
+          "best_det_id": "L14",
+          "best_det_text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data.",
+          "iou": 0.5364
+        }
+      ]
+    },
+    {
+      "prescription": "rx_demo_005.png",
+      "image_size": [
+        1200,
+        1600
+      ],
+      "skew_detected": 0.0,
+      "gt_line_count": 12,
+      "detected_line_count": 14,
+      "mean_iou": 0.6221,
+      "overlay_path": "C:\\Users\\mahin\\OneDrive\\Desktop\\Projects\\CareBridge\\services\\ai\\eval\\results\\overlay\\rx_demo_005_overlay.png",
+      "lines": [
+        {
+          "gt_id": "L1",
+          "gt_text": "அருணோதயம் சமுதாய நல மையம்",
+          "gt_bbox": [
+            120,
+            70,
+            668,
+            35
+          ],
+          "best_det_id": "L1",
+          "best_det_text": "அரண (யோதயம்‌ சமதாய நல மயைம்‌",
+          "iou": 0.6144
+        },
+        {
+          "gt_id": "L2",
+          "gt_text": "42 காந்தி சாலை, சேலம் - 636007 | தொலைபேசி: 0427-2410293",
+          "gt_bbox": [
+            120,
+            115,
+            722,
+            24
+          ],
+          "best_det_id": "L2",
+          "best_det_text": "42 காந்தி சாலை, சலேம்‌ - 636007 | தமொலபைசேி: 0427-2410293",
+          "iou": 0.6291
+        },
+        {
+          "gt_id": "L3",
+          "gt_text": "மருத்துவர் பி. சுந்தரமூர்த்தி, MBBS, MD    Reg: TN-MC-62391",
+          "gt_bbox": [
+            120,
+            165,
+            693,
+            27
+          ],
+          "best_det_id": "L3",
+          "best_det_text": "மரத்தவர்‌ பி. சுந்தரமூர்த்தி, 11885, 110 Reg: TN-MC-62391",
+          "iou": 0.6619
+        },
+        {
+          "gt_id": "L4",
+          "gt_text": "நோயாளி: டி. பானுமதி    வயது: 41 பெண்    தேதி: 16-அக்டோபர்-2026",
+          "gt_bbox": [
+            120,
+            230,
+            822,
+            24
+          ],
+          "best_det_id": "L4",
+          "best_det_text": "நோயாளி: பி. பானமதி வயத:41 பணெ்‌ BCH): 16-அக்டவோபர்‌-2026",
+          "iou": 0.7032
+        },
+        {
+          "gt_id": "L5",
+          "gt_text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப் பின் x 30 நாட்கள்",
+          "gt_bbox": [
+            120,
+            370,
+            672,
+            24
+          ],
+          "best_det_id": "L6",
+          "best_det_text": "1. Tab Metformin 500mg - 1-0-1 உணவுக்குப்‌ பின்‌ x 30 நாட்கள்‌",
+          "iou": 0.6303
+        },
+        {
+          "gt_id": "L6",
+          "gt_text": "    வழிமுறை: தினமும் இருவேளை உணவுக்குப் பின் ஒரு மாத்திரை உட்கொள்ளவும்.",
+          "gt_bbox": [
+            120,
+            406,
+            797,
+            20
+          ],
+          "best_det_id": "L7",
+          "best_det_text": "வழிமறை தினமம்‌ இரவளேை உணவுக்குப்‌ பின்‌ ஒர மாத்திரை உட்கொள்ளவும்‌.",
+          "iou": 0.6405
+        },
+        {
+          "gt_id": "L7",
+          "gt_text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு முன் x 30 நாட்கள்",
+          "gt_bbox": [
+            120,
+            460,
+            723,
+            23
+          ],
+          "best_det_id": "L8",
+          "best_det_text": "2. Tab Amlodipine 5mg - 1-0-0 காலை உணவுக்கு மன்‌ x 30 நாட்கள்‌",
+          "iou": 0.5795
+        },
+        {
+          "gt_id": "L8",
+          "gt_text": "    வழிமுறை: தினமும் காலையில் உணவுக்கு முன் தண்ணீர் குடித்து உட்கொள்ளவும்.",
+          "gt_bbox": [
+            120,
+            496,
+            809,
+            20
+          ],
+          "best_det_id": "L9",
+          "best_det_text": "வழிமுறை Hlorig காலயில்‌ உணவுக்கு மன்‌ தண்ணீர்‌ சுபித்த உட்கொள்ளவும்‌.",
+          "iou": 0.6401
+        },
+        {
+          "gt_id": "L9",
+          "gt_text": "3. Tab Pantoprazole 40mg - 1-0-0 காலை வெறும் வயிற்றில் x 15 நாட்கள்",
+          "gt_bbox": [
+            120,
+            550,
+            783,
+            24
+          ],
+          "best_det_id": "L10",
+          "best_det_text": "3. Tab Pantoprazole 40mg - 1-0-0 காலை வமெம்‌ வயிற்றில்‌ x 15 நாட்கள்‌",
+          "iou": 0.6439
+        },
+        {
+          "gt_id": "L10",
+          "gt_text": "    வழிமுறை: காலை உணவுக்கு அரை மணி நேரம் முன் வெறும் வயிற்றில் உட்கொள்ளவும்.",
+          "gt_bbox": [
+            120,
+            586,
+            873,
+            20
+          ],
+          "best_det_id": "L11",
+          "best_det_text": "வழிமறை காலை உணவுக்கு அரை மணி நரேம்‌ மன்‌ வறெம்‌ வயிற்றில்‌ உட்கொள்ளவும்‌.",
+          "iou": 0.6411
+        },
+        {
+          "gt_id": "L11",
+          "gt_text": "அடுத்த பரிசோதனை: 30 நாட்கள் கழித்து இரத்த அழுத்தம் மற்றும் சர்க்கரை அளவு சரிபார்க்க வரவும்.",
+          "gt_bbox": [
+            120,
+            680,
+            1203,
+            24
+          ],
+          "best_det_id": "L12",
+          "best_det_text": "அடுத்த பரிசசோதனை 30 நாட்கள்‌ கழித்த இரத்த அழத்தம்‌ மற்றம்‌ சர்க்கரல அளவு சரிபார்‌:",
+          "iou": 0.6225
+        },
+        {
+          "gt_id": "L12",
+          "gt_text": "Synthetic demo prescription generated for CareBridge AI. Not real patient data.",
+          "gt_bbox": [
+            120,
+            1530,
+            625,
+            18
+          ],
+          "best_det_id": "L14",
+          "best_det_text": "Synthetic demo prescription generated for CareBridge Al. Not real patient data",
+          "iou": 0.4585
+        }
+      ]
+    }
+  ],
+  "overall_mean_iou": 0.5741
+}

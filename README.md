@@ -2,7 +2,7 @@
 
 > **AMD Developer Hackathon ACT III (lablab.ai)**  
 > **Track 2: Health and Wellbeing**  
-> *Hardware Acceleration: AMD Instinct™ GPUs / AMD Developer Cloud / AMD Token Factory with ROCm™*
+> *Hardware Acceleration: LLM on AMD Token Factory (hosted) with ROCm™ infrastructure, OCR & embeddings on Host CPU*
 
 CareBridge AI bridges patient health literacy, clinical safety, and accessibility. It digitizes paper prescriptions (supporting both English and Tamil), verifies extracted dosages against deterministic clinical safety gates, and provides a citation-grounded conversational assistant that empowers patients while keeping healthcare professionals firmly in the loop.
 
@@ -16,7 +16,7 @@ CareBridge AI follows a strictly decoupled, stateless architecture. The AI servi
 flowchart TD
     subgraph Client["Frontend (apps/web)"]
         UI["React + TypeScript (Vite)\nPrescription Review & Chatbot UI"]
-        AmdPanel["AMD Telemetry Panel\n(GPU Util, Latency, Model)"]
+        AmdPanel["Under the Hood Drawer\n(AMD Token Factory Telemetry)"]
     end
 
     subgraph Backend["Main Backend (Member 2)"]
@@ -24,22 +24,23 @@ flowchart TD
         DB[(PostgreSQL - Auth, Consent, Reminders)]
     end
 
-    subgraph AIService["AI Service (services/ai) - Stateless"]
+    subgraph AIService["AI Service (services/ai) - Stateless [Host CPU]"]
         Gateway["FastAPI Gateway (:8100)"]
-        OCR["OCR Engine: Tesseract\n(English + Tamil BBoxes) [CPU]"]
+        OCR["OCR Engine: Tesseract\n(English + Tamil BBoxes) [Host CPU]"]
+        Embeddings["Multilingual Embeddings\n(BAAI/bge-m3) [Host CPU]"]
         
-        subgraph SafetyGuards["Deterministic Safety Guards"]
+        subgraph SafetyGuards["Deterministic Safety Guards [Host CPU]"]
             EvidenceGate["Evidence Gate & Conflict Verifier\n(verification.py)"]
             RedFlag["Deterministic Red-Flag Router\n(safety.py: L0 -> L3)"]
             GroundingGate["Grounding & Citation Gate\n(rag.py)"]
             TranslationCheck["Preservation Verifier\n(translate.py)"]
         end
 
-        subgraph AMDRuntime["AMD ROCm Acceleration Stack"]
-            vLLM["vLLM on ROCm (Port 8000)\nModel: google/gemma-3-27b-it"]
-            Whisper["Whisper STT (PyTorch ROCm)\nModel: whisper-large-v3-turbo"]
-            Embeddings["Multilingual Embeddings\nModel: BAAI/bge-m3"]
-        end
+        LLMClientCore["LLM Client with Rate-Limit & Backoff Gate\n(app/core/llm.py)"]
+    end
+
+    subgraph AMDCloud["AMD Token Factory (Hosted Cloud)"]
+        TokenFactory["Gemma-4-31B-IT /chat/completions\nHosted on AMD Infrastructure"]
     end
 
     UI -->|REST / SSE| API
@@ -48,17 +49,18 @@ flowchart TD
     API --> DB
 
     Gateway --> OCR
+    Gateway --> Embeddings
     Gateway --> SafetyGuards
-    SafetyGuards --> AMDRuntime
+    SafetyGuards --> LLMClientCore
+    LLMClientCore --> TokenFactory
 ```
 
 ### Technology Stack & Hardware Acceleration
 
 | Component | Technology | Target Hardware | Purpose |
 |---|---|---|---|
-| **Vision & LLM** | Gemma 3 (`google/gemma-3-27b-it`) via **vLLM** | **AMD ROCm GPU** (Instinct / AMD Dev Cloud) | Prescription structured extraction & grounded conversational reasoning |
-| **Speech-to-Text** | Whisper (`whisper-large-v3-turbo`) | **AMD ROCm GPU** (PyTorch ROCm) | Voice prescription queries with English & Tamil acoustic support |
-| **Embeddings** | BAAI / `bge-m3` (Multilingual) | **AMD ROCm GPU** (PyTorch ROCm) | In-memory semantic search over prescription lines & patient leaflets |
+| **Vision & LLM** | Gemma 4 (`Gemma-4-31B-IT`) | **AMD Token Factory (Hosted)** | Prescription structured extraction & grounded conversational reasoning |
+| **Embeddings** | BAAI / `bge-m3` (Multilingual) | **Host CPU** | In-memory semantic search over prescription lines & patient leaflets |
 | **OCR Pipeline** | Tesseract OCR (`eng` + `tam`) | **Host CPU** | Text line tokenization, confidence scoring, and bounding box geometry |
 | **Safety Engine** | Pure Python / Pydantic v2 | **Host CPU** | Deterministic evidence verification, red-flag routing, citation filtering |
 | **Web Frontend** | React 19, TypeScript, Vite, Motion | Browser | Visual audit viewer, side-by-side image verification, chat companion |
@@ -113,42 +115,31 @@ Mock Mode returns realistic, synthetically validated fixtures identical in shape
 
 ---
 
-### Option B: Run on AMD ROCm Hardware / AMD Developer Cloud
+### Option B: Run with AMD Token Factory (Hosted Endpoint)
 
-To run full inference on AMD Instinct™ hardware using vLLM on ROCm:
+To run inference against the hosted AMD Token Factory:
 
-1. **Launch vLLM serving container on AMD GPU:**
+1. **Configure AMD Token Factory in `services/ai/.env`:**
    ```bash
-   # Export your Hugging Face token for Gemma-3 access
-   export HF_TOKEN="hf_your_token_here"
-   export LLM_MODEL="google/gemma-3-27b-it"
-
-   # Execute the AMD deployment launch script
-   chmod +x infra/vllm/serve.sh
-   ./infra/vllm/serve.sh
-   ```
-   *Alternatively, start with Docker Compose:*
-   ```bash
-   docker compose --profile gpu up
+   MOCK_MODE=false
+   LLM_BASE_URL=https://developer.amd.com.cn/radeon/api/v1
+   LLM_API_KEY=your_amd_token_factory_key
+   LLM_MODEL=Gemma-4-31B-IT
+   LLM_MAX_CONCURRENCY=3
    ```
 
-2. **Run AI Service in live ROCm mode:**
+2. **Run AI Service:**
    ```bash
    cd services/ai
    python -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    pip install -r requirements.txt
 
-   # Configure live endpoints in services/ai/.env:
-   # MOCK_MODE=false
-   # LLM_BASE_URL=http://localhost:8000/v1
-   # LLM_MODEL=google/gemma-3-27b-it
-
    uvicorn app.main:app --host 0.0.0.0 --port 8100 --reload
    ```
 
 3. **Verify AMD Telemetry:**
-   Visit `http://localhost:8100/v1/health` or open the **AMD Telemetry Panel** in the web interface to view real-time ROCm GPU status, memory allocation, and latency.
+   Visit `http://localhost:8100/v1/health` or press `.` in the web interface to open the **Under the hood** drawer and inspect live AMD Token Factory status and client-side latency.
 
 ---
 

@@ -8,10 +8,12 @@ Configured strictly through environment variables.
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import io
 import json
 import logging
+import random
 import time
 from pathlib import Path
 from typing import Any
@@ -23,6 +25,47 @@ from app.config import Settings, get_settings
 from app.schemas.common import Metrics
 
 logger = logging.getLogger("carebridge.ai.llm")
+
+_semaphore: asyncio.Semaphore | None = None
+_semaphore_limit: int | None = None
+
+
+def get_llm_semaphore(limit: int = 3) -> asyncio.Semaphore:
+    """Returns a shared process-wide asyncio semaphore for LLM calls."""
+    global _semaphore, _semaphore_limit
+    if _semaphore is None or _semaphore_limit != limit:
+        _semaphore = asyncio.Semaphore(limit)
+        _semaphore_limit = limit
+    return _semaphore
+
+
+def normalize_messages_for_gemma(
+    messages: list[dict[str, Any]],
+    system_prompt: str | None = None,
+) -> list[dict[str, Any]]:
+    """Ensures exactly one system message is present at index 0 for Gemma models.
+
+    Any additional system messages are consolidated into the initial system prompt.
+    """
+    system_parts: list[str] = []
+    if system_prompt and system_prompt.strip():
+        system_parts.append(system_prompt.strip())
+
+    other_messages: list[dict[str, Any]] = []
+    for msg in messages:
+        if msg.get("role") == "system":
+            content = msg.get("content", "")
+            if isinstance(content, str) and content.strip():
+                system_parts.append(content.strip())
+        else:
+            other_messages.append(msg)
+
+    system_text = (
+        "\n\n".join(system_parts)
+        if system_parts
+        else "You are CareBridge AI, a helpful and precise assistant."
+    )
+    return [{"role": "system", "content": system_text}, *other_messages]
 
 
 class LLMResponse:
@@ -51,27 +94,44 @@ class LLMResponse:
 def encode_image_base64(
     image_input: Image.Image | str | Path | bytes,
     image_format: str = "PNG",
+    max_dimension: int = 512,
 ) -> str:
-    """Encodes a PIL image, file path, or raw bytes into a base64 data URI string."""
+    """Encodes a PIL image, file path, or raw bytes into a base64 data URI string.
+
+    If the image exceeds max_dimension in width or height, it is scaled down preserving
+    aspect ratio to prevent excessive vision tokens and CUDA OOM on shared endpoints.
+    """
     if isinstance(image_input, (str, Path)):
-        with open(image_input, "rb") as f:
-            raw_bytes = f.read()
-        mime = "image/png" if str(image_input).lower().endswith(".png") else "image/jpeg"
-        b64_str = base64.b64encode(raw_bytes).decode("utf-8")
-        return f"data:{mime};base64,{b64_str}"
+        img = Image.open(image_input)
+    elif isinstance(image_input, bytes):
+        img = Image.open(io.BytesIO(image_input))
+    elif isinstance(image_input, Image.Image):
+        img = image_input
+    else:
+        raise ValueError(f"Unsupported image input type: {type(image_input)}")
 
-    if isinstance(image_input, bytes):
-        b64_str = base64.b64encode(image_input).decode("utf-8")
-        return f"data:image/png;base64,{b64_str}"
+    # Convert RGBA / P modes to RGB for JPEG compatibility
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+    elif img.mode not in ("RGB", "L"):
+        img = img.convert("RGB")
 
-    if isinstance(image_input, Image.Image):
-        buffer = io.BytesIO()
-        image_input.save(buffer, format=image_format)
-        b64_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
-        mime = f"image/{image_format.lower()}"
-        return f"data:{mime};base64,{b64_str}"
+    # Resize if larger than max_dimension to preserve memory on shared AMD GPUs
+    if max(img.width, img.height) > max_dimension:
+        img = img.copy()
+        img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
 
-    raise ValueError(f"Unsupported image input type: {type(image_input)}")
+    buffer = io.BytesIO()
+    save_format = image_format.upper()
+    if save_format in ("JPEG", "JPG"):
+        img.save(buffer, format="JPEG", quality=85)
+        mime = "image/jpeg"
+    else:
+        img.save(buffer, format=save_format)
+        mime = f"image/{save_format.lower()}"
+
+    b64_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    return f"data:{mime};base64,{b64_str}"
 
 
 class LLMClient:
@@ -81,13 +141,15 @@ class LLMClient:
         self,
         settings: Settings | None = None,
         transport: httpx.AsyncBaseTransport | None = None,
-        timeout: float = 60.0,
+        timeout: float = 180.0,
     ) -> None:
         cfg = settings or get_settings()
         self.base_url = cfg.LLM_BASE_URL.rstrip("/")
         self.api_key = cfg.LLM_API_KEY
         self.model = cfg.LLM_MODEL
         self.timeout = timeout
+        concurrency = getattr(cfg, "LLM_MAX_CONCURRENCY", 3)
+        self.semaphore = get_llm_semaphore(concurrency)
 
         headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -119,10 +181,7 @@ class LLMClient:
         max_tokens: int = 2048,
     ) -> LLMResponse:
         """Executes a text chat completion request with JSON retry logic."""
-        full_messages: list[dict[str, Any]] = []
-        if system_prompt:
-            full_messages.append({"role": "system", "content": system_prompt})
-        full_messages.extend(messages)
+        full_messages = normalize_messages_for_gemma(messages, system_prompt)
 
         return await self._dispatch_with_retry(
             messages=full_messages,
@@ -148,13 +207,13 @@ class LLMClient:
             {"type": "image_url", "image_url": {"url": data_uri}},
         ]
 
-        messages: list[dict[str, Any]] = []
-        if system_prompt:
-            messages.append({"role": "system", "content": system_prompt})
-        messages.append({"role": "user", "content": user_content})
+        full_messages = normalize_messages_for_gemma(
+            [{"role": "user", "content": user_content}],
+            system_prompt,
+        )
 
         return await self._dispatch_with_retry(
-            messages=messages,
+            messages=full_messages,
             json_mode=json_mode,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -190,7 +249,7 @@ class LLMClient:
                 model=self.model,
                 tokens_in=tokens_in,
                 tokens_out=tokens_out,
-                gpu="AMD ROCm",
+                gpu="AMD Token Factory",
             )
             return LLMResponse(content=content, parsed_json=None, metrics=metrics, raw=raw_res)
 
@@ -202,7 +261,7 @@ class LLMClient:
                 model=self.model,
                 tokens_in=tokens_in,
                 tokens_out=tokens_out,
-                gpu="AMD ROCm",
+                gpu="AMD Token Factory",
             )
             return LLMResponse(
                 content=content,
@@ -246,7 +305,7 @@ class LLMClient:
             model=self.model,
             tokens_in=total_tokens_in,
             tokens_out=total_tokens_out,
-            gpu="AMD ROCm",
+            gpu="AMD Token Factory",
         )
         return LLMResponse(
             content=content2,
@@ -255,19 +314,95 @@ class LLMClient:
             raw=raw_res2,
         )
 
+    @staticmethod
+    def _calculate_backoff(response: httpx.Response, attempt: int) -> float:
+        """Calculates backoff seconds honoring Retry-After or exponential backoff + jitter."""
+        if response.status_code == 429:
+            retry_after = response.headers.get("Retry-After")
+            if retry_after:
+                try:
+                    return max(0.5, min(float(retry_after) + random.uniform(0.1, 0.5), 60.0))
+                except ValueError:
+                    pass
+        # Exponential backoff + jitter (e.g. 1s, 2s, 4s + 0.1..0.5s)
+        backoff = (2.0 ** (attempt - 1)) + random.uniform(0.1, 0.5)
+        return min(backoff, 60.0)
+
     async def _send_request(self, payload: dict[str, Any]) -> dict[str, Any]:
-        """POSTs request to OpenAI-compatible /chat/completions endpoint."""
+        """POSTs request to /chat/completions with retries and concurrency control."""
         url = "/chat/completions"
-        try:
-            response = await self._client.post(url, json=payload)
-            response.raise_for_status()
-            return response.json()
-        except httpx.HTTPStatusError as exc:
-            logger.error("LLM HTTP error: %s - %s", exc.response.status_code, exc.response.text)
-            raise
-        except httpx.RequestError as exc:
-            logger.error("LLM connection error to %s: %s", self.base_url, exc)
-            raise
+        # Omit unsupported parameters on AMD Token Factory
+        clean_payload = {
+            k: v for k, v in payload.items() if k not in ("stop", "seed", "top_k")
+        }
+
+        max_tries = 4
+        async with self.semaphore:
+            for attempt in range(1, max_tries + 1):
+                try:
+                    response = await self._client.post(url, json=clean_payload)
+
+                    # Log rate-limit headers (never log prompt text)
+                    rate_limit_headers = {
+                        k: v for k, v in response.headers.items()
+                        if k.lower().startswith("x-ratelimit-")
+                    }
+                    if rate_limit_headers:
+                        logger.info("AMD Token Factory rate limits: %s", rate_limit_headers)
+
+                    if response.status_code in (429, 500, 502, 503):
+                        if attempt < max_tries:
+                            wait_s = self._calculate_backoff(response, attempt)
+                            logger.warning(
+                                "LLM HTTP status %d on try %d/%d. Backing off for %.2fs.",
+                                response.status_code,
+                                attempt,
+                                max_tries,
+                                wait_s,
+                            )
+                            await asyncio.sleep(wait_s)
+                            continue
+                        response.raise_for_status()
+
+                    response.raise_for_status()
+                    return response.json()
+
+                except httpx.HTTPStatusError as exc:
+                    if exc.response.status_code in (429, 500, 502, 503) and attempt < max_tries:
+                        wait_s = self._calculate_backoff(exc.response, attempt)
+                        logger.warning(
+                            "LLM HTTP error %d on try %d/%d. Backing off for %.2fs.",
+                            exc.response.status_code,
+                            attempt,
+                            max_tries,
+                            wait_s,
+                        )
+                        await asyncio.sleep(wait_s)
+                        continue
+                    logger.error(
+                        "LLM HTTP error %d: %s",
+                        exc.response.status_code,
+                        exc.response.text[:200],
+                    )
+                    raise
+                except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                    if attempt < max_tries:
+                        wait_s = (2.0 ** (attempt - 1)) + random.uniform(0.1, 0.5)
+                        logger.warning(
+                            "LLM network error %s on try %d/%d. Backing off for %.2fs.",
+                            type(exc).__name__,
+                            attempt,
+                            max_tries,
+                            wait_s,
+                        )
+                        await asyncio.sleep(wait_s)
+                        continue
+                    logger.error(
+                        "LLM connection error to %s: %s",
+                        self.base_url,
+                        type(exc).__name__,
+                    )
+                    raise
 
     @staticmethod
     def _extract_content(res: dict[str, Any]) -> str:

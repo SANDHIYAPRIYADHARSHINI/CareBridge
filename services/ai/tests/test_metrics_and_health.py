@@ -90,7 +90,7 @@ class TestMetricsAndHealth:
 
         assert data["status"] == "ok"
         assert "device" in data
-        assert data["device"] in ("cpu", "cuda:0", "mock-gpu")
+        assert data["device"] in ("cpu", "cuda:0", "mock-gpu", "hosted on AMD Token Factory")
         assert "embedder" in data
 
         # If sentence-transformers is missing, fallback embedder is active with a clear warning

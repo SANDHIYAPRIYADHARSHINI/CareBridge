@@ -166,3 +166,137 @@ async def test_generate_chat_text_only():
     assert resp.content == "Take once daily."
     assert resp.metrics.tokens_in == 60
     assert resp.metrics.tokens_out == 12
+
+
+@pytest.mark.asyncio
+async def test_retry_429_honors_retry_after(monkeypatch):
+    # Accelerate sleep for tests
+    import asyncio
+    slept = []
+
+    async def fake_sleep(duration):
+        slept.append(duration)
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    calls = 0
+
+    def mock_handler(request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return httpx.Response(
+                429,
+                headers={"Retry-After": "0.2", "x-ratelimit-remaining-user-rpm": "0"},
+                json={"error": {"message": "Rate limit exceeded"}},
+            )
+        return httpx.Response(
+            200,
+            headers={"x-ratelimit-remaining-user-rpm": "19"},
+            json={
+                "choices": [{"message": {"role": "assistant", "content": "Recovered!"}}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            },
+        )
+
+    transport = httpx.MockTransport(mock_handler)
+    settings = Settings(
+        LLM_BASE_URL="http://mock-llm:8000/v1",
+        LLM_API_KEY="test-key",
+        LLM_MODEL="test-gemma",
+        LLM_MAX_CONCURRENCY=2,
+    )
+
+    client = LLMClient(settings=settings, transport=transport)
+    resp = await client.generate_chat(messages=[{"role": "user", "content": "Hello"}])
+
+    assert calls == 2
+    assert len(slept) == 1
+    assert slept[0] >= 0.2  # Honored Retry-After
+    assert resp.content == "Recovered!"
+
+
+@pytest.mark.asyncio
+async def test_retry_503_backoff(monkeypatch):
+    import asyncio
+    slept = []
+
+    async def fake_sleep(duration):
+        slept.append(duration)
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    calls = 0
+
+    def mock_handler(request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls < 3:
+            return httpx.Response(
+                503,
+                headers={"x-ratelimit-remaining-user-rpm": "10"},
+                json={"error": {"message": "Service unavailable"}},
+            )
+        return httpx.Response(
+            200,
+            json={
+                "choices": [{"message": {"role": "assistant", "content": "Back up!"}}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            },
+        )
+
+    transport = httpx.MockTransport(mock_handler)
+    settings = Settings(
+        LLM_BASE_URL="http://mock-llm:8000/v1",
+        LLM_API_KEY="test-key",
+        LLM_MODEL="test-gemma",
+    )
+
+    client = LLMClient(settings=settings, transport=transport)
+    resp = await client.generate_chat(messages=[{"role": "user", "content": "Ping"}])
+
+    assert calls == 3
+    assert len(slept) == 2
+    assert resp.content == "Back up!"
+
+
+@pytest.mark.asyncio
+async def test_gemma_message_normalization():
+    sent_messages = []
+
+    def mock_handler(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content.decode("utf-8"))
+        sent_messages.extend(body["messages"])
+        return httpx.Response(
+            200,
+            json={
+                "choices": [{"message": {"role": "assistant", "content": "OK"}}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 2},
+            },
+        )
+
+    transport = httpx.MockTransport(mock_handler)
+    settings = Settings(
+        LLM_BASE_URL="http://mock-llm:8000/v1",
+        LLM_API_KEY="test-key",
+        LLM_MODEL="test-gemma",
+    )
+
+    client = LLMClient(settings=settings, transport=transport)
+    # Pass user message with a secondary system message in messages list
+    await client.generate_chat(
+        messages=[
+            {"role": "user", "content": "What is my medicine?"},
+            {"role": "system", "content": "Do not give medical advice."},
+        ],
+        system_prompt="You are a clinical assistant.",
+    )
+
+    # Must have exactly one system message at index 0
+    assert len(sent_messages) == 2
+    assert sent_messages[0]["role"] == "system"
+    assert "clinical assistant" in sent_messages[0]["content"]
+    assert "Do not give medical advice" in sent_messages[0]["content"]
+    assert sent_messages[1]["role"] == "user"
+    assert sent_messages[1]["content"] == "What is my medicine?"
+

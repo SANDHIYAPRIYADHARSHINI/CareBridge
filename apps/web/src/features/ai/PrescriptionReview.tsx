@@ -13,6 +13,7 @@ import {
   FileText,
   HandGrabbing,
 } from "@phosphor-icons/react";
+import { motion, AnimatePresence } from "motion/react";
 import type { ExtractionResult, Medicine } from "../../types/ai";
 import "./PrescriptionReview.css";
 
@@ -411,13 +412,16 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
       {/* Dynamic SVG Leader Line Overlay */}
       {leaderLine && (
         <svg className="leader-line-svg" aria-hidden="true">
-          <path
+          <motion.path
             className="leader-line-path"
             d={`M ${leaderLine.startX} ${leaderLine.startY} C ${leaderLine.startX - 45} ${leaderLine.startY}, ${leaderLine.endX + 45} ${leaderLine.endY}, ${leaderLine.endX} ${leaderLine.endY}`}
             stroke="var(--primary)"
             strokeWidth="1.75"
             strokeDasharray="4 3"
             fill="none"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.95 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
           />
           <circle
             cx={leaderLine.startX}
@@ -519,10 +523,13 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
             const isCardHighlighted = allLineIds.some((id) => highlightedLineIds.includes(id));
 
             return (
-              <article
+              <motion.article
                 key={med.id || index}
+                layoutId={`med-card-${med.id}`}
                 className={`medicine-card ${isWarn ? "card-warn" : ""} ${isCardHighlighted ? "card-highlighted" : ""}`}
-                style={{ animationDelay: `${index * 60}ms` }}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.06, duration: 0.32, ease: "easeOut" }}
                 aria-label={`Medication: ${med.name.value}`}
               >
                 {/* Header */}
@@ -732,7 +739,7 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
                     </label>
                   </div>
                 )}
-              </article>
+              </motion.article>
             );
           })}
         </div>
@@ -786,13 +793,21 @@ export const PrescriptionReview: React.FC<PrescriptionReviewProps> = ({
       {/* ------------------------------------------------------------------ */}
       {/* Mobile Full-Screen Paper Sheet Modal                               */}
       {/* ------------------------------------------------------------------ */}
-      {isMobileSheetOpen && (
-        <div className="mobile-paper-sheet-overlay" role="dialog" aria-modal="true">
-          <div className="mobile-sheet-content">
-            {renderDocumentViewer(true)}
+      <AnimatePresence>
+        {isMobileSheetOpen && (
+          <div className="mobile-paper-sheet-overlay" role="dialog" aria-modal="true">
+            <motion.div
+              className="mobile-sheet-content"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+            >
+              {renderDocumentViewer(true)}
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 };

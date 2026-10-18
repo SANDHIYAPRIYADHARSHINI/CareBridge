@@ -12,6 +12,8 @@ def test_health_endpoint():
     assert data["status"] == "ok"
     assert "mock" in data
     assert "model" in data
+    assert "model_available" in data
+    assert data["compute_location"] == "hosted on AMD Token Factory"
     assert "gpu" in data
     assert "stt_model" in data
     assert "embed_model" in data

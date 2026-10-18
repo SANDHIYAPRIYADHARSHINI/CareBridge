@@ -59,6 +59,11 @@ class OcrResult(BaseModel):
     lines: list[OcrLine] = Field(default_factory=list)
 
 
+class ImageDimensions(BaseModel):
+    width: int
+    height: int
+
+
 class ExtractionResult(BaseModel):
     request_id: str
     document_id: str
@@ -72,6 +77,7 @@ class ExtractionResult(BaseModel):
     overall_status: OverallStatus
     review_reasons: list[str] = Field(default_factory=list)
     metrics: Metrics
+    image: ImageDimensions | None = None
     corruption_details: dict[str, Any] | None = None
 
 

@@ -99,6 +99,10 @@
     "Missing drug strength for Amoxicillin: requires pharmacist or doctor clarification before setting reminders.",
     "Quantity and frequency mismatch: 15 capsules is insufficient for 10 days at 3 doses/day."
   ],
+  "image": {
+    "width": 1200,
+    "height": 1600
+  },
   "metrics": {
     "latency_ms": 381.2,
     "model": "google/gemma-3-27b-it",
